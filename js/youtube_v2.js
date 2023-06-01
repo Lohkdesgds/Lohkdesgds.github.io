@@ -132,7 +132,9 @@ function __lsw_yt_onState()
                 __lsw_yt_log("# __ > OnState: Loading");
                 if (typeof obj.m_hooks.on_loading === 'function') obj.m_hooks.on_loading();
                 obj.m_stat.last_state = -3;
-                if (__lsw_yt_loadfail_timeout === null) __lsw_yt_loadfail_timeout = setTimeout(function(){__lsw_yt_timeoutTest(obj);}, 1000); // test again if isListed false.
+                
+                if (__lsw_yt_loadfail_timeout) clearTimeout(__lsw_yt_loadfail_timeout);
+                __lsw_yt_loadfail_timeout = setTimeout(function(){__lsw_yt_timeoutTest(obj);}, 10000); // test again if isListed false.
             }
             else if (cpy === -1 && cur === 3) { // was none, now buffering -> loading
                 __lsw_yt_log("# __ > OnState: Loading");
