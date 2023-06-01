@@ -104,6 +104,14 @@ function __lsw_yt_onReady(ev)
         }
     }
 }
+function __lsw_yt_timeoutTest(obj)
+{
+    if (obj.m_stat < 0 && obj.m_player.playerInfo.videoData.isListed === false) {
+        __lsw_yt_log("# __ > OnState (async): LoadFail (timed_out)");
+        if (typeof obj.m_hooks.on_load_fail === 'function') obj.m_hooks.on_load_fail();
+        setTimeout(function(){__lsw_yt_timeoutTest(obj);}, 500);
+    }
+}
 function __lsw_yt_onState()
 {
     __lsw_yt_log("# __ Youtube OnState triggered");
@@ -127,10 +135,11 @@ function __lsw_yt_onState()
                 __lsw_yt_log("# __ > OnState: Loading");
                 if (typeof obj.m_hooks.on_loading === 'function') obj.m_hooks.on_loading();
             }
-            else if (cpy === 3 && cur === -1) { // was buffering, now none -> failed
+            else if (cpy === 3 && cur === -1 && obj.m_player.playerInfo.videoData.isListed === false) { // was buffering, now none -> failed
                 __lsw_yt_log("# __ > OnState: LoadFail");
                 if (typeof obj.m_hooks.on_load_fail === 'function') obj.m_hooks.on_load_fail();
                 obj.m_stat.last_state = -2; // avoid loop
+                setTimeout(function(){__lsw_yt_timeoutTest(obj);}, 500); // test again if isListed false.
             }
             else if (cur === 1) { // can only be playing
                 __lsw_yt_log("# __ > OnState: Play");
