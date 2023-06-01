@@ -106,10 +106,10 @@ function __lsw_yt_onReady(ev)
 }
 function __lsw_yt_timeoutTest(obj)
 {
-    if (obj.m_stat < 0 && obj.m_player.playerInfo.videoData.isListed === false) {
+    if (obj.m_stat.last_state < 0 && obj.m_player.playerInfo.videoData.isListed === false) {
         __lsw_yt_log("# __ > OnState (async): LoadFail (timed_out)");
         if (typeof obj.m_hooks.on_load_fail === 'function') obj.m_hooks.on_load_fail();
-        setTimeout(function(){__lsw_yt_timeoutTest(obj);}, 500);
+        setTimeout(function(){__lsw_yt_timeoutTest(obj);}, 1000);
     }
 }
 function __lsw_yt_onState()
@@ -118,7 +118,7 @@ function __lsw_yt_onState()
 
     for(let i = 0; i < __lsw_yt_list.length; ++i) 
     {
-        let obj = __lsw_yt_list[i];
+        const obj = __lsw_yt_list[i];
         if (obj.m_player !== null) {
             const cur = obj.m_player.getPlayerState();
             const cpy = obj.m_stat.last_state;
@@ -140,7 +140,7 @@ function __lsw_yt_onState()
                 __lsw_yt_log("# __ > OnState: LoadFail");
                 if (typeof obj.m_hooks.on_load_fail === 'function') obj.m_hooks.on_load_fail();
                 obj.m_stat.last_state = -2; // avoid loop
-                setTimeout(function(){__lsw_yt_timeoutTest(obj);}, 500); // test again if isListed false.
+                setTimeout(function(){ __lsw_yt_timeoutTest(obj);}, 500); // test again if isListed false.
             }
             else if (cur === 1) { // can only be playing
                 __lsw_yt_log("# __ > OnState: Play");
