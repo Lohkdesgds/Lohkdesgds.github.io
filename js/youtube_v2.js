@@ -1,6 +1,7 @@
 var __lsw_yt_loaded = -1;
 var __lsw_yt_list = [];
 var __lsw_yt_debug_list = null; // expects element of list to push <li>
+var __lsw_yt_loadfail_timeout = null;
 
 
 function __lsw_zeroed_first(what, zeros){ if (typeof zeros !== 'number' || zeros < 1) zeros = 2; what = "" + what; while(what.length < zeros) what = "0" + what; return what; }
@@ -109,8 +110,9 @@ function __lsw_yt_timeoutTest(obj)
     if (obj.m_stat.last_state < 0 && obj.m_player.playerInfo.videoData.isListed === false) {
         __lsw_yt_log("# __ > OnState (async): LoadFail (timed_out)");
         if (typeof obj.m_hooks.on_load_fail === 'function') obj.m_hooks.on_load_fail();
-        setTimeout(function(){__lsw_yt_timeoutTest(obj);}, 10000);
+        __lsw_yt_loadfail_timeout = setTimeout(function(){__lsw_yt_timeoutTest(obj);}, 1000);
     }
+    else __lsw_yt_loadfail_timeout = null;
 }
 function __lsw_yt_onState()
 {
@@ -130,7 +132,7 @@ function __lsw_yt_onState()
                 __lsw_yt_log("# __ > OnState: Loading");
                 if (typeof obj.m_hooks.on_loading === 'function') obj.m_hooks.on_loading();
                 obj.m_stat.last_state = -3;
-                setTimeout(function(){__lsw_yt_timeoutTest(obj);}, 2000); // test again if isListed false.
+                if (__lsw_yt_loadfail_timeout === null) __lsw_yt_loadfail_timeout = setTimeout(function(){__lsw_yt_timeoutTest(obj);}, 1000); // test again if isListed false.
             }
             else if (cpy === -1 && cur === 3) { // was none, now buffering -> loading
                 __lsw_yt_log("# __ > OnState: Loading");
@@ -140,7 +142,7 @@ function __lsw_yt_onState()
                 __lsw_yt_log("# __ > OnState: LoadFail");
                 if (typeof obj.m_hooks.on_load_fail === 'function') obj.m_hooks.on_load_fail();
                 obj.m_stat.last_state = -2; // avoid loop
-                setTimeout(function(){ __lsw_yt_timeoutTest(obj);}, 5000); // test again if isListed false.
+                if (__lsw_yt_loadfail_timeout === null) __lsw_yt_loadfail_timeout = setTimeout(function(){ __lsw_yt_timeoutTest(obj);}, 1000); // test again if isListed false.
             }
             else if (cur === 1) { // can only be playing
                 __lsw_yt_log("# __ > OnState: Play");
