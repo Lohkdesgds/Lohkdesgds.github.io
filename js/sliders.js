@@ -46,8 +46,8 @@ function __lsw_mouseup() {
                     )
                 );
 
-        __lsw_mouse.grabbed_element.onmousemove();
         __lsw_mouse.grabbed_element = null;
+        __lsw_mouse.grabbed_element.onmousemove();
     }
 }
 
