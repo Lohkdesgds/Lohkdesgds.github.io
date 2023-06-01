@@ -109,7 +109,7 @@ function __lsw_yt_timeoutTest(obj)
     if (obj.m_stat.last_state < 0 && obj.m_player.playerInfo.videoData.isListed === false) {
         __lsw_yt_log("# __ > OnState (async): LoadFail (timed_out)");
         if (typeof obj.m_hooks.on_load_fail === 'function') obj.m_hooks.on_load_fail();
-        setTimeout(function(){__lsw_yt_timeoutTest(obj);}, 1000);
+        setTimeout(function(){__lsw_yt_timeoutTest(obj);}, 10000);
     }
 }
 function __lsw_yt_onState()
@@ -140,7 +140,7 @@ function __lsw_yt_onState()
                 __lsw_yt_log("# __ > OnState: LoadFail");
                 if (typeof obj.m_hooks.on_load_fail === 'function') obj.m_hooks.on_load_fail();
                 obj.m_stat.last_state = -2; // avoid loop
-                setTimeout(function(){ __lsw_yt_timeoutTest(obj);}, 500); // test again if isListed false.
+                setTimeout(function(){ __lsw_yt_timeoutTest(obj);}, 5000); // test again if isListed false.
             }
             else if (cur === 1) { // can only be playing
                 __lsw_yt_log("# __ > OnState: Play");
