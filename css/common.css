@@ -1,0 +1,21 @@
+@font-face { font-family: 'AvaliScratch';           src: url('/fonts/AvaliScratchExtended-Regular.ttf'); }
+@font-face { font-family: 'EMP-Bold';               src: url('/fonts/EMprint-Bold.ttf'); }
+@font-face { font-family: 'EMP-BoldItalic';         src: url('/fonts/EMprint-BoldItalic.ttf'); }
+@font-face { font-family: 'EMP-CondensedBold';      src: url('/fonts/EMprint-CondensedBold.ttf'); }
+@font-face { font-family: 'EMP-CondensedBoldIt';    src: url('/fonts/EMprint-CondensedBoldIt.ttf'); }
+@font-face { font-family: 'EMP-CondensedItalic';    src: url('/fonts/EMprint-CondensedItalic.ttf'); }
+@font-face { font-family: 'EMP-CondensedLight';     src: url('/fonts/EMprint-CondensedLight.ttf'); }
+@font-face { font-family: 'EMP-CondensedLightIt';   src: url('/fonts/EMprint-CondensedLightIt.ttf'); }
+@font-face { font-family: 'EMP-CondensedRegular';   src: url('/fonts/EMprint-CondensedRegular.ttf'); }
+@font-face { font-family: 'EMP-CondensedSemiBold';  src: url('/fonts/EMprint-CondensedSemiBold.ttf'); }
+@font-face { font-family: 'EMP-CondSemiBoldIt';     src: url('/fonts/EMprint-CondSemiBoldIt.ttf'); }
+@font-face { font-family: 'EMP-Light';              src: url('/fonts/EMprint-Light.ttf'); }
+@font-face { font-family: 'EMP-LightItalic';        src: url('/fonts/EMprint-LightItalic.ttf'); }
+@font-face { font-family: 'EMP-Regular';            src: url('/fonts/EMprint-Regular.ttf'); }
+@font-face { font-family: 'EMP-RegularItalic';      src: url('/fonts/EMprint-RegularItalic.ttf'); }
+@font-face { font-family: 'EMP-SemiBold';           src: url('/fonts/EMprint-SemiBold.ttf'); }
+@font-face { font-family: 'EMP-SemiBoldItalic';     src: url('/fonts/EMprint-SemiBoldItalic.ttf'); }
+
+body {
+    font-family: 'AvaliScratch';
+}
