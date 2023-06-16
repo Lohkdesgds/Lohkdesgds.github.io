@@ -13,41 +13,46 @@ function __lsw_mousemove(ev) {
     __lsw_mouse.last_mx = ev.clientX;
     __lsw_mouse.last_my = ev.clientY;
 
-    if (__lsw_mouse.grabbed_element === null) return;
+    const obj = __lsw_mouse.grabbed_element;
+    if (obj === null) return;
     
-    const curr_x = (dx + Number(__lsw_mouse.grabbed_element.getAttribute('__lsw-pos_x')));
-    const curr_y = (dy + Number(__lsw_mouse.grabbed_element.getAttribute('__lsw-pos_y')));
+    const curr_x = (dx + Number(obj.getAttribute('__lsw-pos_x')));
+    const curr_y = (dy + Number(obj.getAttribute('__lsw-pos_y')));
 
-    __lsw_mouse.grabbed_element.setAttribute('__lsw-pos_x', curr_x);
-    __lsw_mouse.grabbed_element.setAttribute('__lsw-pos_y', curr_y);
+    obj.setAttribute('__lsw-pos_x', curr_x);
+    obj.setAttribute('__lsw-pos_y', curr_y);
     
-    const max_x = __lsw_mouse.grabbed_element.getAttribute('__lsw-max_x');
-    const max_y = __lsw_mouse.grabbed_element.getAttribute('__lsw-max_y');
+    const max_x = obj.getAttribute('__lsw-max_x');
+    const max_y = obj.getAttribute('__lsw-max_y');
 
-    __lsw_mouse.grabbed_element.style.left = (curr_x > max_x ? max_x : (curr_x < 0 ? 0 : curr_x)) + "px";
-    __lsw_mouse.grabbed_element.style.top  = (curr_y > max_y ? max_y : (curr_y < 0 ? 0 : curr_y)) + "px";
+    obj.style.left = (curr_x > max_x ? max_x : (curr_x < 0 ? 0 : curr_x)) + "px";
+    obj.style.top  = (curr_y > max_y ? max_y : (curr_y < 0 ? 0 : curr_y)) + "px";
+    
+    if (typeof obj.onmousemove === 'function') obj.onmousemove();
 }
 function __lsw_mouseup() {
     if (__lsw_mouse.grabbed_element !== null) {
+        const obj = __lsw_mouse.grabbed_element;
+        __lsw_mouse.grabbed_element = null;
+
         // update to real position. 
 
-        __lsw_mouse.grabbed_element.setAttribute(
+        obj.setAttribute(
             '__lsw-pos_x', 
-            __lsw_mouse.grabbed_element.style.left.substring(
+            obj.style.left.substring(
                     0,
-                    __lsw_mouse.grabbed_element.style.left.length - 2
+                    obj.style.left.length - 2
                 )
             );
-            __lsw_mouse.grabbed_element.setAttribute(
+            obj.setAttribute(
                 '__lsw-pos_y', 
-                __lsw_mouse.grabbed_element.style.top.substring(
-                        0,
-                        __lsw_mouse.grabbed_element.style.top.length - 2
-                    )
-                );
+                obj.style.top.substring(
+                    0,
+                    obj.style.top.length - 2
+                )
+            );
 
-        __lsw_mouse.grabbed_element.onmousemove();
-        __lsw_mouse.grabbed_element = null;
+        if (typeof obj.onmousemove === 'function') obj.onmousemove();
     }
 }
 
@@ -61,7 +66,7 @@ function lsw_make_slider_of(div_id, max_x, max_y, callback, keep_select_text_ena
     element.setAttribute('__lsw-max_x', max_x);
     element.setAttribute('__lsw-max_y', max_y);
 
-    element.style.position = "absolute";
+    //element.style.position = "absolute";
 
     element.onmousedown = function(e) {
         __lsw_mouse.grabbed_element = this;

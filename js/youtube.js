@@ -13,8 +13,10 @@ function __lsw_yt_log(data){
         if (max <= 0) max = 20; 
         let elem = document.createElement("li");
         elem.innerHTML = ("<strong>[YTAPI2]</strong> " + __lsw_date_str() + " > " + data);
-        __lsw_yt_debug_list.insertBefore(elem, __lsw_yt_debug_list.firstChild); }}
-        if (__lsw_yt_debug_list.childElementCount > max) __lsw_yt_debug_list.erase(__lsw_yt_debug_list.lastChild);
+        __lsw_yt_debug_list.insertBefore(elem, __lsw_yt_debug_list.firstChild);
+        if (__lsw_yt_debug_list.childElementCount > max) __lsw_yt_debug_list.removeChild(__lsw_yt_debug_list.lastChild)
+    }
+}
 
 function YouTube_setLogID(debug_list_id)
 {
@@ -25,7 +27,7 @@ function YouTube_setLogID(debug_list_id)
     }
 }
 
-function YouTube(debug_list_id)
+function YouTube(own_id, debug_list_id)
 {
     YouTube_setLogID(debug_list_id);
 
@@ -33,13 +35,14 @@ function YouTube(debug_list_id)
         m_recipe: {
             url: null,
             type: 'video', // or 'playlist'
-            id: null, // if null, insert div somewhere
+            id: (typeof own_id === 'string' && own_id.length > 0 ? own_id : null), // if null, insert div somewhere
             width: '0',
             height: '0'
         },
         m_stat: {
             has_played_once: false,
-            last_state: -2
+            last_state: -2,
+            should_autoplay: false
         },
 
         m_player: null, // YouTube Player
@@ -109,8 +112,19 @@ function __lsw_yt_timeoutTest(obj)
 {
     if (obj.m_stat.last_state < 0 && obj.m_player.playerInfo.videoData.isListed === false) {
         __lsw_yt_log("# __ > OnState (async): LoadFail (timed_out)");
+        __lsw_yt_loadfail_timeout = setTimeout(function(){__lsw_yt_timeoutTest(obj);}, 2000);
         if (typeof obj.m_hooks.on_load_fail === 'function') obj.m_hooks.on_load_fail();
-        __lsw_yt_loadfail_timeout = setTimeout(function(){__lsw_yt_timeoutTest(obj);}, 1000);
+    }
+    else if (obj.m_stat.last_state <= -3) {
+        if (--obj.m_stat.last_state <= -5) {
+            __lsw_yt_log("# __ > OnState (async): LoadFail (long timed_out)");
+            __lsw_yt_loadfail_timeout = setTimeout(function(){__lsw_yt_timeoutTest(obj);}, 2000);
+            if (typeof obj.m_hooks.on_load_fail === 'function') obj.m_hooks.on_load_fail();
+        }
+        else {
+            __lsw_yt_log("# __ > OnState (async): Load taking very long... Waiting for " + (6 + obj.m_stat.last_state) + " second(s) for forced LoadFail");            
+            __lsw_yt_loadfail_timeout = setTimeout(function(){__lsw_yt_timeoutTest(obj);}, 1000);
+        }
     }
     else __lsw_yt_loadfail_timeout = null;
 }
@@ -129,22 +143,28 @@ function __lsw_yt_onState()
             //console.log("WUS: " + cpy + "; NOW: " + cur);
 
             if (cpy < -1 && (cur === 3 || cur < 0)) { // was failed, now not loaded -> force keep -3
-                __lsw_yt_log("# __ > OnState: Loading");
+                __lsw_yt_log("# __ > OnState: Loading 1");
                 if (typeof obj.m_hooks.on_loading === 'function') obj.m_hooks.on_loading();
                 obj.m_stat.last_state = -3;
                 
                 if (__lsw_yt_loadfail_timeout) clearTimeout(__lsw_yt_loadfail_timeout);
-                __lsw_yt_loadfail_timeout = setTimeout(function(){__lsw_yt_timeoutTest(obj);}, 10000); // test again if isListed false.
+                __lsw_yt_loadfail_timeout = setTimeout(function(){__lsw_yt_timeoutTest(obj);}, 5000); // test again if isListed false.
             }
             else if (cpy === -1 && cur === 3) { // was none, now buffering -> loading
-                __lsw_yt_log("# __ > OnState: Loading");
+                __lsw_yt_log("# __ > OnState: Loading 2");
                 if (typeof obj.m_hooks.on_loading === 'function') obj.m_hooks.on_loading();
+                obj.m_stat.last_state = -3;
+                
+                if (__lsw_yt_loadfail_timeout) clearTimeout(__lsw_yt_loadfail_timeout);
+                __lsw_yt_loadfail_timeout = setTimeout(function(){ __lsw_yt_timeoutTest(obj);}, 5000); // test again if isListed false.
             }
             else if (cpy === 3 && cur === -1 && obj.m_player.playerInfo.videoData.isListed === false) { // was buffering, now none -> failed
                 __lsw_yt_log("# __ > OnState: LoadFail");
                 if (typeof obj.m_hooks.on_load_fail === 'function') obj.m_hooks.on_load_fail();
                 obj.m_stat.last_state = -2; // avoid loop
-                if (__lsw_yt_loadfail_timeout === null) __lsw_yt_loadfail_timeout = setTimeout(function(){ __lsw_yt_timeoutTest(obj);}, 1000); // test again if isListed false.
+
+                if (__lsw_yt_loadfail_timeout) clearTimeout(__lsw_yt_loadfail_timeout);
+                __lsw_yt_loadfail_timeout = setTimeout(function(){ __lsw_yt_timeoutTest(obj);}, 1000); // test again if isListed false.
             }
             else if (cur === 1) { // can only be playing
                 __lsw_yt_log("# __ > OnState: Play");
@@ -180,9 +200,11 @@ function onYouTubeIframeAPIReady() {
     __lsw_yt_log("# Youtube iframeAPIReady triggered");
     __lsw_yt_loaded = 1;
     
-    for(let i = 0; i < __lsw_yt_list.length; ++i) {
-        __lsw_yt__auto_load(__lsw_yt_list[i]);
-    }
+    setTimeout(function(){
+        for(let i = 0; i < __lsw_yt_list.length; ++i) {
+            __lsw_yt__auto_load(__lsw_yt_list[i]);
+        }
+    }, 500);
 }
 
 function __lsw_yt__auto_load(obj, autodestroy)
@@ -198,9 +220,11 @@ function __lsw_yt__auto_load(obj, autodestroy)
         __lsw_yt_log("Had to create new div, called: " + obj.m_recipe.id);
 
         let elem = document.createElement('div');
+        
         elem.setAttribute('id', obj.m_recipe.id);
 
-        document.body.append(elem);
+        document.body.appendChild(elem);
+
         __lsw_yt_log("Integrated new div to body (" + obj.m_recipe.id + ")");
     }
 
@@ -216,6 +240,7 @@ function __lsw_yt__auto_load(obj, autodestroy)
                 height: obj.m_recipe.height,
                 videoId: 'jfKfPfyJRdk',
                 playerVars: {
+                    autoplay: obj.m_stat.autoplay ? 1 : 0,
                     listType: 'playlist',
                     list: obj.m_recipe.url
                 },
@@ -234,6 +259,9 @@ function __lsw_yt__auto_load(obj, autodestroy)
                 width: obj.m_recipe.width,
                 height: obj.m_recipe.height,
                 videoId: obj.m_recipe.url,
+                playerVars: { 
+                    autoplay: obj.m_stat.autoplay ? 1 : 0
+                },
                 events: {
                     'onReady': __lsw_yt_onReady,
                     'onStateChange': __lsw_yt_onState
@@ -267,7 +295,11 @@ function __lsw_yt_play()
     __lsw_yt_log("% Play: [exists:" + (this.m_player === null ? "NULL" : "YES") + "]");
     if (this.m_player !== null) {
         this.m_player.playVideo();
+        this.m_stat.should_autoplay = true;
         return true;
+    }
+    else { // load again?
+        __lsw_yt__auto_load(this);
     }
     return false;
 }
@@ -276,6 +308,7 @@ function __lsw_yt_pause()
     __lsw_yt_log("% Pause: [exists:" + (this.m_player === null ? "NULL" : "YES") + "]");
     if (this.m_player !== null) {
         this.m_player.pauseVideo();
+        this.m_stat.should_autoplay = false;
         return true;
     }
     return false;
@@ -285,6 +318,7 @@ function __lsw_yt_stop()
     __lsw_yt_log("% Stop: [exists:" + (this.m_player === null ? "NULL" : "YES") + "]");
     if (this.m_player !== null) {
         this.m_player.stopVideo();
+        this.m_stat.should_autoplay = false;
         return true;
     }
     return false;
@@ -337,13 +371,16 @@ function __lsw_yt_play_pause()
         }
         return true;
     }
+    else { // load again?
+        __lsw_yt__auto_load(this);
+    }
     return false;
 }
 function __lsw_yt_set_volume(volume)
 {
-    __lsw_yt_log("% SetVolume: (volume:" + volume + ") [exists:" + (this.m_player === null ? "NULL" : "YES") + "]");
+    __lsw_yt_log("% SetVolume: (volume: " + Math.floor(volume) + "%) [exists:" + (this.m_player === null ? "NULL" : "YES") + "]");
     if (this.m_player !== null) {
-        this.m_player.setVolume(volume);
+        this.m_player.setVolume(Math.floor(volume));
         return true;
     }
     return false;

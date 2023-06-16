@@ -296,3 +296,5 @@ function lsw_storage_erase_from_array(item_name, index)
     
     return obj;
 }
+
+// Table array only available on tools_objectified because as 'class'-like it is much easier to manage

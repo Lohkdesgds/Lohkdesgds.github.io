@@ -8,38 +8,46 @@
         
     <title>Simple Player v2</title>
     
-    <script type="text/javascript" src="/js/youtube_v2.js"></script>
+    <script type="text/javascript" src="/js/youtube.js"></script>
     <script type="text/javascript" src="/js/sliders.js"></script>
     <script type="text/javascript" src="/js/tools.js"></script>
     <link href="/css/sliders.css" media="all" rel="stylesheet" />
+    <link href="/css/common.css" media="all" rel="stylesheet" />
 </head>
 <body>
-    <li>
-        <a id='youtube_text' href="#" onclick="my_youtube.Toggle_play_pause()" style="height: 15px;">
-            Starting...
-        </a>
-        <div id='youtube_player_embedded'></div>
-    </li>
-    <li>
-        <a href="#" onclick="my_youtube.Next()" style="height: 15px;">
-            Next
-        </a>
-    </li>
-    <li>
-        <a href="#" onclick="my_youtube.Previous()" style="height: 15px;">
-            Previous
-        </a>
-    </li>
-    <li>
-        <p style="display: inline; ">Volume:</p>
-        <div style="display: inline; position: absolute; top: 10px; width: 200px; height: 10px; border-radius: 8px; background-color: black;">
-            <div style="position: absolute; top: 0; left: 0; width: 10px; height: 10px; background-color: cyan; border-radius: 8px;" id="youtube_volume"></div>
-        </div>
-    </li>
+    <ul class="lsw-ul_inline">
+        <li>
+            <a class="lsw-btn_default" id='youtube_text' href="#" onclick="my_youtube.PlayPause()">
+                Starting...
+            </a>
+        </li>
+        <li>
+            <a class="lsw-btn_default" href="#" onclick="my_youtube.Next()">
+                Next
+            </a>
+        </li>
+        <li>
+            <a class="lsw-btn_default"  href="#" onclick="my_youtube.Previous()">
+                Previous
+            </a>
+        </li>
+    </ul>
+    <ul class="lsw-ul_inline">
+        <li>
+            <div class="lsw-blk_default">
+                <p>Volume:</p>
+                <div class="lsw-bar_default" style="width: 200px; height: 10px;">
+                    <div style=" width: 10px; height: 10px;" id="youtube_volume"></div>    
+                </div>
+            </div>
+        </li>
+    </ul>
     
     <br />
 
-    <ul id='loglist'></ul>
+    <div style="width: 100%; margin: 0 auto;">
+        <ul class="lsw-list_log" id='loglist'></ul>
+    </div>
 
 </body>
 </html>
@@ -50,25 +58,42 @@
     const vid_id = lsw_http_get('vid_id');
     const vid_pl = lsw_http_get('vid_pl') || 'PLJGtI1TtwC21g9ePKmmaJgjxfqqn816gx'; // Plug & Play
 
-    var my_youtube = YouTube('loglist');
-    lsw_slider_position_like_perc('youtube_volume', vid_vol);
+    const txt_elem = document.getElementById('youtube_text');
+
+    var my_youtube = YouTube();
 
     my_youtube.OnReady(function(){
         console.log('= OnReady!');
 
         my_youtube.SetVolume(vid_vol);
+        lsw_slider_position_like_perc('youtube_volume', vid_vol);
         my_youtube.Shuffle();
         my_youtube.Next(); 
         my_youtube.Play();
+        txt_elem.innerHTML = "Ready! ...";
     });
     my_youtube.OnPlay(function(){ 
         console.log('= OnPlay!');
-        my_youtube.SetVolume(vid_vol);
+        my_youtube.SetVolume(lsw_slider_get_horizontal_perc('youtube_volume'));
+        txt_elem.innerHTML = "Playing";
     });
-    my_youtube.OnPause(function(){ console.log('= OnPause!');});
-    my_youtube.OnStop(function(){ console.log('= OnStop!');});
-    my_youtube.OnLoading(function(){ console.log('= OnLoading');});
-    my_youtube.OnLoadFail(function(){ console.log('= OnLoadFail! Next'); my_youtube.Next(); });
+    my_youtube.OnPause(function(){ 
+        console.log('= OnPause!');
+        txt_elem.innerHTML = "Paused";
+    });
+    my_youtube.OnStop(function(){ 
+        console.log('= OnStop!');
+        txt_elem.innerHTML = "Stopped";
+    });
+    my_youtube.OnLoading(function(){ 
+        console.log('= OnLoading'); 
+        txt_elem.innerHTML = "Loading...";
+    });
+    my_youtube.OnLoadFail(function(){ 
+        console.log('= OnLoadFail! Next');
+        my_youtube.Next();
+        txt_elem.innerHTML = "Error. Loading...";
+     });
 
     if (vid_id === null) {
         my_youtube.Load(vid_pl, true, '0', '0');
