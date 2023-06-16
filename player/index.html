@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <html lang="en">
+        
+    <title>Simple Player v2</title>
+    
+    <script type="text/javascript" src="/js/youtube.js"></script>
+    <script type="text/javascript" src="/js/sliders.js"></script>
+    <script type="text/javascript" src="/js/tools.js"></script>
+    <link href="/css/sliders.css" media="all" rel="stylesheet" />
+    <link href="/css/common.css" media="all" rel="stylesheet" />
+</head>
+<body>
+    <ul class="lsw-ul_inline">
+        <li>
+            <a class="lsw-btn_default" id='youtube_text' href="#" onclick="my_youtube.PlayPause()">
+                Starting...
+            </a>
+        </li>
+        <li>
+            <a class="lsw-btn_default" href="#" onclick="my_youtube.Next()">
+                Next
+            </a>
+        </li>
+        <li>
+            <a class="lsw-btn_default"  href="#" onclick="my_youtube.Previous()">
+                Previous
+            </a>
+        </li>
+    </ul>
+    <ul class="lsw-ul_inline">
+        <li>
+            <div class="lsw-blk_default">
+                <p>Volume:</p>
+                <div class="lsw-bar_default" style="width: 200px; height: 10px;">
+                    <div style=" width: 10px; height: 10px;" id="youtube_volume"></div>    
+                </div>
+            </div>
+        </li>
+    </ul>
+    
+    <br />
+
+    <div style="width: 100%; margin: 0 auto;">
+        <ul class="lsw-list_log" id='loglist'></ul>
+    </div>
+
+</body>
+</html>
+<script>    
+    YouTube_setLogID('loglist');
+
+    const vid_vol = lsw_http_get('vid_vol') || 5;
+    const vid_id = lsw_http_get('vid_id');
+    const vid_pl = lsw_http_get('vid_pl') || 'PLJGtI1TtwC21g9ePKmmaJgjxfqqn816gx'; // Plug & Play
+
+    const txt_elem = document.getElementById('youtube_text');
+
+    var my_youtube = YouTube();
+
+    my_youtube.OnReady(function(){
+        console.log('= OnReady!');
+
+        my_youtube.SetVolume(vid_vol);
+        lsw_slider_position_like_perc('youtube_volume', vid_vol);
+        my_youtube.Shuffle();
+        my_youtube.Next(); 
+        my_youtube.Play();
+        txt_elem.innerHTML = "Ready! ...";
+    });
+    my_youtube.OnPlay(function(){ 
+        console.log('= OnPlay!');
+        my_youtube.SetVolume(lsw_slider_get_horizontal_perc('youtube_volume'));
+        txt_elem.innerHTML = "Playing";
+    });
+    my_youtube.OnPause(function(){ 
+        console.log('= OnPause!');
+        txt_elem.innerHTML = "Paused";
+    });
+    my_youtube.OnStop(function(){ 
+        console.log('= OnStop!');
+        txt_elem.innerHTML = "Stopped";
+    });
+    my_youtube.OnLoading(function(){ 
+        console.log('= OnLoading'); 
+        txt_elem.innerHTML = "Loading...";
+    });
+    my_youtube.OnLoadFail(function(){ 
+        console.log('= OnLoadFail! Next');
+        my_youtube.Next();
+        txt_elem.innerHTML = "Error. Loading...";
+     });
+
+    if (vid_id === null) {
+        my_youtube.Load(vid_pl, true, '0', '0');
+    }
+    else {
+        my_youtube.Load(vid_id, false, '0', '0');
+    }
+    
+    lsw_make_slider_of('youtube_volume', 189, 0, function(w,h) { my_youtube.SetVolume(w); });
+</script>

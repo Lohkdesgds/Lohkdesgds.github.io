@@ -17,5 +17,106 @@
 @font-face { font-family: 'EMP-SemiBoldItalic';     src: url('/fonts/EMprint-SemiBoldItalic.ttf'); }
 
 body {
+    font-family: 'EMP-Regular';
+    color: black;
+    background-color: hsl(0, 0%, 90%);
+    margin: 3em 3em 1em 3.5em;
+}
+
+hr {
+    border: 1px solid hsl(0, 0%, 0%);
+    border-radius: 8px;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul, ol {    
+    padding-inline-start: 0;
+    margin-inline-start: 0;
+}
+
+p {
+    text-align: justify;
+    text-align-last: left;
+    text-indent: 5ch;
+}
+
+.lsw-ul_inline > * {
+    display: inline;
+}
+
+.lsw-btn_default, .lsw-blk_default {
+    background-color: hsl(212, 100%, 15%);
+    border: 2px solid hsl(0, 0%, 20%);
+    box-sizing: border-box;
+    display: inline-block;
+    padding: 0.7em 1.4em;
+    border-radius: 8px;
+    margin: 0.12em;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    box-shadow: inset 2px 2px 1px rgba(255, 255, 255, 0.4), inset -2px -2px 1px rgba(0, 0, 0, 0.35);
+    transition: all 0.5s;
+    font-family: 'EMP-Bold';
+}
+
+.lsw-blk_default {
+    background-color: hsl(212, 100%, 75%);
+    color: rgb(0, 0, 0);
+}
+
+.lsw-blk_default > p {
+    margin: 0.2em 0.1em 0.4em 0.1em;
+}
+
+.lsw-btn_default:hover {
+    background-color: hsl(212, 100%, 75%);
+    color: rgb(0, 0, 0);
+    transition: all 0.5s;
+}
+
+.lsw-bar_default {
+    background-color: black;
+    border-radius: 10px;
+    box-shadow: inset 1px 1px 2px hsl(0, 0, 100);
+}
+
+.lsw-bar_default > * {
+    position: relative;
+    top: 0;
+    left: 0;
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+}
+
+.lsw-list_log {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    border: 2px solid hsl(0, 0%, 20%);
+    padding: 2px;
+    border-radius: 5px;
+    transition: all 0.5s;
+    box-shadow: inset 2px 2px 1px rgba(255, 255, 255, 0.4), inset -2px -2px 1px rgba(68, 68, 68, 0.35);
+}
+.lsw-list_log:hover {    
+    box-shadow: inset 2px 2px 6px rgba(255, 255, 255, 0.9), inset -2px -2px 6px rgba(68, 68, 68, 0.85), inset 2px 2px 6px rgba(255, 255, 255, 0.9), inset -2px -2px 6px rgba(68, 68, 68, 0.85);
+    transition: all 0.5s;
+}
+.lsw-list_log > li {
+    margin: 0;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+    border: 1px solid hsla(0, 0%, 50%, 20%);
+    background-color: rgb(255, 255, 255);
+    padding: 0.2em;
+}
+
+.avali-font {
     font-family: 'AvaliScratch';
 }
