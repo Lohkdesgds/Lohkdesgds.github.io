@@ -16,16 +16,25 @@
 @font-face { font-family: 'EMP-SemiBold';           src: url('/fonts/EMprint-SemiBold.ttf'); }
 @font-face { font-family: 'EMP-SemiBoldItalic';     src: url('/fonts/EMprint-SemiBoldItalic.ttf'); }
 
+.avali-font {
+    font-family: 'AvaliScratch';
+}
+
+html {    
+    min-width: 540px;
+}
+
 body {
     font-family: 'EMP-Regular';
     color: black;
     background-color: hsl(0, 0%, 90%);
-    margin: 3em 3em 1em 3.5em;
+    margin: 3em 3em 3em 3.5em;
 }
 
 hr {
     border: 1px solid hsl(0, 0%, 0%);
     border-radius: 8px;
+    margin: 1.2em auto;
 }
 
 a {
@@ -41,6 +50,68 @@ p {
     text-align: justify;
     text-align-last: left;
     text-indent: 5ch;
+    margin: 0.2em 0;
+}
+
+input {
+    display: block;
+    font-family: 'EMP-Regular';
+    
+    width: calc(100% - 3ch - 4px);
+    height: 2ch;
+    padding: 1.5ch;
+    
+    border-radius: 10px;
+    border: 2px solid rgb(80, 80, 80);
+}
+
+button {
+    font-family: 'EMP-SemiBold';
+    font-size: 14px;
+    text-decoration: none;
+    transition: 0.5s ease;
+    padding: 1em 1em;
+    margin: 0.1em;
+    border-radius: 10px;
+    border-color: rgb(209, 209, 209);
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.12), inset 2px 2px 1px rgba(255, 255, 255, 0.4), inset -2px -2px 1px rgba(0, 0, 0, 0.35);
+}
+
+button > span {
+    font-family: 'EMP-Bold';
+    font-size: 16px;
+}
+
+button:hover {
+    border-color: rgb(139, 139, 139);
+    transform: scale(1.02) translate(-1px, -1px);
+    box-shadow: 2px 2px 1px 1px rgba(0, 0, 0, 0.5), inset 0 0 500px 1px rgba(255, 255, 255, 0.24);
+    transition: all 0.1s;
+}
+
+button:active{
+    transform: translate(1px, 1px);
+    box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+}
+
+video, img {
+    width: 100%;
+    height: auto;
+}
+
+.lsw-left_text {
+    text-align: left;
+    text-align-last: left;
+}
+
+.lsw-right_text {
+    text-align: right;
+    text-align-last: right;
+}
+
+.lsw-no_indent {
+    text-indent: 0;
 }
 
 .lsw-ul_inline > * {
@@ -117,6 +188,44 @@ p {
     padding: 0.2em;
 }
 
-.avali-font {
-    font-family: 'AvaliScratch';
+.lsw-bold {
+    font-family: 'EMP-Bold';
+    font-weight: 900;
+}
+
+.utf-headline {
+    width: 100%;
+    max-height: 10vh;
+    object-fit: scale-down;
+    margin-bottom: 1em;
+}
+
+.utf-frame_gen {
+    border-radius: 10px;
+    padding: 1.1em 2.1em;
+    margin: 0.5em 0;
+    background-color: white;
+    box-sizing: border-box;
+    border: 2px solid rgb(80, 80, 80);
+}
+
+.lsw-autoflex-up2, .lsw-autoflex-up3, .lsw-autoflex-up4 {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 !important;
+    padding: 0 !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem; /* related to > * there vvv */
+}
+.lsw-autoflex-up2 > * {
+    flex-grow: 1;
+    width: calc(50% - 2 * 1rem); /* by default force up to 2 items (50% - gap for 3 items) */
+}
+.lsw-autoflex-up3 > * {
+    flex-grow: 1;
+    width: calc(33% - 2 * 1rem); /* by default force up to 3 items (33% - gap for 3 items) */
+}
+.lsw-autoflex-up4 > * {
+    flex-grow: 1;
+    width: calc(25% - 2 * 1rem); /* by default force up to 4 items (25% - gap for 3 items) */
 }

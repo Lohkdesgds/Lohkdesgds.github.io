@@ -138,7 +138,7 @@ function LocalStorageCustom(key, as_array)
             Delete: null
         };
 
-        obj._SetArrayCache = function(what) {
+        obj._SetArrayCache = function() {
             const obj = {
                 type: 'array',
                 value: JSON.stringify(this._cache)
@@ -147,21 +147,25 @@ function LocalStorageCustom(key, as_array)
             localStorage.setItem(this._id, JSON.stringify(obj));
         }
         obj.GetArray = function(use_cache) {
-            if (use_cache === true && typeof this._cache !== null) return this._cache;
-            
-            const val = JSON.parse(localStorage.getItem(this._id));
+            try {
+                if (use_cache === true && typeof this._cache !== null) return this._cache;
+                
+                const val = JSON.parse(localStorage.getItem(this._id));
 
-            if (typeof val === 'object' && 
-                typeof val.type === 'string' && val.type === 'array' &&
-                typeof val.value !== 'undefined')
-            {
-                return (this._cache = JSON.parse(val.value));
+                if (typeof val === 'object' && 
+                    val.type === 'array' &&
+                    val.value != null)
+                {
+                    return (this._cache = JSON.parse(val.value));
+                }
             }
-
+            catch(err) {
+                console.log("[tools_objectified](LocalStorageCustom) Error: " + err);
+            }
             return null;
         }
         obj.SetArray = function(what) {
-            this._cache = obj.value;
+            this._cache = what;
             this._SetArrayCache();
         }
         obj.GetIndex = function(index) {
@@ -241,8 +245,8 @@ function LocalStorageCustom(key, as_array)
                 const val = JSON.parse(localStorage.getItem(this._id));
 
                 if (typeof val === 'object' && 
-                    typeof val.type === 'string' && val.type === 'item' &&
-                    typeof val.value !== 'undefined')
+                    val.type === 'item' &&
+                    val.value != null)
                 {
                     return (this._cache = JSON.parse(val.value));
                 }
@@ -273,230 +277,184 @@ function LocalStorageCustom(key, as_array)
 }
 
 /*
-TableArray
-Make tables easier to handle with this
+TableObject
+Work on a table like an object easily with this
 - id MUST BE A TABLE
 */
-function TableArray(id)
-{
-    if (id == null) return null;
-
+function TableObject(id) {
     let obj = {
-        // keep a look on ExportDATA and ImportDATA if anything changes!
         _elem: document.getElementById(id),
-        _table: {
-            head_class: '',
-            head_item_class: '',
-            data_class: '',
-            data_item_class: '',
-            head: [], // header of items
-            data: []  // array of items
-        },
 
-        _updateClassHTML: null,
-        _updateHeaderHTML: null,
-        _updateItemHTML: null,
-        _removeItemHTML: null,
-
-        SetClasses: null,
-        SetHeader: null,
-        Append: null,
-        Set: null,
-        SetLast: null,
-        Get: null,
-        GetLast: null,
-        SetInner: null,
-        GetInner: null,
-        Erase: null,
-        Build: null,
-        ExportDATA: null,
-        ImportDATA: null,
-        Sort: null
+        GetRow: null, // get whole row. horizontal
+        GetRowContent: null, // get whole row as array of string. horizontal
+        GetItem: null, // get with row and line
+        GetItemContent: null, // get with row and line a string
+        SetRowRaw: null, // set whole row with raw html
+        SetRowContent: null, // set whole row with content array
+        SetItemRaw: null, // set element with raw html
+        SetItemContent: null, // set element content
+        AppendRowRaw: null, // append new row in table with raw html
+        AppendRowContent: null, // append new row in table with content array
+        DeleteRow: null, // delete a row. If first, next one will be translated to th.
+        SwapRows: null, // changes two rows
+        SortRows: null, // sort ascending or descending
+        ToArrayOfArray: null, // make table an array of array of string
+        FromArrayOfArray: null, // build table from array of array of string
+        GetSize: null, // number of rows
+        FindAtIndex: null // find on index of row that content. Get index
     };
 
-    if (obj._elem == null) return null;
-
-    obj._updateClassHTML = function() {
-        if (this._elem.childElementCount === 0) return;
-
-        // header
-        this._elem.children[0].className = this._table.head_class;
-        for(let j = 0; j < this._elem.children[0].childElementCount; ++j) 
-            this._elem.children[0].children[j].className = this._table.head_item_class;
-
-        // elems
-        for(let i = 1; i < this._elem.childElementCount; ++i) {
-            let inn = this._elem.children[i];
-            inn.className = this._table.data_class;
-            for(let j = 0; j < inn.childElementCount; ++j) inn.children[j].className = this._table.data_item_class;
-        }
-    }
-    obj._updateHeaderHTML = function() {
-        if (this._elem.childElementCount === 0){ // new
-            this.Build();
-            return;
-        }
-
-        let res = "";
-        const cl = this._table.head_class ? (" class=\"" + this._table.head_class + "\"") : "";
-        for(let i = 0; i < this._table.head.length; ++i) res += "<th" + cl + ">" + this._table.head[i] + "</th>";
+    obj.GetRow = function(row) {
+        if (row >= this._elem.children.length) return null;
+        return this._elem.children[row];
+    };
+    obj.GetRowContent = function(row) {
+        if (row >= this._elem.children.length) return null;
         
-        this._elem.children[0].innerHTML = res;
-        for(let j = 0; j < this._elem.children[0].childElementCount; ++j) 
-            if (this._elem.children[0].children[j].className !== this._table.head_item_class)
-                this._elem.children[0].children[j].className = this._table.head_item_class;
-
-        //this._updateClassHTML();
+        let arr = [];
+        for (let i = 0; i < this._elem.children[row].children.length; ++i) {
+            arr[i] = this._elem.children[row].children[i].textContent;
+        }
+        return arr;
     };
-    obj._updateItemHTML = function(index) {
-        if (this._elem.childElementCount === 0){ // new
-            this.Build();
-            return true;
+    obj.GetItem = function(row, line) {
+        if (row >= this._elem.children.length) return null;
+        if (line >= this._elem.children[row].children.length) return null;
+        return this._elem.children[row].children[line];
+    };
+    obj.GetItemContent = function(row, line) {
+        if (row >= this._elem.children.length) return null;
+        if (line >= this._elem.children[row].children.length) return null;
+        return this._elem.children[row].children[line].textContent;
+    };
+    obj.SetRowRaw = function(row, data) {
+        if (row >= this._elem.children.length) return false;
+        this._elem.children[row].innerHTML = data;
+        return true;
+    };
+    obj.SetRowContent = function(row, data_array) {
+        if (row >= this._elem.children.length) return false;
+        if (this._elem.children[row].children.length !== data_array.length) return false;
+        for(let i = 0; i < data_array.length; ++i) {
+            if (this._elem.children[row].children[i].textContent != data_array[i]) this._elem.children[row].children[i].textContent = data_array[i];
         }
-
-        if (index >= this._table.data.length) return -1;
-
-        const elem_index = index + 1;
-        if (elem_index > this._elem.childElementCount) return -2; // or new one next to existing one or existing one, no out of range for no unexpected things please.
-                
-
-        if (elem_index === this._elem.childElementCount) {            
-            let res = "";
-            const cl = this._table.data_item_class ? (" class=\"" + this._table.data_item_class + "\"") : "";
-            for(let i = 0; i < this._table.data[index].length; ++i) 
-                res += "<td" + cl + ">" + this._table.data[index][i] + "</td>";
-
-            let new_elem = document.createElement('tr');
-            new_elem.innerHTML = res;
-            new_elem.className = this._table.data_class;
-            //for(let j = 0; j < new_elem.childElementCount; ++j) new_elem.children[j].className = this._table.data_item_class;
-            this._elem.appendChild(new_elem);
+        return true;
+    };
+    obj.SetItemRaw = function(row, line, data) {
+        if (row >= this._elem.children.length) return false;
+        if (line >= this._elem.children[row].children.length) return false;
+        this._elem.children[row].children[line].innerHTML = data;
+        return true;
+    };
+    obj.SetItemContent = function(row, line, data) {
+        if (row >= this._elem.children.length) return false;
+        if (line >= this._elem.children[row].children.length) return false;
+        if (this._elem.children[row].children[line].textContent != data) this._elem.children[row].children[line].textContent = data;
+        return true;
+    };
+    obj.AppendRowRaw = function(data) {
+        const new_elem = document.createElement('tr');
+        new_elem.innerHTML = data;
+        this._elem.appendChild(new_elem);
+        return true;
+    }
+    obj.AppendRowContent = function(data) {
+        const new_elem = document.createElement('tr');
+        
+        for(let i = 0; i < data.length; ++i) {
+            const new_item = (this._elem.children.length === 0) ? (document.createElement('th')) : (document.createElement('td'));
+            new_item.textContent = data[i];
+            new_elem.appendChild(new_item);
         }
-        else {
-            let inn = this._elem.children[elem_index];
-            //this._elem.children[elem_index].innerHTML = res;
-            for(let j = 0; j < inn.childElementCount; ++j) {
-                /*if (j >= inn.children.length) { // test later? // update: no need.
-                    let new_elem = document.createElement('td');
-                    if (this._table.data_item_class) new_elem.className = this._table.data_item_class;
-                    new_elem.textContent = this._table.data[index][j];
-                    inn.appendChild(new_elem);
+        this._elem.appendChild(new_elem);
+        return true;
+    }
+    obj.DeleteRow = function(row) {
+        if (row >= this._elem.children.length) return false;
+        this._elem.removeChild(this._elem.children[row]);
+        if (row === 0 && this._elem.children.length > 0) {
+            for(let i = 0; i < this._elem.children[0].children.length; ++i) {
+                let new_elem = document.createElement('th');
+                new_elem.innerHTML = this._elem.children[0].children[i].innerHTML;
+                this._elem.children[0].replaceChild(new_elem, this._elem.children[0].children[i]);
+            }
+        }
+        return true;
+    };
+    obj.SwapRows = function(fst, snd) {
+        if (fst == snd) return false;
+        if (fst >= this._elem.children.length || snd >= this._elem.children.length) return false;
+
+        const ref_fst = this._elem.children[fst];
+        const ref_snd = this._elem.children[snd];
+
+        const cpy = ref_snd.innerHTML;
+        ref_snd.innerHTML = ref_fst.innerHTML;
+        ref_fst.innerHTML = cpy;
+        
+        if (fst === 0 || snd === 0) {
+            const non_zero = fst === 0 ? snd : fst;
+
+            for(let i = 0; i < this._elem.children[0].children.length; ++i) {
+                let new_elem = document.createElement('th');
+                new_elem.innerHTML = this._elem.children[0].children[i].innerHTML;
+                this._elem.children[0].replaceChild(new_elem, this._elem.children[0].children[i]);
+            }
+            for(let i = 0; i < this._elem.children[non_zero].children.length; ++i) {
+                let new_elem = document.createElement('td');
+                new_elem.innerHTML = this._elem.children[non_zero].children[i].innerHTML;
+                this._elem.children[non_zero].replaceChild(new_elem, this._elem.children[non_zero].children[i]);
+            }
+        }
+    };
+    obj.SortRows = function(descending, from, to) {
+        if (typeof from !== 'number' || from < 0) from = 0;
+        if (from >= this._elem.children.length || to <= from) return true;
+        if (typeof to !== 'number' || to > this._elem.children.length || to < 0) to = this._elem.children.length;
+
+        for(let i = from; i < to; ++i) {
+            for(let j = i + 1; j < to; ++j) {
+                const fst = this._elem.children[i];
+                const snd = this._elem.children[j];
+
+                if (descending === false && fst.children[0].textContent > snd.children[0].textContent) {
+                    this.SwapRows(i, j);
                 }
-                else {*/
-                if (inn.children[j].textContent != this._table.data[index][j]) inn.children[j].textContent = this._table.data[index][j];
-                if (inn.children[j].className != this._table.data_item_class) inn.children[j].className = this._table.data_item_class;
-                //}
+                else if (fst.children[0].textContent < snd.children[0].textContent) {
+                    this.SwapRows(i, j);
+                }
+            }
+        }
+    };
+    obj.ToArrayOfArray = function() {
+        let arr = [];
+        
+        for(let i = 0; i < this._elem.children.length; ++i) {
+            arr[i] = [];
+            for(let j = 0; j < this._elem.children[i].children.length; ++j) {
+                arr[i][j] = this._elem.children[i].children[j].textContent;
             }
         }
 
-        return true;
+        return arr;
     };
-    obj._removeItemHTML = function(index) {
-        if (index >= this._elem.childElementCount) return true;
-        this._elem.removeChild(this._elem.children[index]);
-    };
-
-
-    obj.SetClasses = function (head_cl, head_item_cl, data_cl, data_item_cl) {
-        this._table.data_class = data_cl;
-        this._table.head_item_class = head_item_cl;
-        this._table.head_class = head_cl;
-        this._table.data_item_class = data_item_cl;
-
-        this._updateClassHTML();
-    }
-    obj.SetHeader = function(array) {
-        if (array == null || array.length === 0) return false;
-        this._table.head = array;
-        this._updateHeaderHTML();
-    };
-    obj.Append = function(array) {
-        if (array == null || array.length === 0) return false;
-        const index = this._table.data.length;
-
-        this._table.data[index] = array;
-        this._updateItemHTML(index);
-        return true;
-    };
-    obj.Set = function(index, array) {
-        if (array == null || array.length === 0 || index >= this._table.data.length) return false;
-        this._table.data[index] = array;
-        this._updateItemHTML(index);
-        return true;
-    };
-    obj.SetLast = function(array) {
-        let index = 0;
-
-        for(let i = 1; i < this._table.data.length; ++i) {
-            if (this._table.data[i][0] > this._table.data[index][0]) index = i;
+    obj.FromArrayOfArray = function (arr) {
+        for(let i = 0; i < arr.length; ++i) {
+            if (this._elem.children.length <= i) this.AppendRowContent(arr[i]);
+            else this.SetRowContent(i, arr[i]);
         }
-
-        return this.Set(index, array);
+        while(this._elem.children.length > arr.length) this.DeleteRow(this._elem.children.length - 1);
     };
-    obj.Get = function(index) {
-        if (index >= this._table.data.length) return null;
-        return this._table.data[index];
+    obj.GetSize = function() {
+        return this._elem.children.length;
     };
-    obj.GetLast = function() {
-        let index = 0;
-
-        for(let i = 1; i < this._table.data.length; ++i) {
-            if (this._table.data[i][0] > this._table.data[index][0]) index = i;
+    obj.FindAtIndex = function(index, what) {
+        for(let i = 0; i < this._elem.children.length; ++i) {
+            if (this._elem.children[i].children.length < index) continue;
+            if (this._elem.children[i].children[index].textContent == what) return i;
         }
-
-        return this.Get(index);
+        return -1;
     };
-    obj.SetInner = function(index, inner_index, value) {
-        if (array == null || array.length === 0 || index >= this._table.data.length) return false;
-        this._table.data[index][inner_index] = value;
-        this._updateItemHTML(index);
-        return true;
-    };
-    obj.GetInner = function(index, inner_index) {
-        if (index >= this._table.data.length) return null;
-        return this._table.data[index][inner_index];
-    };
-    obj.Erase = function(index) {
-        if (index >= this._table.data.length) return false;        
-        this._table.data = this._table.data.splice(index, 1);
-        this._removeItemHTML(index);
-        return true;
-    };
-    obj.Build = function () {
-        while(this._elem.childElementCount > 0) this._elem.removeChild(this._elem.firstChild);
-
-        let res = "";
-        for(let i = 0; i < this._table.head.length; ++i) res += "<th>" + this._table.head[i] + "</th>";
-        
-        let new_elem = document.createElement('tr');
-        new_elem.innerHTML = res;
-        this._elem.appendChild(new_elem);
-
-        for(let i = 0; i < this._table.data.length; ++i) this._updateItemHTML(i);
-        
-        this._updateClassHTML();
-        return true;
-    };
-    obj.ExportDATA = function() {
-        const new_obj = {
-            elem: this._elem.id,
-            table: this._table
-        };
-        return new_obj;
-    };
-    obj.ImportDATA = function(new_obj) {
-        this._elem = document.getElementById(new_obj.elem);
-        this._table = new_obj.table;
-        return true;
-    };
-    obj.Sort = function(descending) {
-        this._table.data.sort(function(a,b){return (a[0] < b[0]) ? 1 : -1;}); // less to more
-
-        if (descending === true) 
-            this._table.data.reverse();
-    };
-
-    while(obj._elem.childElementCount > 0) obj._elem.removeChild(obj._elem.firstChild);
 
     return obj;
 }
