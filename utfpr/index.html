@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <META NAME="KEYWORDS" CONTENT="html, css, javascript">
+    <meta name="rating" content="general">
+    <meta name="generator" content="VSCode">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta name="copyright" content="none">
+    <meta charset="utf-8">
+    <meta http-equiv="content-language" content="pt-br">
+    <meta name="author" content="Lohkdesgds Hangi Lhuminury">
+    <meta name="description" content="Lohk's">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="/utfpr/assets/fav.ico"-->
+    
+    <title>UTFDB 2.0</title>
+
+    <link rel="stylesheet" href="/css/common.css">
+    <script type="text/javascript" src="/js/tools.js"></script>
+    <script type="text/javascript" src="https://cdn.discordapp.com/attachments/1133125047712755773/1133159494105444492/data.js"></script>
+    <!--script type="text/javascript" src="/utfpr/_quiet/data.js"></script-->
+    
+    <!--link rel="stylesheet" href="/css/boxxing.css">
+    <script type="text/javascript" src="/js/common.js"></script-->
+</head>
+<body>
+    <a href="#" onclick="_reset()"><img class="utf-headline" src="/utfpr/assets/headline.png"></a>
+    <hr>
+    <input type="text" placeholder="Filtrar por ELP72, ELE13, GE70T..." id="search">
+
+    <div class="utf-frame_gen">
+        <div id="search_result">
+            Carregando...
+        </div>
+    </div>
+    <p class="lsw-right_text">Site by Lohk, 2023</p>
+</body>
+</html>
+
+<script>
+search.onkeyup = function(a) {
+    if (search.value.length) {
+        let vec = _find(search.value);
+        if (vec.length == 0) {
+            search_result.textContent = "Nenhum resultado";
+        }
+        else {
+            _put(vec);
+        }
+    }
+    else {
+        _put(utfdb_search_class_options(""));
+    }
+}
+
+search.onkeyup();
+
+function _reset()
+{
+    search.value = "";
+    search.onkeyup();
+}
+
+function _find(what)
+{
+    return utfdb_search_class_options(what);
+}
+
+function _put(list)
+{
+    let raw_htm = "<div class=\"lsw-autoflex-up3\" style=\"gap: 0.3rem\">";
+    for(let i = 0; i < list.length; ++i) {
+        const obj = utfdb_find_class(list[i]);
+        if (!obj) continue;
+        raw_htm += "<button onclick=\"_build_page('" + obj.code + "', '" + obj.name + "')\" class=\"lsw-left_text\"><span>" + obj.code + ":</span> " + obj.name + " (" + obj.classes.list.length + " vídeo(s))" + "</button>";
+    }
+    raw_htm += "</div>"
+    search_result.innerHTML = raw_htm;
+}
+
+function _build_page(inner_path, inner_name)
+{
+    const obj = utfdb_find_class(inner_path.toLowerCase());
+    if (!obj) {
+        search_result.textContent = "Error.";
+        return;
+    }
+
+    const dates = obj.GetClasses();
+
+    let raw_htm = "<div><h1>Disciplina: " + inner_name + "</h1><h2>Código da disciplina: " + inner_path + "</h2></div>";
+    
+    raw_htm += "<div class=\"lsw-autoflex-up2\">";
+
+    for(let i = 0; i < dates.length; ++i) {
+        const cur = dates[i];
+        raw_htm += "<div class=\"utf-frame_gen\" style=\"padding: 0.4em 1em\"><h2 style=\"margin-top:0.5em; text-decoration: underline\">" + cur.date + "</h2>";
+        
+        if (cur.url.endsWith(".mp4")) { // vid
+            raw_htm += "<video controls controlsList=\"nodownload\"><source src=\"" +
+                cur.url + "\" type=\"video/mp4\">Seu navegador não é capaz de carregar vídeos.</video>";
+        }
+        else if (cur.url.endsWith(".jpg")) { // img
+            raw_htm += "<a href=\"" + 
+                cur.url + "\" target=\"_blank\"><img alt=\"Foto\" src=\"" +
+                cur.url + "\" alt=\"Foto\"></a>";
+        }
+        else if (cur.url.endsWith(".ogg")) { // audio
+            raw_htm += "<audio controls controlsList=\"nodownload\"><source src=\"" + 
+                cur.url + "\" type=\"audio/ogg\">Seu navegador não é capaz de carregar áudios.</audio>";
+        }
+        raw_htm += "</div>";
+    }
+    
+    raw_htm += "</div>"
+    search_result.innerHTML = raw_htm;
+
+    //search_result.textContent = JSON.stringify(dates);
+}
+
+</script>

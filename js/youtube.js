@@ -65,6 +65,7 @@ function YouTube(own_id, debug_list_id)
         OnReady: __lsw_yt_on_ready,         // OnReady(cb: function)
         OnLoading: __lsw_yt_on_loading,     // OnLoading(cb: function)
         OnLoadFail: __lsw_yt_on_load_fail,  // OnReady(cb: function)
+        Log: __lsw_yt_on_log_external,      // Log(text: string)
 
         // hooks
         m_hooks: {
@@ -452,6 +453,10 @@ function __lsw_yt_on_load_fail(cb) // 0 or 5
     else {
         this.m_hooks.on_load_fail = null;
     }
+}
+function __lsw_yt_on_log_external(text)
+{
+    __lsw_yt_log("[EXT] " + text);
 }
 function __lsw_yt_genname() // make sure there is no
 {
