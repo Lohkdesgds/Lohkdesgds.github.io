@@ -63,7 +63,7 @@ function _reset()
 
 function _find(what)
 {
-    return utfdb_search_class_options(what);
+    return utfdb_search_class_options(what.toLowerCase());
 }
 
 function _put(list)
