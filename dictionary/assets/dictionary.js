@@ -2,10 +2,11 @@
 
 const __dict = [
     {
-        l: 'tue',
-        d: [
-            'ser',
-            'estar'
+        l: 'daeh', // raw word
+        d: [ // list of meanings
+            'colega',
+            'membro, participante de um grupo, de uma turma',
+            'conhecido amigável'
         ]
     }
 ];
@@ -14,7 +15,7 @@ function larinuim_FIND_WORD(word) {
     let opts = [];
     for(let i = 0; i < __dict.length; ++i) {
         const obj = __dict[i];
-        if (obj.l == word) opts[opts.length] = obj;
+        if (obj.l === word) opts[opts.length] = obj;
     }
     return opts;
 }
