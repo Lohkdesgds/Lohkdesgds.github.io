@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <META NAME="KEYWORDS" CONTENT="html, css, javascript">
+    <meta name="rating" content="general">
+    <meta name="generator" content="VSCode">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta name="copyright" content="none">
+    <meta charset="utf-8">
+    <meta http-equiv="content-language" content="pt-br">
+    <meta name="author" content="Lohkdesgds Hangi Lhuminury">
+    <meta name="description" content="Lohk's">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" type="image/x-icon" href="/utfpr/assets/fav.ico"-->
+    
+    <title>Larinuim</title>
+
+    <link rel="stylesheet" href="/css/common.css">
+    <script type="text/javascript" src="/js/tools.js"></script>
+    <script type="text/javascript" src="/dictionary/assets/dictionary.js"></script>
+</head>
+<body>
+    <h2>Larinuim Dictionary Online</h2>
+    <hr>
+    <input type="text" placeholder="Pesquisar palavras ou significados..." id="search">
+
+    <div class="utf-frame_gen">
+        <div id="search_result">
+            Carregando...
+        </div>
+    </div>
+    <p class="lsw-right_text">Site by Lohk, 2023</p>
+</body>
+</html>
+
+<script>
+search.onkeyup = function(a) {
+    if (search.value.length) {
+        let vec = _find(search.value);
+        if (vec.length == 0) {
+            search_result.textContent = "Nenhum resultado";
+        }
+        else {
+            _put(vec);
+        }
+    }
+    else {
+        _put(larinuim_FIND_ANY(""));
+    }
+}
+
+search.onkeyup();
+
+function _reset()
+{
+    search.value = "";
+    search.onkeyup();
+}
+
+function _find(what)
+{
+    return larinuim_FIND_ANY(what.toLowerCase());
+}
+
+function _put(list)
+{
+    //search_result.textContent = JSON.stringify(list);
+    let raw_htm = "<ul class=\"lsw-list\">";
+    for(let i = 0; i < list.length; ++i) {
+        const obj = list[i];
+        if (!obj) continue;
+        raw_htm += "<li><span class=\"lsw-bold\" style=\"text-decoration: underline; font-size: 1.2em\">" + obj.l + ":</span>";
+        for(let j = 0; j < obj.d.length; ++j) {
+            raw_htm += "<p class=\"lsw-low_indent\"><span class=\"lsw-bold\">" + (j + 1) + ".</span> " + obj.d[j] + "</p>";
+        }
+        raw_htm += "</li>";
+    }
+    raw_htm += "</ul>"
+    search_result.innerHTML = raw_htm;
+}
+
+</script>
