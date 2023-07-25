@@ -77,7 +77,7 @@ button {
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.12), inset 2px 2px 1px rgba(255, 255, 255, 0.4), inset -2px -2px 1px rgba(0, 0, 0, 0.35);
 }
 
-button > span {
+button > span, .lsw-bold {
     font-family: 'EMP-Bold';
     font-size: 16px;
 }
@@ -112,6 +112,10 @@ video, img {
 
 .lsw-no_indent {
     text-indent: 0;
+}
+
+.lsw-low_indent {
+    text-indent: 2ch;
 }
 
 .lsw-ul_inline > * {
@@ -186,6 +190,43 @@ video, img {
     border: 1px solid hsla(0, 0%, 50%, 20%);
     background-color: rgb(255, 255, 255);
     padding: 0.2em;
+}
+
+.lsw-list {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    /*border: 2px solid hsl(0, 0%, 20%);*/
+    padding: 2px;
+    /*border-radius: 5px;*/
+    transition: all 0.5s;
+    /*box-shadow: inset 2px 2px 1px rgba(255, 255, 255, 0.4), inset -2px -2px 1px rgba(68, 68, 68, 0.35);*/
+}
+/*.lsw-list:hover {    
+    box-shadow: inset 2px 2px 6px rgba(255, 255, 255, 0.9), inset -2px -2px 6px rgba(68, 68, 68, 0.85), inset 2px 2px 6px rgba(255, 255, 255, 0.9), inset -2px -2px 6px rgba(68, 68, 68, 0.85);
+    transition: all 0.5s;
+}*/
+.lsw-list > li::before {
+    content: '▸ ';
+}
+.lsw-list > li {
+    margin: 0;
+    border-radius: 15px;
+    /*box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);*/
+    /*border: 1px solid hsla(0, 0%, 50%, 20%);*/
+    border: 2px solid hsla(0, 0%, 50%, 0);
+    background-color: rgb(255, 255, 255);
+    padding: 0.7em;
+    transition: all 0.2s;
+}
+.lsw-list > li:hover {
+    border: 2px solid hsla(0, 0%, 50%, 40%);
+    border-radius: 15px;
+    transition: all 0.2s;
 }
 
 .lsw-bold {
