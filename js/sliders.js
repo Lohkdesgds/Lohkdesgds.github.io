@@ -66,7 +66,7 @@ function lsw_make_slider_of(div_id, max_x, max_y, callback, keep_select_text_ena
     element.setAttribute('__lsw-max_x', max_x);
     element.setAttribute('__lsw-max_y', max_y);
 
-    element.style.position = "absolute";
+    //element.style.position = "absolute";
 
     element.onmousedown = function(e) {
         __lsw_mouse.grabbed_element = this;
