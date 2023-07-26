@@ -24,11 +24,11 @@
     <script type="text/javascript" src="/js/common.js"></script-->
 </head>
 <body>
-    <a href="#" onclick="_reset()"><img class="utf-headline" src="/utfpr/assets/headline.png"></a>
+    <a href="#" onclick="_reset()"><img class="lsw-headline" src="/utfpr/assets/headline.png"></a>
     <hr>
     <input type="text" placeholder="Filtrar por ELP72, ELE13, GE70T..." id="search">
 
-    <div class="utf-frame_gen">
+    <div class="lsw-frame_gen">
         <div id="search_result">
             Carregando...
         </div>
@@ -94,7 +94,7 @@ function _build_page(inner_path, inner_name)
 
     for(let i = 0; i < dates.length; ++i) {
         const cur = dates[i];
-        raw_htm += "<div class=\"utf-frame_gen\" style=\"padding: 0.4em 1em\"><h2 style=\"margin-top:0.5em; text-decoration: underline\">" + cur.date + "</h2>";
+        raw_htm += "<div class=\"lsw-frame_gen\" style=\"padding: 0.4em 1em\"><h2 style=\"margin-top:0.5em; text-decoration: underline\">" + cur.date + "</h2>";
         
         if (cur.url.endsWith(".mp4")) { // vid
             raw_htm += "<video controls controlsList=\"nodownload\"><source src=\"" +
