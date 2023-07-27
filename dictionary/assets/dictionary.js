@@ -82,7 +82,7 @@ function larinuim_REMOVE_MODS(word) {
         if (l_word.startsWith(obj.l)) {
             l_word = l_word.substring(obj.l.length);
             res.msg[res.msg.length] = [obj.l, obj.m];
-            break; // can be only one
+            i = -1;
         }
     }
     for(let i = 0; i < dct.cases_after.length; ++i) {
@@ -90,7 +90,7 @@ function larinuim_REMOVE_MODS(word) {
         if (l_word.endsWith(obj.l)) {
             l_word = l_word.substring(0, l_word.length - obj.l.length);
             res.msg[res.msg.length] = [obj.l, obj.m];
-            break; // can be only one
+            i = -1;
         }
     }
 
@@ -106,7 +106,10 @@ const __dict_modifiers = [
             { l: 'ni', m: 'sexo feminino' },
             { l: 'na', m: 'sexo masculino' }
         ],
-        cases_after: [] // no mods like this here
+        cases_after: [
+            { l: 'xi', m: 'diminutivo' },
+            { l: 'xa', m: 'aumentativo' }
+        ]
     },
     {
         //when: 3, // verb
@@ -123,7 +126,9 @@ const __dict_modifiers = [
             { l: 'pa', m: 'passado' },
             { l: 'fa', m: 'futuro' },
             { l: 'ga', m: 'gerúndio' },
-            { l: 'ku', m: 'substantivado' }
+            { l: 'ku', m: 'substantivado' },
+            { l: 'xi', m: 'diminutivo' },
+            { l: 'xa', m: 'aumentativo' }
         ]
     }
 
