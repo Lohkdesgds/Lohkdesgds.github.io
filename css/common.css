@@ -22,7 +22,7 @@
     --font_b:  'EMP-Bold';
     --multiplier_font: 1;
     font-family: var(--font);
-    letter-spacing: 0;
+    /*letter-spacing: 0;*/
 }
 .avali-font {
     --font:     'AvaliScratch';
@@ -30,7 +30,7 @@
     --font_b:   'AvaliScratch';
     --multiplier_font: 2;
     font-family: var(--font);
-    letter-spacing: -1.2px;
+    /*letter-spacing: -1.2px;*/
 }
 
 html {    
