@@ -9,18 +9,28 @@ function larinuim_FIND_ANY(word) {
     for(let i = 0; i < __dict.length; ++i) {
         const obj = __dict[i];
         if (obj.l.indexOf(word) != -1) {
-            opts[opts.length] = obj;
+            opts[opts.length] = {
+                o: obj,
+                w: (obj.l === word ? -999 : 0)
+            };
         }
         else {
             for(let j = 0; j < obj.d.length; ++j) {
                 if (obj.d[j].indexOf(word) >= 0) {
-                    opts[opts.length] = obj;
+                    opts[opts.length] = { 
+                        o: __dict[i],
+                        w: (obj.d[j] === word ? (j - 300) : j)
+                    };
                     break;
                 }
             }
         }
     }
-    return opts;
+    let res = [];
+    opts.sort(function(a,b){return a.w - b.w;});
+    for(let i = 0; i < opts.length; ++i) res[i] = opts[i].o;
+
+    return res;
 }
 
 function larinuim_FIND_WORD(word) {
@@ -134,732 +144,5087 @@ const __dict_modifiers = [
 
 ];
 
-const __dict = [    
-    { l: 'anne',          d: ['macaco']},
-    { l: 'abd',           d: ['aprender']},
-    { l: 'abia',          d: ['lama, terra molhada', 'sujeira, sujo']},
-    { l: 'abl',           d: ['acontecer, fazer existir', 'preparar, ajustar, deixar pronto (para algo que vai acontecer)']},
-    { l: 'adi',           d: ['conhecer, descobrir algo novo']},
-    { l: 'ae',            d: ['você, ele (sujeito)']},
-    { l: 'aete',          d: ['nome, identificação, palavra que identifique alguém']},
-    { l: 'afoh',          d: ['cachorro, cadela (animal doméstico)', 'pet, bichinho de estimação', 'subordinado, dependente', 'derivado, originado de']},
-    { l: 'ahly',          d: ['ilha, monte de terra rodeado por água geralmente grande']},
-    { l: 'ai',            d: ['isso, isto, objeto próximo, algo próximo']},
-    { l: 'aka',           d: ['arrumar, organizar, otimizar', 'dar um jeito de conseguir algo (aka edof: arrumar dinheiro)']},
-    { l: 'ale',           d: ['escovar, pentear', 'desculpar, pedir desculpa, desculpar-se']},
-    { l: 'alfk',          d: ['dom, habilidade']},
-    { l: 'alg',           d: ['almoçar, lanche entre o café da manhã e o café da tarde, maior refeição do dia']},
-    { l: 'alul',          d: ['cavalo, égua']},
-    { l: 'amya',          d: ['tanto, tantos, tantas, tão']},
-    { l: 'anoa',          d: ['sol', 'fogo, quente, fonte de calor, fogueira', 'centro, origem', 'verão', 'destaque, destacado, em foco, ponto, argumento']},
-    { l: 'aout',          d: ['tomada, plugue, encaixe, conector', 'buraco (para passagem ou transporte), veia, artéria, via']},
-    { l: 'as',            d: ['vosso, vossa (de vós, pronome)']},
-    { l: 'asse',          d: ['possível, provável, possibilidade, chance, oportunidade']},
-    { l: 'au',            d: ['nosso, nossa (de nós, pronome)']},
-    { l: 'av',            d: ['seu, sua, seus, suas (de vocês, pronome)']},
-    { l: 'aved',          d: ['talvez']},
-    { l: 'awf',           d: ['recuperar, consertar, corrigir, desfazer, cancelar']},
-    { l: 'awfo',          d: ['recuperação, o ato de recuperar, o processo de conserto, correção']},
-    { l: 'bak',           d: ['pegar, capturar, agarrar um objeto, segurar algo']},
-    { l: 'bal',           d: ['carregar, transportar algo', 'recarregar', 'carregar-se de texto ou informação, ler', 'obter, receber (conhecimento ou algo)']},
-    { l: 'bduh',          d: ['bobo, no sentido de um erro engraçado ou numa conversa casual, sem sentido negativo em si']},
-    { l: 'bih',           d: ['chorar, lacrimejar, estar triste a ponto de chorar', 'entristecer, ficar mal, piorar, ficar pior, estragar', 'envelhecer, chegando ao fim, indo para o fim, terminando']},
-    { l: 'bite',          d: ['ano, 365 dias, conjunto de meses que formam o ano', 'luz, luminosidade, energia (de luz)']},
-    { l: 'bla',           d: ['conversar, falar']},
-    { l: 'blar',          d: ['conversa, papo, mensagem, comentário']},
-    { l: 'bly',           d: ['vender, troca de algo por dinheiro']},
-    { l: 'body',          d: ['bolo, massa em formato de bolo, alimento à base de massa', 'conjunto, objetos juntos em um espaço', 'conjunto de peças que fazem sentido juntas, organizadas de alguma maneira', 'lista, pasta (de documentos, por exemplo)']},
-    { l: 'bofo',          d: ['brócolis']},
-    { l: 'brad',          d: ['pão, massa de pão']},
-    { l: 'brod',          d: ['comida, alimento, refeição, lanche', 'piquenique, intervalo para alimentar-se', 'remédio ingerível (euyt)']},
-    { l: 'brot',          d: ['boca, orifício bucal']},
-    { l: 'brum',          d: ['cotovelo, canto do braço', 'maluco, doido, insano', 'maravilha, maravilhoso, incrível']},
-    { l: 'brus',          d: ['ônibus, veículo de transporte para muitas pessoas', 'multidão, conjunto de pessoas em um lugar ou em algo']},
-    { l: 'bty',           d: ['comprar, troca de dinheiro por algo, obter algo por dinheiro']},
-    { l: 'buno',          d: ['parte traseira, de trás', 'orifício anal']},
-    { l: 'bunt',          d: ['mil, multiplicador, multiplicado por mil']},
-    { l: 'bvor',          d: ['executável, jogo, programa, código executável do computador, aplicativo', 'programa, calendário, rotina, roteiro pro dia']},
-    { l: 'byh',           d: ['chover, molhar, deixar algo molhado', 'lavar, limpar com água', 'banhar, tomar banho, ser lavado, limpar-se', 'limpar, deixar limpo, ducha, lavagem']},
-    { l: 'carr',          d: ['caro, não barato, custoso', 'cansativo, que custa tempo ou energia, demorado']},
-    { l: 'cite',          d: ['cinco, número cinco']},
-    { l: 'cla',           d: ['apertar, clicar, pressionar, empurrar, cutucar']},
-    { l: 'cloc',          d: ['feijão', 'borrado, não nítido', 'esquecido, lembrança confusa']},
-    { l: 'clon',          d: ['com, como, com o (clon alul: com o cavalo)']},
-    { l: 'colk',          d: ['mistura de alimentos, prato misturado', 'feijoada']},
-    { l: 'coln',          d: ['controle (remoto), ferramenta de controle (de algo ou alguém)', 'poder de controlar algo, controlador (ae tar coln lolk cruy: você tem o controle do mundo)']},
-    { l: 'cra',           d: ['comer, alimentar-se, ingerir comida', 'sobreviver', 'ato de procriar, sexo']},
-    { l: 'crar',          d: ['automotivo, carro, meio de transporte para poucas ou uma pessoa', 'ferramenta mecânica que ajuda no movimento de algo (motorizada ou elétrica), meio de transporte de um objeto ou ser vivo por algum meio mecânico (motorizado ou elétrico)']},
-    { l: 'cret',          d: ['sobrancelha', 'algo que expresse sentimento ou emoção, expressão', 'forma de dizer algo, expressão']},
-    { l: 'cro',           d: ['acreditar, imaginar ser real, seguir algo por considerar verdadeiro']},
-    { l: 'crue',          d: ['burro, burra, jumento, jumenta']},
-    { l: 'cruy',          d: ['mundo, globo, um planeta', 'um grande espaço (definido), conjunto em um espaço, conjunto de algo', 'ecossistema, organismo']},
-    { l: 'cto',           d: ['curtir, ter diversão, divertir-se, sentir prazer com algo']},
-    { l: 'cunk',          d: ['milhão, milésimo, multiplicador']},
-    { l: 'daeh',          d: ['colega', 'membro, participante de um grupo, de uma turma', 'conhecido amigável']},
-    { l: 'dayh',          d: ['sócio, membro de alta classe de um grupo, dono, criador, mestre, administração']},
-    { l: 'daew',          d: ['externo, fora (de algo)', 'vizinho', 'estrangeiro', 'desconhecido, novo na área não conhecido pelo bairro', 'importado (veio de fora)']},
-    { l: 'dafk',          d: ['cabeça', 'parte superior', 'controle (cérebro), aquele ou aquilo que controla ou direciona', 'volante, guidão']},
-    { l: 'daih',          d: ['adulto, maior de idade, responsável', 'para maior de idade, inapropriado, nsfw']},
-    { l: 'daiw',          d: ['interno, dentro', 'exportado (de dentro)', 'submerso, debaixo de algo, coberto', 'profundo, fundo, bem abaixo', 'detalhado (profundamente), bem feito, perfeccionista, perfeito, perfeitamente feito, bom trabalho']},
-    { l: 'dak',           d: ['morar, viver em algum lugar', 'depender de algo para viver (ue dak plar: eu "moro" no trabalho, dependo do trabalho para existir)']},
-    { l: 'daoh',          d: ['idoso, terceira idade', 'algo que parece velho, antigo, antiguidade']},
-    { l: 'dap',           d: ['beber, tomar']},
-    { l: 'dapa',          d: ['capaz, ter a capacidade de', 'que aguenta, tem força para carregar, forte, competente']},
-    { l: 'dec',           d: ['achar (algo), descobrir (onde está), encontrar algo, varrer, pesquisar, procurar']},
-    { l: 'dee',           d: ['feder, ter cheiro ruim, estar fedido, conter odor desagradável']},
-    { l: 'def',           d: ['criar, inovar', 'transformar uma ideia em algo novo, converter', 'cuidar de algo com carinho e/ou atenção', 'trabalhar com a cria de animais ou relacionado a sobrevivência e/ou procriação (ae trta def\'ury?: você que cria/cuida/trata animais?)']},
-    { l: 'deft',          d: ['deficiente, com falta de, em falta, terminou (olal brad tue deft: o pão está em falta, acabou)']},
-    { l: 'defy',          d: ['a criação em si, algo criado, algo novo criado ou transformado, novo', 'resultado de um trabalho criado, feito manualmente (rifn defy: belo trabalho – de criação, como "bela pintura")', 'preparado, feito, depois de um tempo']},
-    { l: 'dek',           d: ['ensinar', 'mostrar, apresentar, apontar, descobrir (algo, para mostrar)', 'descamuflar (para se mostrar), aparecer, reaparecer, tirar fantasia, roupa, proteção, cobertor, o que estiver por cima']},
-    { l: 'delf',          d: ['fofo']}, 
-    { l: 'dept',          d: ['depois, após, posterior']},
-    { l: 'des',           d: ['humilhar, se fazer acima de algo ou alguém, insinuar que algo ou alguém é superior a outra coisa (ae tue eu desga: você está me humilhando / tentando se passar como alguém melhor ou superiora mim)']}, 
-    { l: 'dla',           d: ['montar, juntar, combinar', 'construir, fundir', 'gerar, fazer forma, transformar']},
-    { l: 'dlet',          d: ['principal', 'que aparece primeiro, se destaca ou é importante para o corpo ou objeto', 'preciso, necessário, importante', 'oficial, genuíno']},
-    { l: 'doht',          d: ['nada, nenhum, nulo, inexistente, sem traços, vazio', 'desaparecido, escondido, perdido']},
-    { l: 'dos',           d: ['processar, fazer algo com algo, trabalhar com coisas para resultar em algo', 'tratar um ferimento', 'tratar de negócios (dos clon ae lokt bty nyht hute: trate com ele para comprar essa casa)', 'processar alguém por algo que fez, processo, defesa (uegno ea dos!: vou te processar!)']},
-    { l: 'dout',          d: ['doutor, pessoa com grande experiência em algo, com ensino completo em algo, doutorado']},
-    { l: 'dovk',          d: ['modo, meio, forma de fazer']},
-    { l: 'drib',          d: ['pelado, nu, nude, despido, sem roupa', 'original, puro', 'cru', 'completo, sem filtros, total, inteiro (ue qne nyht fpri drib: eu quero esse documento por inteiro / sem filtro / completo)']},
-    { l: 'dtie',          d: ['digital, geralmente não mecânico, que funciona de forma digital']},
-    { l: 'dtye',          d: ['futurista, à frente, adiantado']},
-    { l: 'dude',          d: ['dois, número dois']},
-    { l: 'dued',          d: ['nota, resultado, valor']},
-    { l: 'duh',           d: ['funcionar, encaixar, caber', 'costumar, acostumar, afazer, afeiçoar', 'habituar, praticar, treinar']},
-    { l: 'duly',          d: ['plural, múltiplo']},
-    { l: 'duut',          d: ['nádega, bunda', 'parte traseira', 'que aparece por último']},
-    { l: 'dwa',           d: ['detonar, acabar com, explodir', 'foder, transar']},
-    { l: 'dwat',          d: ['secreto, segredo', 'protegido, lacrado', 'mantido fora do alcance']},
-    { l: 'dyd',           d: ['duvidar', 'perguntar, questionar']},
-    { l: 'ea',            d: ['seu, sua (singular)']},
-    { l: 'edof',          d: ['dinheiro, moeda']},
-    { l: 'egka',          d: ['ave, pássaro', 'algo que voe, avião', 'águia']},
-    { l: 'eitd',          d: ['analógico', 'mecânico', 'natural']},
-    { l: 'elgh',          d: ['duro, rígido', 'resistente', 'egoísta']},
-    { l: 'ena',           d: ['usar', 'aplicar (uegto ena nyht euyt trta\'e: vou aplicar esta vacina em você)']},
-    { l: 'ene',           d: ['lembrar', 'anotar (para lembrar depois)', 'decorar']},
-    { l: 'enge',          d: ['engenharia, engenheiro']},
-    { l: 'eny',           d: ['energizar, ligar', 'levantar']},
-    { l: 'epy',           d: ['desligar, tirar energia', 'agachar']},
-    { l: 'es',            d: ['teu, tua (singular)']},
-    { l: 'esge',          d: ['artista, aquele que desenha, cria arte', 'criativo, inovador, que pensa fora da caixa']},
-    { l: 'esiu',          d: ['difícil', 'complicado', 'fechado, difícil acesso, trancado']},
-    { l: 'esja',          d: ['dificuldade', 'resistência, força contra', 'defesa, defensivo']},
-    { l: 'espa',          d: ['pois', 'por que, porque, por quê, porquê']},
-    { l: 'espe',          d: ['alface']},
-    { l: 'esy',           d: ['chupar', 'sugar', 'remover (sugando)', 'inspirar']},
-    { l: 'etit',          d: ['data, dia', 'reserva', 'encontro']},
-    { l: 'ety',           d: ['afastar, distanciar algo', 'separar', 'desconectar, desplugar', 'terminar (namoro, relação, algo que dependa de duas partes ou mais juntas)']},
-    { l: 'eu',            d: ['meu, minha (singular)']},
-    { l: 'eurt',          d: ['fraco', 'frágil', 'inseguro (ae fla eurt giit ai: você parece inseguro sobre isso)']},
-    { l: 'euyt',          d: ['vacina', 'cura', 'seringa', 'remédio, drogas, medicamento (nyht euyt tue brod tdou ai tue ena?: esse remédio é de comer ou é vacina?)']},
-    { l: 'ewrk',          d: ['borracha', 'pneu']}, 
-    { l: 'fafa',          d: ['minuto']},
-    { l: 'fafs',          d: ['velho, idoso', 'antigo, clássico']},
-    { l: 'fakk',          d: ['obrigado, agradecido', 'agradecimento']},
-    { l: 'faq',           d: ['levar', 'transportar (para algum lugar)', 'carregar (algo para outro lugar distante)']},
-    { l: 'fein',          d: ['combustível', 'origem (de algo ou acontecimento)', 'herança']},
-    { l: 'feni',          d: ['acima, em cima, cima (feni lolk uhly: em cima da mesa)', 'maior (em poder), mais (em algum atributo)(feni lure trta ae: mais inteligente que você)']},
-    { l: 'fert',          d: ['professor, orientador, comandante (o que ensina, orienta ou comanda com um objetivo educacional ou prático)']},
-    { l: 'fery',          d: ['parte, pedaço', 'contexto', 'membro (do corpo), órgão']},
-    { l: 'fglu',          d: ['normal, padrão', 'universal']},
-    { l: 'fhlo',          d: ['automático', 'individual (trabalho para uma pessoa, onde ela faz tudo)']},
-    { l: 'fini',          d: ['agudo, pontudo', 'alto', 'alta frequência', 'singular, único, especial']},
-    { l: 'fla',           d: ['copiar, parecer (ae fla inna lope: você parece/"se apresenta como" uma folha / "você veio vestido de folha"), disfarçar (como algo)', 'vestir (algo para disfarce ou para se apresentar em algum lugar especial)(ue gno eu fla lokt inna plar: eu vou me arrumar para o trabalho)', 'imprimir, fazer parecer, fazer algo parecer']},
-    { l: 'flai',          d: ['álcool, líquido, como para automóveis ou limpeza', 'bebida alcoólica']},
-    { l: 'flar',          d: ['impressora, equipamento que imprime', 'impressionador, que impressiona, causa impressão', 'cópia, semelhante']},
-    { l: 'fle',           d: ['dizer, falar sério', 'ditado, algo sempre falado, que dizem muito, comum']},
-    { l: 'flei',          d: ['ouvido', 'audição', 'microfone, dispositivo de captura de som ou frequência', 'frequencímetro, gravador, aparelho de som (para captura de som)']},
-    { l: 'flix',          d: ['gato, felino', 'cheio de energia, radical, animal']},
-    { l: 'flo',           d: ['cair, tropeçar', 'afundar, descer bastante', 'mergulhar de cabeça em algo, aprofundar', 'estar presente entre outras coisas (ae flo trta olal klan yoiu: você caiu/entrou no time vermelho)', 'soltar, deixar de estar preso em algo, desamarrar']},
-    { l: 'floi',          d: ['diesel, combustível de fácil explosão', 'pessoa com temperamento sensível']},
-    { l: 'flui',          d: ['gasolina', 'pessoa atraente, que causa "calor"']},
-    { l: 'fout',          d: ['tórax, peitoral, frente de um corpo', 'proteção frontal de algo importante, capô', 'armadura, roupa extremamente resistente', 'tampa, fechadura, trava, cadeado', 'bloqueado, trancado, fechado']},
-    { l: 'fouk',          d: ['seio', 'curva, sinuosidade', 'o mais interno de um ser, alma, espírito', 'cavidade, canal interno que contém ou por onde passa algo, buraco, túnel, passagem']},
-    { l: 'fpri',          d: ['documento, arquivo, folha', 'identidade, algo que represente algum ser', 'registro, traço, pista de algo que indique a alguém', 'conta, contato']},
-    { l: 'frav',          d: ['ser aquilo ou aquilo que tem entre as pernas (definido pelo sexo, ou indefinido caso não interessado, como em ue tue nifrav: eu (sou) / (tenho um(a)) (órgão do sexo feminino)), genitália']},
-    { l: 'fraq',          d: ['ser aquele que tem interesse no sexo que for definido na palavra, ou ambos (ou qualquer um) caso não definido (ue tue nafraq: eu (sou interessado) / (gosto de) homens (órgão sexual masculino))', 'Relacionado a palavras como: hétero, homossexual, bissexual']},
-    { l: 'frax',          d: ['bomba, mina, granada, explosivo', 'spam', 'irritante, o que não se quer perto']},
-    { l: 'frea',          d: ['carne', 'material de origem animal', 'couro']},
-    { l: 'frex',          d: ['colega próximo, parceiro, dupla, faz parte de sua equipe pessoal']},
-    { l: 'froc',          d: ['rocha, pedra', 'duro, resistente', 'persistente ou cabeça dura', 'pouco valioso, comum']},
-    { l: 'frot',          d: ['frita, tostada com calor', 'queimado, colocado à lenha rapidamente', 'febre, acima da temperatura normal, aquecido de forma irregular', 'machucado de "queimar" (tanto emocional quanto real)']},
-    { l: 'fruf',          d: ['pelo, pelugem', 'penas, plumagem (caso esteja falando de aves)', 'cobertura, cobertor, algo que cobre e mantém quente ou protege de algo', 'armadura mística ou especial que te mantém protegido']},
-    { l: 'fti',           d: ['adicionar, somar', 'obter algo por meio da soma, junção ou transformação', 'adquirir (a si ou para algo)', 'entrar em um grupo, equipe, para adicionar algo (somar forças)']},
-    { l: 'ftik',          d: ['forçado', 'feito sob medida, apertado', 'planejado perfeitamente', 'limitado', 'pressionado (a fazer algo), obrigado']},
-    { l: 'ftuk',          d: ['sanduíche', 'hambúrguer']},
-    { l: 'fual',          d: ['decente, bem feito, bem trabalhado', 'robusto, competente, garantido', 'preparado (bem), organizado (de forma decente)', 'encaixado perfeitamente (com um conector bem colocado, sem problemas), combinado (em cor, formato ou qualquer outra característica)', 'conectado (com perfeição ou com grandes garantias de sucesso), montado perfeitamente, construído sem erros']}, 
-    { l: 'fuil',          d: ['bem, bom, estar bem, feliz, alegre', 'positivo', 'felicidade', 'certo, correto, perfeitamente bem', 'bem cuidado, em perfeitas condições']},
-    { l: 'fur',           d: ['conseguir, obter com sucesso', 'solucionar, resolver', 'terminar, acabar, finalizar', 'conquistar, capturar', 'prender, trancar, trancafiar, bloquear, fechar', 'resistir, sobreviver, garantir, sustentar']},
-    { l: 'fury',          d: ['ser vivo, corpo com vida', 'animal', 'espontâneo, animado, motivado', 'independente, maduro, adulto (parecer adulto), responsável']},
-    { l: 'fyl',           d: ['animar, alegrar, deixar pessoas felizes de alguma forma', 'enfeitar, melhorar, embelezar, produzir-se', 'reanimar, acordar, nascer', 'irradiar, brilhar, crescer (como uma flor cresce e floresce)', 'revelar, desmascarar']},
-    { l: 'fytu',          d: ['nenhum, ninguém', 'vazio, desocupado, sem gente', 'desistente, cancelado, estar fora', 'sem ninguém, sozinho', 'assexual', 'sem interesses, sem desejos', 'inativo', 'ausente']},
-    { l: 'gale',          d: ['acesso, entrada, porta', 'acessibilidade, assistência']},
-    { l: 'game',          d: ['pá, ferramenta manual para escavar', 'paz, símbolo de paz', 'estar calmo, sem estresse, relaxado', 'conquistar terras, novo território, conquista, com sucesso e pacífico; terminar algo sem estresse, na calma']},
-    { l: 'gaq',           d: ['conduzir, guiar', 'seguir, trilhar o mesmo caminho que alguém', 'inscrever, assinar']},
-    { l: 'gatx',          d: ['lindo, belo, bonito, elegante', 'bem feito, bem trabalhado, que dá orgulho', 'bem composto, bem misturado, destaque entre outros', 'gostoso']},
-    { l: 'gaty',          d: ['bem produzido, sem falhas, perfeito (dado algo para comparar)', 'exemplar, ideal', 'molde, norma, original, marca', 'exemplo, template']},
-    { l: 'gdaj',          d: ['socorro, ajuda (não necessariamente médica)', 'pedido, carta, mensagem ou qualquer sinal pedindo ajuda', 'sinalização de emergência ou de assistência (local de origem ou vindo ao local)', 'substantivo indicando que está "precisando de ajuda" (ae tue gdaj: você está "precisando de ajuda")', 'doação, investimento, aplicação (para ajudar o próximo)']},
-    { l: 'gds',           d: ['ajudar', 'colaborar', 'participar em algo positivamente', 'retribuir', 'investir, aplicar, fazer algo para positivamente influenciar algo', 'doar, oferecer algo, para ajudar o próximo']},
-    { l: 'gefh',          d: ['mãe (não necessariamente mulher)', 'aquele que é reconhecido como o mais importante num grupo de pessoas', 'pessoa de alto valor num grupo, por mérito, honra, não por dinheiro ou poder', 'pai']},
-    { l: 'geft',          d: ['teclado, instrumentos de múltiplas teclas', 'interface de um dispositivo', 'senha, palavra-chave, resposta, chave', 'ponto importante, relevante, sobre algo']},
-    { l: 'gfad',          d: ['prova, teste', 'prova, registro', 'memória, registro de memória, anotação', 'trilha, pegadas, traços, registro de algum acontecimento', 'resposta (final), fato inquestionável, a verdade pura']},
-    { l: 'gflu',          d: ['estranho, alienígena, intruso', 'irregular, diferente, fora do padrão, incomum', 'desconhecido, novo']},
-    { l: 'gfoh',          d: ['desde, a partir de, a datar de, a contar de, com início em', 'já, já em, agora, imediatamente, no momento']},
-    { l: 'ghea',          d: ['geografia', 'terreno', 'área, lugar, região', 'vizinhança, bairro, pólis, comunidade, cidade-estado']},
-    { l: 'ghit',          d: ['sob, abaixo, embaixo', 'submerso, afundado, tampado, sobreposto por algo', 'protegido, escondido por baixo de algo, em segurança', 'isolado, controlado, vistoriado']},
-    { l: 'giit',          d: ['sobre, por cima', 'sobrevoando, voando, flutuando, acima, por cima de algo, sobrepondo algo', 'exposto, encontrável, visível, desprotegido', 'livre, liberto, descontrolado']},
-    { l: 'gku',           d: ['preocupar, deixar preocupado', 'assustar', 'destacar, deixar destacado, fazer aparecer, aparecer em destaque', 'fixar, colocar em foco, dar destaque a algo para pesquisar sobre, tachar']},
-    { l: 'gleh',          d: ['mole', 'flácido, flexível', 'demorado, tardio, pausado', 'líquido (estado da matéria)']},
-    { l: 'glut',          d: ['círculo, esfera, objeto radial sem cantos', 'grupo, quadrilha, conjunto, equipe']},
-    { l: 'gno',           d: ['Ir', 'passar', 'expirar, perecer', 'acabar, terminar, finalizar']},
-    { l: 'goto',          d: ['botão, brinco, pingente', 'gema', 'broto', 'raiz, origem, base originária, início', 'ponto, centro, destaque, tacha', 'tarefa, problema, origem de trabalho']},
-    { l: 'graf',          d: ['mesmo, até, inclusive, também, ainda', 'próprio, tal', 'precisamente, exatamente, justamente']},
 
-    { l: 'grah',          d: ['já, agora, neste momento, na hora']},
-    { l: 'grak',          d: ['bicho', 'verme']},
-    { l: 'grin',          d: ['guitarra', 'violão elétrico']},
-    { l: 'gren',          d: ['violão', 'instrumento de cordas', 'instrumento musical de cordas, que vibra, gera som por vibrações']},
-    { l: 'gron',          d: ['teste', 'experimento', 'experiência', 'prova (colocar algo à prova)', 'exercício']},
-    { l: 'grug',          d: ['abaixo', 'baixo', 'grave', 'fundo', 'profundo']},
-    { l: 'gruy',          d: ['leoa', 'leão', 'felino selvagem']},
-    { l: 'gto',           d: ['gostar', 'apreciar']},
 
-    // not up to date with format (not revisited):
-    { l: 'guk',           d: ['subir']},
-    { l: 'guni',          d: ['ideia', 'sugestão']},
-    { l: 'gura',          d: ['bola', 'esfera']},
-    { l: 'gure',          d: ['informação', 'notícia']},
-    { l: 'gyla',          d: ['ritmo', 'movimento']},
-    { l: 'gyth',          d: ['chocolate']},
-    { l: 'gyyk',          d: ['ainda']},
-    { l: 'hug',           d: ['avisar']},
-    { l: 'hugi',          d: ['conteúdo', 'matéria']},
-    { l: 'hune',          d: ['casamento']},
-    { l: 'hung',          d: ['sal']},
-    { l: 'hute',          d: ['casa']},
-    { l: 'huti',          d: ['ânus']},
-    { l: 'huty',          d: ['terreno', 'área', 'espaço (de médio tamanho, para uma casa ou poucas casas)']},
-    { l: 'huwg',          d: ['bosta', 'merda', 'fezes']},
-    { l: 'hyc',           d: ['enxergar', 'olhar', 'ver']},
-    { l: 'hye',           d: ['verificar']},
-    { l: 'hyi',           d: ['esconder', 'desaparecer', 'sumir']},
-    { l: 'hyor',          d: ['rua']},
-    { l: 'iata',          d: ['título', 'topo']},
-    { l: 'iceb',          d: ['cebola']},
-    { l: 'igrn',          d: ['veado']},
-    { l: 'ihgl',          d: ['inglês']},
-    { l: 'ihk',           d: ['adorar']},
-    { l: 'ike',           d: ['dever']},
-    { l: 'iki',           d: ['merecer']},
-    { l: 'ikk',           d: ['atrapalhar']},
-    { l: 'ilpe',          d: ['caldo']},
-    { l: 'inna',          d: ['um', 'uma']},
-    { l: 'issu',          d: ['calcanhar']},
-    { l: 'isti',          d: ['ovíparo']},
-    { l: 'isto',          d: ['herbívoro']},
-    { l: 'itep',          d: ['tempero']},
-    { l: 'jap',           d: ['voar', 'flutuar', 'planar']},
-    { l: 'jfab',          d: ['faculdade']},
-    { l: 'jiak',          d: ['unidade', 'medida', 'dimensão', 'métrica', 'universo', 'tamanho']},
-    { l: 'jip',           d: ['beijar']},
-    { l: 'jki',           d: ['lavar']},
-    { l: 'jol',           d: ['bater', 'golpear']},
-    { l: 'jolo',          d: ['grande', 'maior', 'mais', 'muito', 'vários', 'bastante', 'maior']},
-    { l: 'joqe',          d: ['joystick']},
-    { l: 'julk',          d: ['foda']},
-    { l: 'kaa',           d: ['exigir', 'invocar']},
-    { l: 'kaet',          d: ['pobre', 'pobreza']},
-    { l: 'kaga',          d: ['mercado', 'shopping']},
-    { l: 'kaka',          d: ['atrevido']},
-    { l: 'kala',          d: ['caramba']},
-    { l: 'kara',          d: ['loucura']},
-    { l: 'kark',          d: ['atualização']},
-    { l: 'kefh',          d: ['tia', 'tio']},
-    { l: 'kei',           d: ['encher', 'servir']},
-    { l: 'kek',           d: ['desapontar']},
-    { l: 'kerk',          d: ['desatualização']},
-    { l: 'kgo',           d: ['libertar']},
-    { l: 'kik',           d: ['dormir']},
-    { l: 'kina',          d: ['vegetal']},
-    { l: 'kini',          d: ['episódio', 'caso']},
-    { l: 'kjor',          d: ['personalidade', 'pessoa']},
-    { l: 'klai',          d: ['código', 'senha']},
-    { l: 'klan',          d: ['grupo', 'time']},
-    { l: 'klet',          d: ['barriga']},
-    { l: 'klin',          d: ['até', 'tchau']},
-    { l: 'knep',          d: ['certo', 'correto', 'verdade', 'verdadeiro', 'real', 'realidade']},
-    { l: 'knet',          d: ['série']},
-    { l: 'knyh',          d: ['briga', 'luta']},
-    { l: 'kok',           d: ['veja']},
-    { l: 'kop',           d: ['colaborar', 'participar']},
-    { l: 'koy',           d: ['amassar', 'amocar']},
-    { l: 'kral',          d: ['livre']},
-    { l: 'krat',          d: ['problema']},
-    { l: 'krfi',          d: ['favor']},
-    { l: 'krk',           d: ['atualizar']},
-    { l: 'krka',          d: ['preso']},
-    { l: 'kro',           d: ['fazer']},
-    { l: 'kruk',          d: ['tradução']},
-    { l: 'ktra',          d: ['entre']},
-    { l: 'ktuh',          d: ['atenção']},
-    { l: 'kuil',          d: ['saúde']},
-    { l: 'kuky',          d: ['céu']},
-    { l: 'kulh',          d: ['máquina']},
-    { l: 'kurp',          d: ['inútil']},
-    { l: 'kwyh',          d: ['espaço (não muito grande)', 'quarto']},
-    { l: 'kyek',          d: ['mendigo']},
-    { l: 'kyia',          d: ['oi', 'olá']},
-    { l: 'kyna',          d: ['porra']},
-    { l: 'lak',           d: ['abaixar']},
-    { l: 'lala',          d: ['gelo', 'gelado', 'sorvete', 'picolé']},
-    { l: 'laq',           d: ['baixar', 'puxar', 'trazer']},
-    { l: 'lar',           d: ['trabalhar (uma ideia, desenvolver)', 'manusear']},
-    { l: 'larb',          d: ['trabalhador']},
-    { l: 'lare',          d: ['alguém']},
-    { l: 'lari',          d: ['algum', 'alguma']},
-    { l: 'lark',          d: ['ocupado']},
-    { l: 'lay',           d: ['escutar', 'ouvir']},
-    { l: 'laz',           d: ['iluminar']},
-    { l: 'lea',           d: ['parar']},
-    { l: 'leh',           d: ['adivinhar']},
-    { l: 'lep',           d: ['brincar']},
-    { l: 'lhun',          d: ['pulso']},
-    { l: 'lide',          d: ['ímã']},
-    { l: 'lifu',          d: ['decepcionado', 'desmotivado']},
-    { l: 'lii',           d: ['sorrir']},
-    { l: 'liit',          d: ['frio', 'inverno']},
-    { l: 'liku',          d: ['antigo', 'relíquia', 'histórico', 'outrora']},
-    { l: 'lili',          d: ['riso']},
-    { l: 'lily',          d: ['sorriso']},
-    { l: 'limy',          d: ['biscoito', 'bolacha']},
-    { l: 'lint',          d: ['língua']},
-    { l: 'lio',           d: ['entender']},
-    { l: 'liuf',          d: ['mal', 'mau', 'triste']},
-    { l: 'liuk',          d: ['péssimo', 'horrível', 'terrível']},
-    { l: 'lod',           d: ['estudar']},
-    { l: 'lof',           d: ['odiar']},
-    { l: 'lofh',          d: ['padrinho', 'madrinha']},
-    { l: 'lofi',          d: ['branco']},
-    { l: 'log',           d: ['chutar']},
-    { l: 'lohp',          d: ['trás']},
-    { l: 'loht',          d: ['cara', 'face', 'frente']},
-    { l: 'lokl',          d: ['acaso']},
-    { l: 'lokt',          d: ['para', 'pra']},
-    { l: 'loku',          d: ['osso']},
-    { l: 'lolk',          d: ['da', 'de', 'do', 'por']},
-    { l: 'lolo',          d: ['ovo']},
-    { l: 'lope',          d: ['folha', 'papel', 'pena']},
-    { l: 'lopk',          d: ['deus']},
-    { l: 'lot',           d: ['perder', 'tirar', 'roubar']},
-    { l: 'lowe',          d: ['universidade']},
-    { l: 'lra',           d: ['cantar']},
-    { l: 'lual',          d: ['viagem']},
-    { l: 'lui',           d: ['existir', 'haver']},
-    { l: 'luk',           d: ['fumar']},
-    { l: 'luka',          d: ['perna']},
-    { l: 'luly',          d: ['semente']},
-    { l: 'lumu',          d: ['caderno', 'livro']},
-    { l: 'lung',          d: ['ombro']},
-    { l: 'luph',          d: ['coxa']},
-    { l: 'lur',           d: ['acertar']},
-    { l: 'lurd',          d: ['distante', 'longe']},
-    { l: 'lure',          d: ['gênio', 'inteligente']},
-    { l: 'luyo',          d: ['dragão']},
-    { l: 'lyka',          d: ['reino']},
-    { l: 'lyr',           d: ['errar', 'falhar', 'fracassar']},
-    { l: 'lyru',          d: ['feio']},
-    { l: 'lyvo',          d: ['mesquinho', 'fútil']},
-    { l: 'maly',          d: ['redação', 'texto']},
-    { l: 'maah',          d: ['sim', 'claro']},
-    { l: 'maeh',          d: ['certeza ']},
-    { l: 'mana',          d: ['não', 'incerto']},
-    { l: 'mank',          d: ['contrário', 'inverso', 'des-', 'a-']},
-    { l: 'maol',          d: ['então', 'portanto']},
-    { l: 'medy',          d: ['medicina', 'médico']},
-    { l: 'mhat',          d: ['matemática']},
-    { l: 'mhut',          d: ['constante', 'estável']},
-    { l: 'mig',           d: ['contar', 'fatiar', 'distribuir']},
-    { l: 'molg',          d: ['macarrão']},
-    { l: 'molh',          d: ['boi', 'vaca']},
-    { l: 'muna',          d: ['ou', 'entretanto']},
-    { l: 'munu',          d: ['lição', 'tarefa']},
-    { l: 'nag',           d: ['estressar']},
-    { l: 'nagt',          d: ['estresse']},
-    { l: 'nak',           d: ['cochilar']},
-    { l: 'nape',          d: ['apenas', 'só']},
-    { l: 'naq',           d: ['escolher', 'selecionar', 'preferir']},
-    { l: 'naqi',          d: ['escolha', 'opção', 'configuração']},
-    { l: 'naz',           d: ['descansar']},
-    { l: 'neh',           d: ['nascer']},
-    { l: 'nheh',          d: ['igreja']},
-    { l: 'nhoe',          d: ['nove']},
-    { l: 'nhu',           d: ['alterar', 'modificar', 'mudar']},
-    { l: 'nhum',          d: ['sorte']},
-    { l: 'nih',           d: ['renascer']},
-    { l: 'nili',          d: ['frase ']},
-    { l: 'njvn',          d: ['alho']},
-    { l: 'noag',          d: ['batata']},
-    { l: 'nofy',          d: ['(deixado) sozinho', 'só']},
-    { l: 'nog',           d: ['chegar', 'vir']},
-    { l: 'nolc',          d: ['anti', 'sem']},
-    { l: 'nuki',          d: ['coitado']},
-    { l: 'nukn',          d: ['colaboração']},
-    { l: 'nune',          d: ['fluente']},
-    { l: 'nury',          d: ['permanente', 'para sempre']},
-    { l: 'nyht',          d: ['essa', 'esse', 'esta', 'este']},
-    { l: 'nyil',          d: ['pior']},
-    { l: 'nyta',          d: ['química', 'químico']},
-    { l: 'oaut',          d: ['espelho']},
-    { l: 'obs',           d: ['observar']},
-    { l: 'ofi',           d: ['trepar']},
-    { l: 'ohde',          d: ['um']},
-    { l: 'ohte',          d: ['oito']},
-    { l: 'oky',           d: ['agradecer']},
-    { l: 'olal',          d: ['a', 'ao', 'o', 'à', 'as', 'aos', 'os', 'às']},
-    { l: 'olar',          d: ['fórmula', 'receita', 'dicionário']},
-    { l: 'ole',           d: ['apagar']},
-    { l: 'olf',           d: ['remover']},
-    { l: 'olg',           d: ['acabar']},
-    { l: 'oli',           d: ['dar']},
-    { l: 'olk',           d: ['adiar']},
-    { l: 'oloj',          d: ['menor', 'menos', 'pequeno', 'pouco', 'menor']},
-    { l: 'ori',           d: ['fechar']},
-    { l: 'otsi',          d: ['carnívoro']},
-    { l: 'otun',          d: ['música', 'músico']},
-    { l: 'ougt',          d: ['olho']},
-    { l: 'oyye',          d: ['loiro']},
-    { l: 'ozuk',          d: ['onda']},
-    { l: 'pane',          d: ['próton']},
-    { l: 'par',           d: ['enfiar']},
-    { l: 'pate',          d: ['planta', 'árvore']},
-    { l: 'paut',          d: ['caralho']},
-    { l: 'pedt',          d: ['antes', 'último']},
-    { l: 'penk',          d: ['anormal', 'errado', 'erro', 'falha', 'falso', 'virtual', 'emulado', 'mentira']},
-    { l: 'phaf',          d: ['farmacêutico', 'farmácia']},
-    { l: 'phed',          d: ['foto', 'imagem']},
-    { l: 'phlo',          d: ['alto']},
-    { l: 'phoa',          d: ['fone']},
-    { l: 'phor',          d: ['português']},
-    { l: 'phuf',          d: ['cotovelada']},
-    { l: 'phus',          d: ['física']},
-    { l: 'pie',           d: ['viajar']},
-    { l: 'pitn',          d: ['nariz']},
-    { l: 'pikt',          d: ['alicate']},
-    { l: 'pka',           d: ['sapatear']},
-    { l: 'plar',          d: ['trabalho']},
-    { l: 'plep',          d: ['café', 'cafeína']},
-    { l: 'plek',          d: ['bebida energética', 'energético', 'eletricidade, elétrico']},
-    { l: 'plk',           d: ['responder']},
-    { l: 'plo',           d: ['abrir']},
-    { l: 'plof',          d: ['responsável']},
-    { l: 'plug',          d: ['pulsação']},
-    { l: 'poad',          d: ['massa']},
-    { l: 'poag',          d: ['manteiga']},
-    { l: 'pod',           d: ['poder']},
-    { l: 'podr',          d: ['capô']},
-    { l: 'pody',          d: ['pudim', 'pé']},
-    { l: 'pofh',          d: ['chute']},
-    { l: 'pohl',          d: ['frente']},
-    { l: 'poje',          d: ['padre']},
-    { l: 'pola',          d: ['saco']},
-    { l: 'pole',          d: ['detalhe', 'ponto', 'pixel']},
-    { l: 'polh',          d: ['joelhada']},
-    { l: 'polt',          d: ['lábio']},
-    { l: 'poly',          d: ['algo', 'coisa', 'objeto']},
-    { l: 'pop',           d: ['continuar', 'seguir', 'prosseguir']},
-    { l: 'pope',          d: ['bebida']},
-    { l: 'pora',          d: ['futebol']},
-    { l: 'pote',          d: ['tela', 'arte', 'janela']},
-    { l: 'potr',          d: ['penal']},
-    { l: 'pous',          d: ['sopa']},
-    { l: 'pra',           d: ['escutar']},
-    { l: 'praf',          d: ['pediatra', 'pediatria']},
-    { l: 'pre',           d: ['assinar', 'declarar']},
-    { l: 'pred',          d: ['som']},
-    { l: 'pri',           d: ['entrar', 'visitar']},
-    { l: 'proe',          d: ['adaptador', 'conector']},
-    { l: 'prud',          d: ['cabo', 'fio', 'internet', 'net', 'enrolado', 'embaralhado']},
-    { l: 'ptha',          d: ['plástico']},
-    { l: 'ptos',          d: ['geralmente']},
-    { l: 'puag',          d: ['margarina']},
-    { l: 'pulh',          d: ['porco']},
-    { l: 'qene',          d: ['quente']},
-    { l: 'qnad',          d: ['quando']},
-    { l: 'qne',           d: ['desejar', 'pedir', 'querer']},
-    { l: 'qnm',           d: ['salvar']},
-    { l: 'qute',          d: ['quatro']},
-    { l: 'qwut',          d: ['malandragem', 'malandro']},
-    { l: 'raki',          d: ['guerra']},
-    { l: 'rai',           d: ['chamar', 'ligar', 'telefonar']},
-    { l: 'raih',          d: ['assim']},
-    { l: 'raik',          d: ['martelo']},
-    { l: 'rara',          d: ['bora', 'em boa hora', 'em perfeito estado', 'ao ponto, no ponto', 'temperado']},
-    { l: 'rau',           d: ['imaginar', 'pensar', 'sonhar']},
-    { l: 'rauk',          d: ['sonho']},
-    { l: 'raut',          d: ['mouse', 'rato', 'peste']},
-    { l: 'regh',          d: ['relógio']},
-    { l: 'reh',           d: ['pagar']},
-    { l: 'reka',          d: ['aqui']},
-    { l: 'reko',          d: ['rumo']},
-    { l: 'rela',          d: ['ali']},
-    { l: 'relo',          d: ['caminho', 'percurso']},
-    { l: 'rhfa',          d: ['rádio']},
-    { l: 'rhis',          d: ['história']},
-    { l: 'rifn',          d: ['cabelo']},
-    { l: 'ripy',          d: ['perigo']},
-    { l: 'rirt',          d: ['escuro', 'escuridão', 'noite', 'preto']},
-    { l: 'rka',           d: ['gravar']},
-    { l: 'rote',          d: ['filme']},
-    { l: 'roti',          d: ['remoto']},
-    { l: 'rud',           d: ['prestar']},
-    { l: 'ruh',           d: ['sair']},
-    { l: 'ruka',          d: ['barra', 'régua']},
-    { l: 'ruky',          d: ['alavanca']},
-    { l: 'rury',          d: ['tipo']},
-    { l: 'rutu',          d: ['desenho']},
-    { l: 'rwes',          d: ['porta']},
-    { l: 'rye',           d: ['enviar', 'escrever']},
-    { l: 'ryi',           d: ['passar']},
-    { l: 'ryke',          d: ['droga', 'porcaria']},
-    { l: 'ryty',          d: ['início', 'menu']},
-    { l: 'sa',            d: ['vós']},
-    { l: 'saa',           d: ['prometer']},
-    { l: 'saan',          d: ['bolado']},
-    { l: 'sadu',          d: ['separado']},
-    { l: 'saf',           d: ['abusar']},
-    { l: 'sak',           d: ['faltar']},
-    { l: 'saki',          d: ['paz']},
-    { l: 'salu',          d: ['cursinho', 'curso']},
-    { l: 'saqi',          d: ['idade']},
-    { l: 'sari',          d: ['mas', 'porém']},
-    { l: 'sase',          d: ['total']},
-    { l: 'se',            d: ['tu']},
-    { l: 'sea',           d: ['comprometer']},
-    { l: 'sek',           d: ['colocar', 'por']},
-    { l: 'sele',          d: ['nem']},
-    { l: 'sem',           d: ['deixar']},
-    { l: 'sfy',           d: ['filosofar']},
-    { l: 'shie',          d: ['ciências']},
-    { l: 'sih',           d: ['começar', 'iniciar', 'jogar']},
-    { l: 'ska',           d: ['dançar']},
-    { l: 'skaa',          d: ['janeiro']},
-    { l: 'skab',          d: ['fevereiro']},
-    { l: 'skac',          d: ['março']},
-    { l: 'skad',          d: ['abril']},
-    { l: 'skae',          d: ['maio']},
-    { l: 'skaf',          d: ['junho']},
-    { l: 'skag',          d: ['julho']},
-    { l: 'skah',          d: ['agosto']},
-    { l: 'skai',          d: ['setembro']},
-    { l: 'skaj',          d: ['outubro']},
-    { l: 'skak',          d: ['novembro']},
-    { l: 'skal',          d: ['dezembro']},
-    { l: 'skra',          d: ['imbecil']},
-    { l: 'slag',          d: ['salgado']},
-    { l: 'sle',           d: ['faxinar']},
-    { l: 'sleg',          d: ['cera']},
-    { l: 'smug',          d: ['cigarro']},
-    { l: 'snop',          d: ['jamais', 'nunca']},
-    { l: 'snuz',          d: ['cama']},
-    { l: 'sofy',          d: ['filosofia', 'filósofo']},
-    { l: 'spet',          d: ['sombra']},
-    { l: 'spot',          d: ['sempre']},
-    { l: 'squ',           d: ['monitorar']},
-    { l: 'srag',          d: ['frango']},
-    { l: 'srak',          d: ['dada']},
-    { l: 'sret',          d: ['faxina']},
-    { l: 'sru',           d: ['tentar']},
-    { l: 'stop',          d: ['nunca']},
-    { l: 'stor',          d: ['host']},
-    { l: 'sue',           d: ['abraçar']},
-    { l: 'sufe',          d: ['sete']},
-    { l: 'suff',          d: ['novo', 'novamente', 'de novo']},
-    { l: 'suft',          d: ['suco']},
-    { l: 'sufy',          d: ['infernal', 'inferno', 'diabo']},
-    { l: 'suk',           d: ['editar']},
-    { l: 'sulu',          d: ['diferente']},
-    { l: 'sute',          d: ['seis']},
-    { l: 'swa',           d: ['pirar']},
-    { l: 'swag',          d: ['servidor']},
-    { l: 'swap',          d: ['agora', 'versão']},
-    { l: 'swen',          d: ['preguiçoso']},
-    { l: 'swi',           d: ['voltar', 'desfazer']},
-    { l: 'swyn',          d: ['forma']},
-    { l: 'tahi',          d: ['resposta', 'solução']},
-    { l: 'tar',           d: ['ter']},
-    { l: 'tbd',           d: ['ficar bem', 'melhorar', 'ficar saudável', 'deixar de passar mal ou ter dor']},
-    { l: 'tart',          d: ['estalactite']},
-    { l: 'taek',          d: ['estado']},
-    { l: 'tdod',          d: ['tomate']},
-    { l: 'tdou',          d: ['ou']},
-    { l: 'teak',          d: ['rico', 'riqueza']},
-    { l: 'tnu',           d: ['sobreviver', 'viver']},
-    { l: 'tofh',          d: ['irmão', 'irmã']},
-    { l: 'tohd',          d: ['todo', 'tudo', 'toda', 'cada']},
-    { l: 'tol',           d: ['ganhar', 'vencer (vitória)']},
-    { l: 'top',           d: ['ficar']},
-    { l: 'tops',          d: ['vez']},
-    { l: 'topt',          d: ['divertido', 'legal']},
-    { l: 'topk',          d: ['chata', 'chato']},
-    { l: 'tort',          d: ['hoje']},
-    { l: 'totr',          d: ['amanhã']},
-    { l: 'tpos',          d: ['raramente']},
-    { l: 'tra',           d: ['importar']},
-    { l: 'trar',          d: ['estalagmite']},
-    { l: 'trat',          d: ['eletricidade']},
-    { l: 'tre',           d: ['aceitar']},
-    { l: 'trie',          d: ['século']},
-    { l: 'trir',          d: ['dia']},
-    { l: 'troa',          d: ['morno']},
-    { l: 'troe',          d: ['três']},
-    { l: 'trot',          d: ['ontem']},
-    { l: 'trta',          d: ['dentro', 'em', 'na', 'no', 'que', 'se']},
-    { l: 'true',          d: ['forte']},
-    { l: 'trui',          d: ['computador']},
-    { l: 'trur',          d: ['lado']},
-    { l: 'trus',          d: ['vidro', 'copo', 'balde', 'reservatório', 'bacia']},
-    { l: 'trut',          d: ['esquerda', 'esquerdo']},
-    { l: 'tua',           d: ['socializar']},
-    { l: 'tue',           d: ['estar', 'ser']},
-    { l: 'turt',          d: ['direita', 'direito']},
-    { l: 'tute',          d: ['cérebro']},
-    { l: 'tuti',          d: ['amigo']},
-    { l: 'tyh',           d: ['cuidar']},
-    { l: 'tyrr',          d: ['hora', 'momento']},
-    { l: 'ua',            d: ['nós']},
-    { l: 'uadu',          d: ['junto', 'unido']},
-    { l: 'ue',            d: ['eu']},
-    { l: 'ugs',           d: ['retornar', 'voltar (de um lugar ou estado)']},
-    { l: 'uhfu',          d: ['joelho']},
-    { l: 'uhle',          d: ['apoio (moral ou material)', 'suporte']},
-    { l: 'uhly',          d: ['mesa']},
-    { l: 'uhm',           d: ['precisar']},
-    { l: 'uhno',          d: ['estômago']},
-    { l: 'uhpe',          d: ['baleia']},
-    { l: 'uhro',          d: ['dez']},
-    { l: 'uhso',          d: ['zero']},
-    { l: 'uhtr',          d: ['clima', 'relógio', 'tempo']},
-    { l: 'uise',          d: ['fácil']},
-    { l: 'uls',           d: ['mandar', 'obrigar']},
-    { l: 'ulu',           d: ['dividir', 'analisar']},
-    { l: 'ulus',          d: ['igual']},
-    { l: 'unmu',          d: ['mão']},
-    { l: 'uolo',          d: ['arroz']},
-    { l: 'urno',          d: ['intestino']},
-    { l: 'uru',           d: ['memorizar']},
-    { l: 'utro',          d: ['cem']},
-    { l: 'uviu',          d: ['peixe']},
-    { l: 'uwe',           d: ['aguardar', 'esperar']},
-    { l: 'uwo',           d: ['cozinhar']},
-    { l: 'uyo',           d: ['amar']},
-    { l: 'va',            d: ['eles', 'vocês ']},
-    { l: 'varu',          d: ['lobo']},
-    { l: 'valk',          d: ['queijo']},
-    { l: 'vest',          d: ['leite ']},
-    { l: 'wa',            d: ['aquilo']},
-    { l: 'waa',           d: ['ousar']},
-    { l: 'waag',          d: ['louça']},
-    { l: 'wab',           d: ['trocar']},
-    { l: 'wae',           d: ['correr', 'avançar', 'pular']},
-    { l: 'waf',           d: ['concluir']},
-    { l: 'wah',           d: ['andar']},
-    { l: 'waki',          d: ['adolescente', 'jovem']},
-    { l: 'wala',          d: ['palavra']},
-    { l: 'wany',          d: ['criança']},
-    { l: 'warq',          d: ['dedo']},
-    { l: 'witi',          d: ['sério', 'sinceramente', 'carinhosamente']},
-    { l: 'woka',          d: ['outro']},
-    { l: 'wre',           d: ['cercar']},
-    { l: 'wri',           d: ['reclamar']},
-    { l: 'wuag',          d: ['aula']},
-    { l: 'wug',           d: ['cansar']},
-    { l: 'wuha',          d: ['vampiro', 'máquina relacionada a sangue', 'sangue']},
-    { l: 'wuhp',          d: ['super']},
-    { l: 'wuje',          d: ['quem']},
-    { l: 'wuky',          d: ['adolescência']},
-    { l: 'wum',           d: ['acordar']},
-    { l: 'wune',          d: ['onde']},
-    { l: 'wuni',          d: ['infância']},
-    { l: 'wupe',          d: ['qual']},
-    { l: 'wuqa',          d: ['pergunta']},
-    { l: 'wuqe',          d: ['aleatório', 'qualquer']},
-    { l: 'wush',          d: ['academia']},
-    { l: 'wusu',          d: ['relação']},
-    { l: 'wuyh',          d: ['extremo', 'intensivo']},
-    { l: 'wyt',           d: ['cortar', 'machucar']},
-    { l: 'xur',           d: ['atender']},
-    { l: 'yaa',           d: ['significar', 'valer']},
-    { l: 'yair',          d: ['família']},
-    { l: 'yaye',          d: ['água ']},
-    { l: 'yayu',          d: ['vida']},
-    { l: 'yela',          d: ['laranja']},
-    { l: 'yelo',          d: ['marrom']},
-    { l: 'yemo',          d: ['memória']},
-    { l: 'yepo',          d: ['verde']},
-    { l: 'yeur',          d: ['inscrito']},
-    { l: 'yhe',           d: ['esquecer']},
-    { l: 'yhrn',          d: ['e', 'também']},
-    { l: 'yio',           d: ['abandonar']},
-    { l: 'yloy',          d: ['cenoura']},
-    { l: 'yuoa',          d: ['lua', 'ferrugem', 'desgastado', 'torrado']},
-    { l: 'ymer',          d: ['vídeo']},
-    { l: 'yohu',          d: ['baú', 'caixa']},
-    { l: 'yoio',          d: ['roxo']},
-    { l: 'yoiu',          d: ['vermelho']},
-    { l: 'yolo',          d: ['azul']},
-    { l: 'yomu',          d: ['cartão']},
-    { l: 'yopo',          d: ['turquesa']},
-    { l: 'yopu',          d: ['dourado']},
-    { l: 'youn',          d: ['vina', 'linguiça', 'salsicha']},
-    { l: 'youo',          d: ['bege']},
-    { l: 'youp',          d: ['prata']},
-    { l: 'yout',          d: ['jeito']},
-    { l: 'yoyo',          d: ['aparelho']},
-    { l: 'yoyu',          d: ['celular', 'telefone']},
-    { l: 'yrui',          d: ['sono']},
-    { l: 'yryr',          d: ['alienígena', 'invasor']},
-    { l: 'yte',           d: ['aproximar']},
-    { l: 'ytre',          d: ['bissexto']},
-    { l: 'ytyr',          d: ['fim']},
-    { l: 'yuiu',          d: ['amarelo']},
-    { l: 'yumu',          d: ['tecido', 'têxtil', 'textura']},
-    { l: 'yuno',          d: ['braço']},
-    { l: 'yupo',          d: ['moreno']},
-    { l: 'yuuh',          d: ['cinza']},
-    { l: 'zno',           d: ['sentir']},
-    { l: 'zon',           d: ['saber']},
-    { l: 'zuh',           d: ['morrer']},
-    { l: 'zuyh',          d: ['sentido']},
-    { l: 'zold',          d: ['velocidade', 'velocímetro']},
-    { l: 'yort',          d: ['rosa']},
-    { l: 'yopy',          d: ['foca']},
 
-    // obsolete ones:
-    { discontinued: true, l: 'grye',   d: ['trocado para => gkuku', 'medo', 'susto', 'assustador, medonho, aterrorizante, amedrontador', 'amedrontado, assustado']},
-    { discontinued: true, l: 'nilt',   d: ['trocado para => byhku', 'banho']},
-    { discontinued: true, l: 'uyok',   d: ['trocado para => uyoku', 'amor']},
-    { discontinued: true, l: 'pohl',   d: ['trocado para => loht', 'frente']},
-    { discontinued: true, l: 'krum',   d: ['trocado para => nakjor', 'homem', 'macho']},
-    { discontinued: true, l: 'murk',   d: ['trocado para => nikjor', 'garota', 'mulher']},
-    { discontinued: true, l: 'warf',   d: ['trocado para => niwany', 'menina']},
-    { discontinued: true, l: 'fraw',   d: ['trocado para => nawany', 'menino']},
-    { discontinued: true, l: 'tefh',   d: ['trocado para => nitofh', 'irmã']},
-    { discontinued: true, l: 'walu',   d: ['trocado para => wa', 'aquilo']},
-    { discontinued: true, l: 'cunt',   d: ['trocado para => cunk']},
-    { discontinued: true, l: 'egua',   d: ['trocado para => egka']},
-    { discontinued: true, l: 'eigi',   d: ['trocado para => egka']},
-    { discontinued: true, l: 'gofh',   d: ['trocado para => nagefh', 'pai']},
-    { discontinued: true, l: 'grafaw', d: ['trocado para => woka', 'outra', 'outro']},
-    { discontinued: true, l: 'ifol',   d: ['trocado para => rirt', 'preto']},
-    { discontinued: true, l: 'lefh',   d: ['trocado para => nilofh', 'madrinha']},
-    { discontinued: true, l: 'lohk',   d: ['trocado para => lopk']},
-    { discontinued: true, l: 'wue',    d: ['trocado para => koy']},
-    { discontinued: true, l: 'yauh',   d: ['trocado para => rirt', 'escuridão', 'escuro']},
-    { discontinued: true, l: 'liyn',   d: ['trocado para => jolo']},
-    { discontinued: true, l: 'dea',    d: ['trocado para => dec', 'achar']},
-    { discontinued: true, l: 'slep',   d: ['trocado para => knep']},
-    { discontinued: true, l: 'fylu',   d: ['trocado para => fraq (verifique definição)', 'que tem interesse de estar perto de semelhantes, do mesmo sexo, ou que se parecem ser do mesmo', 'atraído por membros do mesmo sexo', 'homossexual, gay.']}
-
+const __dict =
+[
+ {
+  l: "ae",
+  d: [
+   "você",
+   "ele",
+   "sujeito"
+  ]
+ },
+ {
+  l: "ai",
+  d: [
+   "isso",
+   "isto"
+  ]
+ },
+ {
+  l: "as",
+  d: [
+   "vosso",
+   "vossa"
+  ]
+ },
+ {
+  l: "au",
+  d: [
+   "nosso",
+   "nossa"
+  ]
+ },
+ {
+  l: "av",
+  d: [
+   "seu",
+   "sua", 
+   "seus", 
+   "suas"
+  ]
+ },
+ {
+  l: "ea",
+  d: [
+   "seu",
+   "sua"
+  ]
+ },
+ {
+  l: "es",
+  d: [
+   "teu",
+   "tua"
+  ]
+ },
+ {
+  l: "eu",
+  d: [
+   "meu",
+   "minha"
+  ]
+ },
+ {
+  l: "sa",
+  d: [
+   "vós"
+  ]
+ },
+ {
+  l: "se",
+  d: [
+   "tu"
+  ]
+ },
+ {
+  l: "ua",
+  d: [
+   "nós"
+  ]
+ },
+ {
+  l: "ue",
+  d: [
+   "eu"
+  ]
+ },
+ {
+  l: "va",
+  d: [
+   "eles",
+   "vocês"
+  ]
+ },
+ {
+  l: "wa",
+  d: [
+   "aquilo"
+  ]
+ },
+ {
+  l: "abd",
+  d: [
+   "aprender"
+  ]
+ },
+ {
+  l: "abl",
+  d: [
+   "acontecer",
+   "preparar",
+   "gerar",
+   "produzir",
+   "ajustar",   
+   "prontificar",
+   "(fazer) existir"
+  ]
+ },
+ {
+  l: "adi",
+  d: [
+   "conhecer",
+   "descobrir",
+   "inventar",
+   "desabrochar"
+  ]
+ },
+ {
+  l: "aka",
+  d: [
+   "arrumar",
+   "organizar",
+   "otimizar",
+   "conseguir"
+  ]
+ },
+ {
+  l: "ale",
+  d: [
+   "escovar",
+   "pentear",
+   "acariciar",
+   "tocar",
+   "aconchegar",
+   "abraçar",
+   "desculpar"
+  ]
+ },
+ {
+  l: "alg",
+  d: [
+   "almoçar",
+   "lanchar",
+   "entupir",
+   "pintar",
+   "pincelar",
+   "comer",
+   "preencher"
+  ]
+ },
+ {
+  l: "awf",
+  d: [
+   "recuperar",
+   "consertar",
+   "corrigir",
+   "desfazer",
+   "cancelar",
+   "atrasar",
+   "retornar",
+   "devolver"
+  ]
+ },
+ {
+  l: "bak",
+  d: [
+   "pegar",
+   "capturar",
+   "agarrar",
+   "segurar",
+   "obter",
+   "receber",
+   "aceitar",
+   "ver"
+  ]
+ },
+ {
+  l: "bal",
+  d: [
+   "carregar",
+   "transportar",
+   "recarregar",
+   "obter",
+   "receber",
+   "informar",
+   "ler"
+  ]
+ },
+ {
+  l: "bih",
+  d: [
+   "chorar",
+   "lacrimejar",
+   "entristecer",
+   "piorar",
+   "maleficar",
+   "estragar",
+   "envelhecer",
+   "finalizar",
+   "terminar"
+  ]
+ },
+ {
+  l: "bla",
+  d: [
+   "conversar",
+   "falar",
+   "papear",
+   "discutir",
+   "determinar",
+   "delatar",
+   "acusar",
+   "denunciar",
+   "entregar"
+  ]
+ },
+ {
+  l: "bly",
+  d: [
+   "vender",
+   "comercializar",
+   "mercadejar",
+   "mercantilizar",
+   "negociar",
+   "transacionar",
+   "delatar",
+   "acusar",
+   "denunciar",
+   "entregar",
+   "malsinar",
+   "sacrificar",
+   "trair"
+  ]
+ },
+ {
+  l: "bty",
+  d: [
+   "comprar",
+   "mercar",
+   "adquirir",
+   "obter"
+  ]
+ },
+ {
+  l: "byh",
+  d: [
+   "chover",
+   "molhar",
+   "lavar",
+   "limpar",
+   "banhar",
+   "lavar",
+   "limpar"
+  ]
+ },
+ {
+  l: "cla",
+  d: [
+   "apertar",
+   "clicar",
+   "pressionar",
+   "empurrar",
+   "cutucar",
+   "mover",
+   "deslocar",
+   "acelerar",
+   "promover",
+   "elencar",
+   "eleger",
+   "anunciar"
+  ]
+ },
+ {
+  l: "cra",
+  d: [
+   "comer",
+   "alimentar",
+   "ingerir",
+   "consumir",
+   "sobreviver",
+   "procriar",
+   "acasalar",
+   "trepar"
+  ]
+ },
+ {
+  l: "cro",
+  d: [
+   "acreditar",
+   "imaginar",
+   "devanear",
+   "sonhar",
+   "borboletear",
+   "esboçar",
+   "fabricar",
+   "forjar",
+   "formar",
+   "seguir",
+   "crer",
+   "acatar",
+   "aderir",
+   "adotar",
+   "aprovar",
+   "assentir",
+   "consentir",
+   "reconhecer"
+  ]
+ },
+ {
+  l: "cto",
+  d: [
+   "curtir",
+   "divertir",
+   "alegrar",
+   "aprazer",
+   "contentar",
+   "deliciar",
+   "entreter",
+   "recrear",
+   "satisfazer",
+   "agradar"
+  ]
+ },
+ {
+  l: "dak",
+  d: [
+   "morar",
+   "residir",
+   "habitar",
+   "domiciliar",
+   "viver",
+   "existir",
+   "haver",
+   "perdurar",
+   "resistir",
+   "descender",
+   "proceder",
+   "depender",
+   "viciar"
+  ]
+ },
+ {
+  l: "dap",
+  d: [
+   "beber",
+   "tomar",
+   "consumir",
+   "engolir",
+   "liquidar",
+   "levar",
+   "receber",
+   "sugar",
+   "responder",
+   "responsabilizar",
+   "justificar",
+   "explicar",
+   "analisar"
+  ]
+ },
+ {
+  l: "dec",
+  d: [
+   "achar",
+   "descobrir",
+   "encontrar",
+   "varrer",
+   "pesquisar",
+   "raciocinar",
+   "procurar",
+   "manifestar",
+   "aclarar",
+   "destramar",
+   "revelar",
+   "explicar",
+   "deparar",
+   "demarcar",
+   "registrar",
+   "pensar"
+  ]
+ },
+ {
+  l: "dee",
+  d: [
+   "feder",
+   "estragar",
+   "poluir",
+   "desfigurar",
+   "deformar",
+   "descaracterizar",
+   "falsificar",
+   "degradar",
+   "adulterar",
+   "falsear",
+   "depreciar",
+   "acanalhar",
+   "falsar"
+  ]
+ }, // stopped here #######
+ {
+  l: "def",
+  d: [
+   "criar, inovar",
+   "transformar uma ideia em algo novo, converter",
+   "cuidar de algo com carinho e/ou atenção",
+   "trabalhar com a cria de animais ou relacionado a sobrevivência e/ou procriação (ae trta def'ury?: você que cria/cuida/trata animais?)"
+  ]
+ },
+ {
+  l: "dek",
+  d: [
+   "ensinar",
+   "mostrar, apresentar, apontar, descobrir (algo, para mostrar)",
+   "descamuflar (para se mostrar), aparecer, reaparecer, tirar fantasia, roupa, proteção, cobertor, o que estiver por cima"
+  ]
+ },
+ {
+  l: "des",
+  d: [
+   "humilhar, se fazer acima de algo ou alguém, insinuar que algo ou alguém é superior a outra coisa (ae tue eu desga: você está me humilhando / tentando se passar como alguém melhor ou superiora mim)"
+  ]
+ },
+ {
+  l: "dla",
+  d: [
+   "montar, juntar, combinar",
+   "construir, fundir",
+   "gerar, fazer forma, transformar"
+  ]
+ },
+ {
+  l: "dos",
+  d: [
+   "processar, fazer algo com algo, trabalhar com coisas para resultar em algo",
+   "tratar um ferimento",
+   "tratar de negócios (dos clon ae lokt bty nyht hute: trate com ele para comprar essa casa)",
+   "processar alguém por algo que fez, processo, defesa (uegno ea dos!: vou te processar!)"
+  ]
+ },
+ {
+  l: "duh",
+  d: [
+   "funcionar, encaixar, caber",
+   "costumar, acostumar, afazer, afeiçoar",
+   "habituar, praticar, treinar"
+  ]
+ },
+ {
+  l: "dwa",
+  d: [
+   "detonar, acabar com, explodir",
+   "foder, transar"
+  ]
+ },
+ {
+  l: "dyd",
+  d: [
+   "duvidar",
+   "perguntar, questionar"
+  ]
+ },
+ {
+  l: "ena",
+  d: [
+   "usar",
+   "aplicar (uegto ena nyht euyt trta'e: vou aplicar esta vacina em você)"
+  ]
+ },
+ {
+  l: "ene",
+  d: [
+   "lembrar",
+   "anotar (para lembrar depois)",
+   "decorar"
+  ]
+ },
+ {
+  l: "eny",
+  d: [
+   "energizar, ligar",
+   "levantar"
+  ]
+ },
+ {
+  l: "epy",
+  d: [
+   "desligar, tirar energia",
+   "agachar"
+  ]
+ },
+ {
+  l: "esy",
+  d: [
+   "chupar",
+   "sugar",
+   "remover (sugando)",
+   "inspirar"
+  ]
+ },
+ {
+  l: "ety",
+  d: [
+   "afastar, distanciar algo",
+   "separar",
+   "desconectar, desplugar",
+   "terminar (namoro, relação, algo que dependa de duas partes ou mais juntas)"
+  ]
+ },
+ {
+  l: "faq",
+  d: [
+   "levar",
+   "transportar (para algum lugar)",
+   "carregar (algo para outro lugar distante)"
+  ]
+ },
+ {
+  l: "fla",
+  d: [
+   "copiar, parecer (ae fla inna lope: você parece/\"se apresenta como\" uma folha / \"você veio vestido de folha\"), disfarçar (como algo)",
+   "vestir (algo para disfarce ou para se apresentar em algum lugar especial)(ue gno eu fla lokt inna plar: eu vou me arrumar para o trabalho)",
+   "imprimir, fazer parecer, fazer algo parecer"
+  ]
+ },
+ {
+  l: "fle",
+  d: [
+   "dizer, falar sério",
+   "ditado, algo sempre falado, que dizem muito, comum"
+  ]
+ },
+ {
+  l: "flo",
+  d: [
+   "cair, tropeçar",
+   "afundar, descer bastante",
+   "mergulhar de cabeça em algo, aprofundar",
+   "estar presente entre outras coisas (ae flo trta olal klan yoiu: você caiu/entrou no time vermelho)",
+   "soltar, deixar de estar preso em algo, desamarrar"
+  ]
+ },
+ {
+  l: "fti",
+  d: [
+   "adicionar, somar",
+   "obter algo por meio da soma, junção ou transformação",
+   "adquirir (a si ou para algo)",
+   "entrar em um grupo, equipe, para adicionar algo (somar forças)"
+  ]
+ },
+ {
+  l: "fur",
+  d: [
+   "conseguir, obter com sucesso",
+   "solucionar, resolver",
+   "terminar, acabar, finalizar",
+   "conquistar, capturar",
+   "prender, trancar, trancafiar, bloquear, fechar",
+   "resistir, sobreviver, garantir, sustentar"
+  ]
+ },
+ {
+  l: "fyl",
+  d: [
+   "animar, alegrar, deixar pessoas felizes de alguma forma",
+   "enfeitar, melhorar, embelezar, produzir-se",
+   "reanimar, acordar, nascer",
+   "irradiar, brilhar, crescer (como uma flor cresce e floresce)",
+   "revelar, desmascarar"
+  ]
+ },
+ {
+  l: "gaq",
+  d: [
+   "conduzir, guiar",
+   "seguir, trilhar o mesmo caminho que alguém",
+   "inscrever, assinar"
+  ]
+ },
+ {
+  l: "gds",
+  d: [
+   "ajudar",
+   "colaborar",
+   "participar em algo positivamente",
+   "retribuir",
+   "investir, aplicar, fazer algo para positivamente influenciar algo",
+   "doar, oferecer algo, para ajudar o próximo"
+  ]
+ },
+ {
+  l: "gku",
+  d: [
+   "preocupar, deixar preocupado",
+   "assustar",
+   "destacar, deixar destacado, fazer aparecer, aparecer em destaque",
+   "fixar, colocar em foco, dar destaque a algo para pesquisar sobre, tachar"
+  ]
+ },
+ {
+  l: "gno",
+  d: [
+   "Ir",
+   "passar",
+   "expirar, perecer",
+   "acabar, terminar, finalizar"
+  ]
+ },
+ {
+  l: "gto",
+  d: [
+   "gostar",
+   "apreciar"
+  ]
+ },
+ {
+  l: "guk",
+  d: [
+   "subir"
+  ]
+ },
+ {
+  l: "hug",
+  d: [
+   "avisar"
+  ]
+ },
+ {
+  l: "hyc",
+  d: [
+   "enxergar",
+   "olhar",
+   "ver"
+  ]
+ },
+ {
+  l: "hye",
+  d: [
+   "verificar"
+  ]
+ },
+ {
+  l: "hyi",
+  d: [
+   "esconder",
+   "desaparecer",
+   "sumir"
+  ]
+ },
+ {
+  l: "ihk",
+  d: [
+   "adorar"
+  ]
+ },
+ {
+  l: "ike",
+  d: [
+   "dever"
+  ]
+ },
+ {
+  l: "iki",
+  d: [
+   "merecer"
+  ]
+ },
+ {
+  l: "ikk",
+  d: [
+   "atrapalhar"
+  ]
+ },
+ {
+  l: "jap",
+  d: [
+   "voar",
+   "flutuar",
+   "planar"
+  ]
+ },
+ {
+  l: "jip",
+  d: [
+   "beijar"
+  ]
+ },
+ {
+  l: "jki",
+  d: [
+   "lavar"
+  ]
+ },
+ {
+  l: "jol",
+  d: [
+   "bater",
+   "golpear"
+  ]
+ },
+ {
+  l: "kaa",
+  d: [
+   "exigir",
+   "invocar"
+  ]
+ },
+ {
+  l: "kei",
+  d: [
+   "encher",
+   "servir"
+  ]
+ },
+ {
+  l: "kek",
+  d: [
+   "desapontar"
+  ]
+ },
+ {
+  l: "kgo",
+  d: [
+   "libertar"
+  ]
+ },
+ {
+  l: "kik",
+  d: [
+   "dormir"
+  ]
+ },
+ {
+  l: "kok",
+  d: [
+   "veja"
+  ]
+ },
+ {
+  l: "kop",
+  d: [
+   "colaborar",
+   "participar"
+  ]
+ },
+ {
+  l: "koy",
+  d: [
+   "amassar",
+   "amocar"
+  ]
+ },
+ {
+  l: "krk",
+  d: [
+   "atualizar"
+  ]
+ },
+ {
+  l: "kro",
+  d: [
+   "fazer"
+  ]
+ },
+ {
+  l: "lak",
+  d: [
+   "abaixar"
+  ]
+ },
+ {
+  l: "laq",
+  d: [
+   "baixar",
+   "puxar",
+   "trazer"
+  ]
+ },
+ {
+  l: "lar",
+  d: [
+   "trabalhar (uma ideia, desenvolver)",
+   "manusear"
+  ]
+ },
+ {
+  l: "lay",
+  d: [
+   "escutar",
+   "ouvir"
+  ]
+ },
+ {
+  l: "laz",
+  d: [
+   "iluminar"
+  ]
+ },
+ {
+  l: "lea",
+  d: [
+   "parar"
+  ]
+ },
+ {
+  l: "leh",
+  d: [
+   "adivinhar"
+  ]
+ },
+ {
+  l: "lep",
+  d: [
+   "brincar"
+  ]
+ },
+ {
+  l: "lii",
+  d: [
+   "sorrir"
+  ]
+ },
+ {
+  l: "lio",
+  d: [
+   "entender"
+  ]
+ },
+ {
+  l: "lod",
+  d: [
+   "estudar"
+  ]
+ },
+ {
+  l: "lof",
+  d: [
+   "odiar"
+  ]
+ },
+ {
+  l: "log",
+  d: [
+   "chutar"
+  ]
+ },
+ {
+  l: "lot",
+  d: [
+   "perder",
+   "tirar",
+   "roubar"
+  ]
+ },
+ {
+  l: "lra",
+  d: [
+   "cantar"
+  ]
+ },
+ {
+  l: "lui",
+  d: [
+   "existir",
+   "haver"
+  ]
+ },
+ {
+  l: "luk",
+  d: [
+   "fumar"
+  ]
+ },
+ {
+  l: "lur",
+  d: [
+   "acertar"
+  ]
+ },
+ {
+  l: "lyr",
+  d: [
+   "errar",
+   "falhar",
+   "fracassar"
+  ]
+ },
+ {
+  l: "mig",
+  d: [
+   "contar",
+   "fatiar",
+   "distribuir"
+  ]
+ },
+ {
+  l: "nag",
+  d: [
+   "estressar"
+  ]
+ },
+ {
+  l: "nak",
+  d: [
+   "cochilar"
+  ]
+ },
+ {
+  l: "naq",
+  d: [
+   "escolher",
+   "selecionar",
+   "preferir"
+  ]
+ },
+ {
+  l: "naz",
+  d: [
+   "descansar"
+  ]
+ },
+ {
+  l: "neh",
+  d: [
+   "nascer"
+  ]
+ },
+ {
+  l: "nhu",
+  d: [
+   "alterar",
+   "modificar",
+   "mudar"
+  ]
+ },
+ {
+  l: "nih",
+  d: [
+   "renascer"
+  ]
+ },
+ {
+  l: "nog",
+  d: [
+   "chegar",
+   "vir"
+  ]
+ },
+ {
+  l: "obs",
+  d: [
+   "observar"
+  ]
+ },
+ {
+  l: "ofi",
+  d: [
+   "trepar"
+  ]
+ },
+ {
+  l: "oky",
+  d: [
+   "agradecer"
+  ]
+ },
+ {
+  l: "ole",
+  d: [
+   "apagar"
+  ]
+ },
+ {
+  l: "olf",
+  d: [
+   "remover"
+  ]
+ },
+ {
+  l: "olg",
+  d: [
+   "acabar"
+  ]
+ },
+ {
+  l: "oli",
+  d: [
+   "dar"
+  ]
+ },
+ {
+  l: "olk",
+  d: [
+   "adiar"
+  ]
+ },
+ {
+  l: "ori",
+  d: [
+   "fechar"
+  ]
+ },
+ {
+  l: "par",
+  d: [
+   "enfiar"
+  ]
+ },
+ {
+  l: "pie",
+  d: [
+   "viajar"
+  ]
+ },
+ {
+  l: "pka",
+  d: [
+   "sapatear"
+  ]
+ },
+ {
+  l: "plk",
+  d: [
+   "responder"
+  ]
+ },
+ {
+  l: "plo",
+  d: [
+   "abrir"
+  ]
+ },
+ {
+  l: "pod",
+  d: [
+   "poder"
+  ]
+ },
+ {
+  l: "pop",
+  d: [
+   "continuar",
+   "seguir",
+   "prosseguir"
+  ]
+ },
+ {
+  l: "pra",
+  d: [
+   "escutar"
+  ]
+ },
+ {
+  l: "pre",
+  d: [
+   "assinar",
+   "declarar"
+  ]
+ },
+ {
+  l: "pri",
+  d: [
+   "entrar",
+   "visitar"
+  ]
+ },
+ {
+  l: "qne",
+  d: [
+   "desejar",
+   "pedir",
+   "querer"
+  ]
+ },
+ {
+  l: "qnm",
+  d: [
+   "salvar"
+  ]
+ },
+ {
+  l: "rai",
+  d: [
+   "chamar",
+   "ligar",
+   "telefonar"
+  ]
+ },
+ {
+  l: "rau",
+  d: [
+   "imaginar",
+   "pensar",
+   "sonhar"
+  ]
+ },
+ {
+  l: "reh",
+  d: [
+   "pagar"
+  ]
+ },
+ {
+  l: "rka",
+  d: [
+   "gravar"
+  ]
+ },
+ {
+  l: "rud",
+  d: [
+   "prestar"
+  ]
+ },
+ {
+  l: "ruh",
+  d: [
+   "sair"
+  ]
+ },
+ {
+  l: "rye",
+  d: [
+   "enviar",
+   "escrever"
+  ]
+ },
+ {
+  l: "ryi",
+  d: [
+   "passar"
+  ]
+ },
+ {
+  l: "saa",
+  d: [
+   "prometer"
+  ]
+ },
+ {
+  l: "saf",
+  d: [
+   "abusar"
+  ]
+ },
+ {
+  l: "sak",
+  d: [
+   "faltar"
+  ]
+ },
+ {
+  l: "sea",
+  d: [
+   "comprometer"
+  ]
+ },
+ {
+  l: "sek",
+  d: [
+   "colocar",
+   "por"
+  ]
+ },
+ {
+  l: "sem",
+  d: [
+   "deixar"
+  ]
+ },
+ {
+  l: "sfy",
+  d: [
+   "filosofar"
+  ]
+ },
+ {
+  l: "sih",
+  d: [
+   "começar",
+   "iniciar",
+   "jogar"
+  ]
+ },
+ {
+  l: "ska",
+  d: [
+   "dançar"
+  ]
+ },
+ {
+  l: "sle",
+  d: [
+   "faxinar"
+  ]
+ },
+ {
+  l: "squ",
+  d: [
+   "monitorar"
+  ]
+ },
+ {
+  l: "sru",
+  d: [
+   "tentar"
+  ]
+ },
+ {
+  l: "sue",
+  d: [
+   "abraçar"
+  ]
+ },
+ {
+  l: "suk",
+  d: [
+   "editar"
+  ]
+ },
+ {
+  l: "swa",
+  d: [
+   "pirar"
+  ]
+ },
+ {
+  l: "swi",
+  d: [
+   "voltar",
+   "desfazer"
+  ]
+ },
+ {
+  l: "tar",
+  d: [
+   "ter"
+  ]
+ },
+ {
+  l: "tbd",
+  d: [
+   "ficar bem",
+   "melhorar",
+   "ficar saudável",
+   "deixar de passar mal ou ter dor"
+  ]
+ },
+ {
+  l: "tnu",
+  d: [
+   "sobreviver",
+   "viver"
+  ]
+ },
+ {
+  l: "tol",
+  d: [
+   "ganhar",
+   "vencer (vitória)"
+  ]
+ },
+ {
+  l: "top",
+  d: [
+   "ficar"
+  ]
+ },
+ {
+  l: "tra",
+  d: [
+   "importar"
+  ]
+ },
+ {
+  l: "tre",
+  d: [
+   "aceitar"
+  ]
+ },
+ {
+  l: "tua",
+  d: [
+   "socializar"
+  ]
+ },
+ {
+  l: "tue",
+  d: [
+   "estar",
+   "ser"
+  ]
+ },
+ {
+  l: "tyh",
+  d: [
+   "cuidar"
+  ]
+ },
+ {
+  l: "ugs",
+  d: [
+   "retornar",
+   "voltar (de um lugar ou estado)"
+  ]
+ },
+ {
+  l: "uhm",
+  d: [
+   "precisar"
+  ]
+ },
+ {
+  l: "uls",
+  d: [
+   "mandar",
+   "obrigar"
+  ]
+ },
+ {
+  l: "ulu",
+  d: [
+   "dividir",
+   "analisar"
+  ]
+ },
+ {
+  l: "uru",
+  d: [
+   "memorizar"
+  ]
+ },
+ {
+  l: "uwe",
+  d: [
+   "aguardar",
+   "esperar"
+  ]
+ },
+ {
+  l: "uwo",
+  d: [
+   "cozinhar"
+  ]
+ },
+ {
+  l: "uyo",
+  d: [
+   "amar"
+  ]
+ },
+ {
+  l: "waa",
+  d: [
+   "ousar"
+  ]
+ },
+ {
+  l: "wab",
+  d: [
+   "trocar"
+  ]
+ },
+ {
+  l: "wae",
+  d: [
+   "correr",
+   "avançar",
+   "pular"
+  ]
+ },
+ {
+  l: "waf",
+  d: [
+   "concluir"
+  ]
+ },
+ {
+  l: "wah",
+  d: [
+   "andar"
+  ]
+ },
+ {
+  l: "wre",
+  d: [
+   "cercar"
+  ]
+ },
+ {
+  l: "wri",
+  d: [
+   "reclamar"
+  ]
+ },
+ {
+  l: "wug",
+  d: [
+   "cansar"
+  ]
+ },
+ {
+  l: "wum",
+  d: [
+   "acordar"
+  ]
+ },
+ {
+  l: "wyt",
+  d: [
+   "cortar",
+   "machucar"
+  ]
+ },
+ {
+  l: "xur",
+  d: [
+   "atender"
+  ]
+ },
+ {
+  l: "yaa",
+  d: [
+   "significar",
+   "valer"
+  ]
+ },
+ {
+  l: "yhe",
+  d: [
+   "esquecer"
+  ]
+ },
+ {
+  l: "yio",
+  d: [
+   "abandonar"
+  ]
+ },
+ {
+  l: "yte",
+  d: [
+   "aproximar"
+  ]
+ },
+ {
+  l: "zno",
+  d: [
+   "sentir"
+  ]
+ },
+ {
+  l: "zon",
+  d: [
+   "saber"
+  ]
+ },
+ {
+  l: "zuh",
+  d: [
+   "morrer"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "wue",
+  d: [
+   "trocado para => koy"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "dea",
+  d: [
+   "trocado para => dec",
+   "achar"
+  ]
+ },
+ {
+  l: "anne",
+  d: [
+   "macaco"
+  ]
+ },
+ {
+  l: "abia",
+  d: [
+   "lama, terra molhada",
+   "sujeira, sujo"
+  ]
+ },
+ {
+  l: "aete",
+  d: [
+   "nome, identificação, palavra que identifique alguém"
+  ]
+ },
+ {
+  l: "afoh",
+  d: [
+   "cachorro, cadela (animal doméstico)",
+   "pet, bichinho de estimação",
+   "subordinado, dependente",
+   "derivado, originado de"
+  ]
+ },
+ {
+  l: "ahly",
+  d: [
+   "ilha, monte de terra rodeado por água geralmente grande"
+  ]
+ },
+ {
+  l: "alfk",
+  d: [
+   "dom, habilidade"
+  ]
+ },
+ {
+  l: "alul",
+  d: [
+   "cavalo, égua"
+  ]
+ },
+ {
+  l: "amya",
+  d: [
+   "tanto, tantos, tantas, tão"
+  ]
+ },
+ {
+  l: "anoa",
+  d: [
+   "sol",
+   "fogo, quente, fonte de calor, fogueira",
+   "centro, origem",
+   "verão",
+   "destaque, destacado, em foco, ponto, argumento"
+  ]
+ },
+ {
+  l: "aout",
+  d: [
+   "tomada, plugue, encaixe, conector",
+   "buraco (para passagem ou transporte), veia, artéria, via"
+  ]
+ },
+ {
+  l: "asse",
+  d: [
+   "possível, provável, possibilidade, chance, oportunidade"
+  ]
+ },
+ {
+  l: "aved",
+  d: [
+   "talvez"
+  ]
+ },
+ {
+  l: "awfo",
+  d: [
+   "recuperação, o ato de recuperar, o processo de conserto, correção"
+  ]
+ },
+ {
+  l: "bduh",
+  d: [
+   "bobo, no sentido de um erro engraçado ou numa conversa casual, sem sentido negativo em si"
+  ]
+ },
+ {
+  l: "bite",
+  d: [
+   "ano, 365 dias, conjunto de meses que formam o ano",
+   "luz, luminosidade, energia (de luz)"
+  ]
+ },
+ {
+  l: "blar",
+  d: [
+   "conversa, papo, mensagem, comentário"
+  ]
+ },
+ {
+  l: "body",
+  d: [
+   "bolo, massa em formato de bolo, alimento à base de massa",
+   "conjunto, objetos juntos em um espaço",
+   "conjunto de peças que fazem sentido juntas, organizadas de alguma maneira",
+   "lista, pasta (de documentos, por exemplo)"
+  ]
+ },
+ {
+  l: "bofo",
+  d: [
+   "brócolis"
+  ]
+ },
+ {
+  l: "brad",
+  d: [
+   "pão, massa de pão"
+  ]
+ },
+ {
+  l: "brod",
+  d: [
+   "comida, alimento, refeição, lanche",
+   "piquenique, intervalo para alimentar-se",
+   "remédio ingerível (euyt)"
+  ]
+ },
+ {
+  l: "brot",
+  d: [
+   "boca, orifício bucal"
+  ]
+ },
+ {
+  l: "brum",
+  d: [
+   "cotovelo, canto do braço",
+   "maluco, doido, insano",
+   "maravilha, maravilhoso, incrível"
+  ]
+ },
+ {
+  l: "brus",
+  d: [
+   "ônibus, veículo de transporte para muitas pessoas",
+   "multidão, conjunto de pessoas em um lugar ou em algo"
+  ]
+ },
+ {
+  l: "buno",
+  d: [
+   "parte traseira, de trás",
+   "orifício anal"
+  ]
+ },
+ {
+  l: "bunt",
+  d: [
+   "mil, multiplicador, multiplicado por mil"
+  ]
+ },
+ {
+  l: "bvor",
+  d: [
+   "executável, jogo, programa, código executável do computador, aplicativo",
+   "programa, calendário, rotina, roteiro pro dia"
+  ]
+ },
+ {
+  l: "carr",
+  d: [
+   "caro, não barato, custoso",
+   "cansativo, que custa tempo ou energia, demorado"
+  ]
+ },
+ {
+  l: "cite",
+  d: [
+   "cinco, número cinco"
+  ]
+ },
+ {
+  l: "cloc",
+  d: [
+   "feijão",
+   "borrado, não nítido",
+   "esquecido, lembrança confusa"
+  ]
+ },
+ {
+  l: "clon",
+  d: [
+   "com, como, com o (clon alul: com o cavalo)"
+  ]
+ },
+ {
+  l: "colk",
+  d: [
+   "mistura de alimentos, prato misturado",
+   "feijoada"
+  ]
+ },
+ {
+  l: "coln",
+  d: [
+   "controle (remoto), ferramenta de controle (de algo ou alguém)",
+   "poder de controlar algo, controlador (ae tar coln lolk cruy: você tem o controle do mundo)"
+  ]
+ },
+ {
+  l: "crar",
+  d: [
+   "automotivo, carro, meio de transporte para poucas ou uma pessoa",
+   "ferramenta mecânica que ajuda no movimento de algo (motorizada ou elétrica), meio de transporte de um objeto ou ser vivo por algum meio mecânico (motorizado ou elétrico)"
+  ]
+ },
+ {
+  l: "cret",
+  d: [
+   "sobrancelha",
+   "algo que expresse sentimento ou emoção, expressão",
+   "forma de dizer algo, expressão"
+  ]
+ },
+ {
+  l: "crue",
+  d: [
+   "burro, burra, jumento, jumenta"
+  ]
+ },
+ {
+  l: "cruy",
+  d: [
+   "mundo, globo, um planeta",
+   "um grande espaço (definido), conjunto em um espaço, conjunto de algo",
+   "ecossistema, organismo"
+  ]
+ },
+ {
+  l: "cunk",
+  d: [
+   "milhão, milésimo, multiplicador"
+  ]
+ },
+ {
+  l: "daeh",
+  d: [
+   "colega",
+   "membro, participante de um grupo, de uma turma",
+   "conhecido amigável"
+  ]
+ },
+ {
+  l: "dayh",
+  d: [
+   "sócio, membro de alta classe de um grupo, dono, criador, mestre, administração"
+  ]
+ },
+ {
+  l: "daew",
+  d: [
+   "externo, fora (de algo)",
+   "vizinho",
+   "estrangeiro",
+   "desconhecido, novo na área não conhecido pelo bairro",
+   "importado (veio de fora)"
+  ]
+ },
+ {
+  l: "dafk",
+  d: [
+   "cabeça",
+   "parte superior",
+   "controle (cérebro), aquele ou aquilo que controla ou direciona",
+   "volante, guidão"
+  ]
+ },
+ {
+  l: "daih",
+  d: [
+   "adulto, maior de idade, responsável",
+   "para maior de idade, inapropriado, nsfw"
+  ]
+ },
+ {
+  l: "daiw",
+  d: [
+   "interno, dentro",
+   "exportado (de dentro)",
+   "submerso, debaixo de algo, coberto",
+   "profundo, fundo, bem abaixo",
+   "detalhado (profundamente), bem feito, perfeccionista, perfeito, perfeitamente feito, bom trabalho"
+  ]
+ },
+ {
+  l: "daoh",
+  d: [
+   "idoso, terceira idade",
+   "algo que parece velho, antigo, antiguidade"
+  ]
+ },
+ {
+  l: "dapa",
+  d: [
+   "capaz, ter a capacidade de",
+   "que aguenta, tem força para carregar, forte, competente"
+  ]
+ },
+ {
+  l: "deft",
+  d: [
+   "deficiente, com falta de, em falta, terminou (olal brad tue deft: o pão está em falta, acabou)"
+  ]
+ },
+ {
+  l: "defy",
+  d: [
+   "a criação em si, algo criado, algo novo criado ou transformado, novo",
+   "resultado de um trabalho criado, feito manualmente (rifn defy: belo trabalho – de criação, como \"bela pintura\")",
+   "preparado, feito, depois de um tempo"
+  ]
+ },
+ {
+  l: "delf",
+  d: [
+   "fofo"
+  ]
+ },
+ {
+  l: "dept",
+  d: [
+   "depois, após, posterior"
+  ]
+ },
+ {
+  l: "dlet",
+  d: [
+   "principal",
+   "que aparece primeiro, se destaca ou é importante para o corpo ou objeto",
+   "preciso, necessário, importante",
+   "oficial, genuíno"
+  ]
+ },
+ {
+  l: "doht",
+  d: [
+   "nada, nenhum, nulo, inexistente, sem traços, vazio",
+   "desaparecido, escondido, perdido"
+  ]
+ },
+ {
+  l: "dout",
+  d: [
+   "doutor, pessoa com grande experiência em algo, com ensino completo em algo, doutorado"
+  ]
+ },
+ {
+  l: "dovk",
+  d: [
+   "modo, meio, forma de fazer"
+  ]
+ },
+ {
+  l: "drib",
+  d: [
+   "pelado, nu, nude, despido, sem roupa",
+   "original, puro",
+   "cru",
+   "completo, sem filtros, total, inteiro (ue qne nyht fpri drib: eu quero esse documento por inteiro / sem filtro / completo)"
+  ]
+ },
+ {
+  l: "dtie",
+  d: [
+   "digital, geralmente não mecânico, que funciona de forma digital"
+  ]
+ },
+ {
+  l: "dtye",
+  d: [
+   "futurista, à frente, adiantado"
+  ]
+ },
+ {
+  l: "dude",
+  d: [
+   "dois, número dois"
+  ]
+ },
+ {
+  l: "dued",
+  d: [
+   "nota, resultado, valor"
+  ]
+ },
+ {
+  l: "duly",
+  d: [
+   "plural, múltiplo"
+  ]
+ },
+ {
+  l: "duut",
+  d: [
+   "nádega, bunda",
+   "parte traseira",
+   "que aparece por último"
+  ]
+ },
+ {
+  l: "dwat",
+  d: [
+   "secreto, segredo",
+   "protegido, lacrado",
+   "mantido fora do alcance"
+  ]
+ },
+ {
+  l: "edof",
+  d: [
+   "dinheiro, moeda"
+  ]
+ },
+ {
+  l: "egka",
+  d: [
+   "ave, pássaro",
+   "algo que voe, avião",
+   "águia"
+  ]
+ },
+ {
+  l: "eitd",
+  d: [
+   "analógico",
+   "mecânico",
+   "natural"
+  ]
+ },
+ {
+  l: "elgh",
+  d: [
+   "duro, rígido",
+   "resistente",
+   "egoísta"
+  ]
+ },
+ {
+  l: "enge",
+  d: [
+   "engenharia, engenheiro"
+  ]
+ },
+ {
+  l: "esge",
+  d: [
+   "artista, aquele que desenha, cria arte",
+   "criativo, inovador, que pensa fora da caixa"
+  ]
+ },
+ {
+  l: "esiu",
+  d: [
+   "difícil",
+   "complicado",
+   "fechado, difícil acesso, trancado"
+  ]
+ },
+ {
+  l: "esja",
+  d: [
+   "dificuldade",
+   "resistência, força contra",
+   "defesa, defensivo"
+  ]
+ },
+ {
+  l: "espa",
+  d: [
+   "pois",
+   "por que, porque, por quê, porquê"
+  ]
+ },
+ {
+  l: "espe",
+  d: [
+   "alface"
+  ]
+ },
+ {
+  l: "etit",
+  d: [
+   "data, dia",
+   "reserva",
+   "encontro"
+  ]
+ },
+ {
+  l: "eurt",
+  d: [
+   "fraco",
+   "frágil",
+   "inseguro (ae fla eurt giit ai: você parece inseguro sobre isso)"
+  ]
+ },
+ {
+  l: "euyt",
+  d: [
+   "vacina",
+   "cura",
+   "seringa",
+   "remédio, drogas, medicamento (nyht euyt tue brod tdou ai tue ena?: esse remédio é de comer ou é vacina?)"
+  ]
+ },
+ {
+  l: "ewrk",
+  d: [
+   "borracha",
+   "pneu"
+  ]
+ },
+ {
+  l: "fafa",
+  d: [
+   "minuto"
+  ]
+ },
+ {
+  l: "fafs",
+  d: [
+   "velho, idoso",
+   "antigo, clássico"
+  ]
+ },
+ {
+  l: "fakk",
+  d: [
+   "obrigado, agradecido",
+   "agradecimento"
+  ]
+ },
+ {
+  l: "fein",
+  d: [
+   "combustível",
+   "origem (de algo ou acontecimento)",
+   "herança"
+  ]
+ },
+ {
+  l: "feni",
+  d: [
+   "acima, em cima, cima (feni lolk uhly: em cima da mesa)",
+   "maior (em poder), mais (em algum atributo)(feni lure trta ae: mais inteligente que você)"
+  ]
+ },
+ {
+  l: "fert",
+  d: [
+   "professor, orientador, comandante (o que ensina, orienta ou comanda com um objetivo educacional ou prático)"
+  ]
+ },
+ {
+  l: "fery",
+  d: [
+   "parte, pedaço",
+   "contexto",
+   "membro (do corpo), órgão"
+  ]
+ },
+ {
+  l: "fglu",
+  d: [
+   "normal, padrão",
+   "universal"
+  ]
+ },
+ {
+  l: "fhlo",
+  d: [
+   "automático",
+   "individual (trabalho para uma pessoa, onde ela faz tudo)"
+  ]
+ },
+ {
+  l: "fini",
+  d: [
+   "agudo, pontudo",
+   "alto",
+   "alta frequência",
+   "singular, único, especial"
+  ]
+ },
+ {
+  l: "flai",
+  d: [
+   "álcool, líquido, como para automóveis ou limpeza",
+   "bebida alcoólica"
+  ]
+ },
+ {
+  l: "flar",
+  d: [
+   "impressora, equipamento que imprime",
+   "impressionador, que impressiona, causa impressão",
+   "cópia, semelhante"
+  ]
+ },
+ {
+  l: "flei",
+  d: [
+   "ouvido",
+   "audição",
+   "microfone, dispositivo de captura de som ou frequência",
+   "frequencímetro, gravador, aparelho de som (para captura de som)"
+  ]
+ },
+ {
+  l: "flix",
+  d: [
+   "gato, felino",
+   "cheio de energia, radical, animal"
+  ]
+ },
+ {
+  l: "floi",
+  d: [
+   "diesel, combustível de fácil explosão",
+   "pessoa com temperamento sensível"
+  ]
+ },
+ {
+  l: "flui",
+  d: [
+   "gasolina",
+   "pessoa atraente, que causa \"calor\""
+  ]
+ },
+ {
+  l: "fout",
+  d: [
+   "tórax, peitoral, frente de um corpo",
+   "proteção frontal de algo importante, capô",
+   "armadura, roupa extremamente resistente",
+   "tampa, fechadura, trava, cadeado",
+   "bloqueado, trancado, fechado"
+  ]
+ },
+ {
+  l: "fouk",
+  d: [
+   "seio",
+   "curva, sinuosidade",
+   "o mais interno de um ser, alma, espírito",
+   "cavidade, canal interno que contém ou por onde passa algo, buraco, túnel, passagem"
+  ]
+ },
+ {
+  l: "fpri",
+  d: [
+   "documento, arquivo, folha",
+   "identidade, algo que represente algum ser",
+   "registro, traço, pista de algo que indique a alguém",
+   "conta, contato"
+  ]
+ },
+ {
+  l: "frav",
+  d: [
+   "ser aquilo ou aquilo que tem entre as pernas (definido pelo sexo, ou indefinido caso não interessado, como em ue tue nifrav: eu (sou) / (tenho um(a)) (órgão do sexo feminino)), genitália"
+  ]
+ },
+ {
+  l: "fraq",
+  d: [
+   "ser aquele que tem interesse no sexo que for definido na palavra, ou ambos (ou qualquer um) caso não definido (ue tue nafraq: eu (sou interessado) / (gosto de) homens (órgão sexual masculino))",
+   "Relacionado a palavras como: hétero, homossexual, bissexual"
+  ]
+ },
+ {
+  l: "frax",
+  d: [
+   "bomba, mina, granada, explosivo",
+   "spam",
+   "irritante, o que não se quer perto"
+  ]
+ },
+ {
+  l: "frea",
+  d: [
+   "carne",
+   "material de origem animal",
+   "couro"
+  ]
+ },
+ {
+  l: "frex",
+  d: [
+   "colega próximo, parceiro, dupla, faz parte de sua equipe pessoal"
+  ]
+ },
+ {
+  l: "froc",
+  d: [
+   "rocha, pedra",
+   "duro, resistente",
+   "persistente ou cabeça dura",
+   "pouco valioso, comum"
+  ]
+ },
+ {
+  l: "frot",
+  d: [
+   "frita, tostada com calor",
+   "queimado, colocado à lenha rapidamente",
+   "febre, acima da temperatura normal, aquecido de forma irregular",
+   "machucado de \"queimar\" (tanto emocional quanto real)"
+  ]
+ },
+ {
+  l: "fruf",
+  d: [
+   "pelo, pelugem",
+   "penas, plumagem (caso esteja falando de aves)",
+   "cobertura, cobertor, algo que cobre e mantém quente ou protege de algo",
+   "armadura mística ou especial que te mantém protegido"
+  ]
+ },
+ {
+  l: "ftik",
+  d: [
+   "forçado",
+   "feito sob medida, apertado",
+   "planejado perfeitamente",
+   "limitado",
+   "pressionado (a fazer algo), obrigado"
+  ]
+ },
+ {
+  l: "ftuk",
+  d: [
+   "sanduíche",
+   "hambúrguer"
+  ]
+ },
+ {
+  l: "fual",
+  d: [
+   "decente, bem feito, bem trabalhado",
+   "robusto, competente, garantido",
+   "preparado (bem), organizado (de forma decente)",
+   "encaixado perfeitamente (com um conector bem colocado, sem problemas), combinado (em cor, formato ou qualquer outra característica)",
+   "conectado (com perfeição ou com grandes garantias de sucesso), montado perfeitamente, construído sem erros"
+  ]
+ },
+ {
+  l: "fuil",
+  d: [
+   "bem, bom, estar bem, feliz, alegre",
+   "positivo",
+   "felicidade",
+   "certo, correto, perfeitamente bem",
+   "bem cuidado, em perfeitas condições"
+  ]
+ },
+ {
+  l: "fury",
+  d: [
+   "ser vivo, corpo com vida",
+   "animal",
+   "espontâneo, animado, motivado",
+   "independente, maduro, adulto (parecer adulto), responsável"
+  ]
+ },
+ {
+  l: "fytu",
+  d: [
+   "nenhum, ninguém",
+   "vazio, desocupado, sem gente",
+   "desistente, cancelado, estar fora",
+   "sem ninguém, sozinho",
+   "assexual",
+   "sem interesses, sem desejos",
+   "inativo",
+   "ausente"
+  ]
+ },
+ {
+  l: "gale",
+  d: [
+   "acesso, entrada, porta",
+   "acessibilidade, assistência"
+  ]
+ },
+ {
+  l: "game",
+  d: [
+   "pá, ferramenta manual para escavar",
+   "paz, símbolo de paz",
+   "estar calmo, sem estresse, relaxado",
+   "conquistar terras, novo território, conquista, com sucesso e pacífico; terminar algo sem estresse, na calma"
+  ]
+ },
+ {
+  l: "gatx",
+  d: [
+   "lindo, belo, bonito, elegante",
+   "bem feito, bem trabalhado, que dá orgulho",
+   "bem composto, bem misturado, destaque entre outros",
+   "gostoso"
+  ]
+ },
+ {
+  l: "gaty",
+  d: [
+   "bem produzido, sem falhas, perfeito (dado algo para comparar)",
+   "exemplar, ideal",
+   "molde, norma, original, marca",
+   "exemplo, template"
+  ]
+ },
+ {
+  l: "gdaj",
+  d: [
+   "socorro, ajuda (não necessariamente médica)",
+   "pedido, carta, mensagem ou qualquer sinal pedindo ajuda",
+   "sinalização de emergência ou de assistência (local de origem ou vindo ao local)",
+   "substantivo indicando que está \"precisando de ajuda\" (ae tue gdaj: você está \"precisando de ajuda\")",
+   "doação, investimento, aplicação (para ajudar o próximo)"
+  ]
+ },
+ {
+  l: "gefh",
+  d: [
+   "mãe (não necessariamente mulher)",
+   "aquele que é reconhecido como o mais importante num grupo de pessoas",
+   "pessoa de alto valor num grupo, por mérito, honra, não por dinheiro ou poder",
+   "pai"
+  ]
+ },
+ {
+  l: "geft",
+  d: [
+   "teclado, instrumentos de múltiplas teclas",
+   "interface de um dispositivo",
+   "senha, palavra-chave, resposta, chave",
+   "ponto importante, relevante, sobre algo"
+  ]
+ },
+ {
+  l: "gfad",
+  d: [
+   "prova, teste",
+   "prova, registro",
+   "memória, registro de memória, anotação",
+   "trilha, pegadas, traços, registro de algum acontecimento",
+   "resposta (final), fato inquestionável, a verdade pura"
+  ]
+ },
+ {
+  l: "gflu",
+  d: [
+   "estranho, alienígena, intruso",
+   "irregular, diferente, fora do padrão, incomum",
+   "desconhecido, novo"
+  ]
+ },
+ {
+  l: "gfoh",
+  d: [
+   "desde, a partir de, a datar de, a contar de, com início em",
+   "já, já em, agora, imediatamente, no momento"
+  ]
+ },
+ {
+  l: "ghea",
+  d: [
+   "geografia",
+   "terreno",
+   "área, lugar, região",
+   "vizinhança, bairro, pólis, comunidade, cidade-estado"
+  ]
+ },
+ {
+  l: "ghit",
+  d: [
+   "sob, abaixo, embaixo",
+   "submerso, afundado, tampado, sobreposto por algo",
+   "protegido, escondido por baixo de algo, em segurança",
+   "isolado, controlado, vistoriado"
+  ]
+ },
+ {
+  l: "giit",
+  d: [
+   "sobre, por cima",
+   "sobrevoando, voando, flutuando, acima, por cima de algo, sobrepondo algo",
+   "exposto, encontrável, visível, desprotegido",
+   "livre, liberto, descontrolado"
+  ]
+ },
+ {
+  l: "gleh",
+  d: [
+   "mole",
+   "flácido, flexível",
+   "demorado, tardio, pausado",
+   "líquido (estado da matéria)"
+  ]
+ },
+ {
+  l: "glut",
+  d: [
+   "círculo, esfera, objeto radial sem cantos",
+   "grupo, quadrilha, conjunto, equipe"
+  ]
+ },
+ {
+  l: "goto",
+  d: [
+   "botão, brinco, pingente",
+   "gema",
+   "broto",
+   "raiz, origem, base originária, início",
+   "ponto, centro, destaque, tacha",
+   "tarefa, problema, origem de trabalho"
+  ]
+ },
+ {
+  l: "graf",
+  d: [
+   "mesmo, até, inclusive, também, ainda",
+   "próprio, tal",
+   "precisamente, exatamente, justamente"
+  ]
+ },
+ {
+  l: "grah",
+  d: [
+   "já, agora, neste momento, na hora"
+  ]
+ },
+ {
+  l: "grak",
+  d: [
+   "bicho",
+   "verme"
+  ]
+ },
+ {
+  l: "grin",
+  d: [
+   "guitarra",
+   "violão elétrico"
+  ]
+ },
+ {
+  l: "gren",
+  d: [
+   "violão",
+   "instrumento de cordas",
+   "instrumento musical de cordas, que vibra, gera som por vibrações"
+  ]
+ },
+ {
+  l: "gron",
+  d: [
+   "teste",
+   "experimento",
+   "experiência",
+   "prova (colocar algo à prova)",
+   "exercício"
+  ]
+ },
+ {
+  l: "grug",
+  d: [
+   "abaixo",
+   "baixo",
+   "grave",
+   "fundo",
+   "profundo"
+  ]
+ },
+ {
+  l: "gruy",
+  d: [
+   "leoa",
+   "leão",
+   "felino selvagem"
+  ]
+ },
+ {
+  l: "guni",
+  d: [
+   "ideia",
+   "sugestão"
+  ]
+ },
+ {
+  l: "gura",
+  d: [
+   "bola",
+   "esfera"
+  ]
+ },
+ {
+  l: "gure",
+  d: [
+   "informação",
+   "notícia"
+  ]
+ },
+ {
+  l: "gyla",
+  d: [
+   "ritmo",
+   "movimento"
+  ]
+ },
+ {
+  l: "gyth",
+  d: [
+   "chocolate"
+  ]
+ },
+ {
+  l: "gyyk",
+  d: [
+   "ainda"
+  ]
+ },
+ {
+  l: "hugi",
+  d: [
+   "conteúdo",
+   "matéria"
+  ]
+ },
+ {
+  l: "hune",
+  d: [
+   "casamento"
+  ]
+ },
+ {
+  l: "hung",
+  d: [
+   "sal"
+  ]
+ },
+ {
+  l: "hute",
+  d: [
+   "casa"
+  ]
+ },
+ {
+  l: "huti",
+  d: [
+   "ânus"
+  ]
+ },
+ {
+  l: "huty",
+  d: [
+   "terreno",
+   "área",
+   "espaço (de médio tamanho, para uma casa ou poucas casas)"
+  ]
+ },
+ {
+  l: "huwg",
+  d: [
+   "bosta",
+   "merda",
+   "fezes"
+  ]
+ },
+ {
+  l: "hyor",
+  d: [
+   "rua"
+  ]
+ },
+ {
+  l: "iata",
+  d: [
+   "título",
+   "topo"
+  ]
+ },
+ {
+  l: "iceb",
+  d: [
+   "cebola"
+  ]
+ },
+ {
+  l: "igrn",
+  d: [
+   "veado"
+  ]
+ },
+ {
+  l: "ihgl",
+  d: [
+   "inglês"
+  ]
+ },
+ {
+  l: "ilpe",
+  d: [
+   "caldo"
+  ]
+ },
+ {
+  l: "inna",
+  d: [
+   "um",
+   "uma"
+  ]
+ },
+ {
+  l: "issu",
+  d: [
+   "calcanhar"
+  ]
+ },
+ {
+  l: "isti",
+  d: [
+   "ovíparo"
+  ]
+ },
+ {
+  l: "isto",
+  d: [
+   "herbívoro"
+  ]
+ },
+ {
+  l: "itep",
+  d: [
+   "tempero"
+  ]
+ },
+ {
+  l: "jfab",
+  d: [
+   "faculdade"
+  ]
+ },
+ {
+  l: "jiak",
+  d: [
+   "unidade",
+   "medida",
+   "dimensão",
+   "métrica",
+   "universo",
+   "tamanho"
+  ]
+ },
+ {
+  l: "jolo",
+  d: [
+   "grande",
+   "maior",
+   "mais",
+   "muito",
+   "vários",
+   "bastante",
+   "maior"
+  ]
+ },
+ {
+  l: "joqe",
+  d: [
+   "joystick"
+  ]
+ },
+ {
+  l: "julk",
+  d: [
+   "foda"
+  ]
+ },
+ {
+  l: "kaet",
+  d: [
+   "pobre",
+   "pobreza"
+  ]
+ },
+ {
+  l: "kaga",
+  d: [
+   "mercado",
+   "shopping"
+  ]
+ },
+ {
+  l: "kaka",
+  d: [
+   "atrevido"
+  ]
+ },
+ {
+  l: "kala",
+  d: [
+   "caramba"
+  ]
+ },
+ {
+  l: "kara",
+  d: [
+   "loucura"
+  ]
+ },
+ {
+  l: "kark",
+  d: [
+   "atualização"
+  ]
+ },
+ {
+  l: "kefh",
+  d: [
+   "tia",
+   "tio"
+  ]
+ },
+ {
+  l: "kerk",
+  d: [
+   "desatualização"
+  ]
+ },
+ {
+  l: "kina",
+  d: [
+   "vegetal"
+  ]
+ },
+ {
+  l: "kini",
+  d: [
+   "episódio",
+   "caso"
+  ]
+ },
+ {
+  l: "kjor",
+  d: [
+   "personalidade",
+   "pessoa"
+  ]
+ },
+ {
+  l: "klai",
+  d: [
+   "código",
+   "senha"
+  ]
+ },
+ {
+  l: "klan",
+  d: [
+   "grupo",
+   "time"
+  ]
+ },
+ {
+  l: "klet",
+  d: [
+   "barriga"
+  ]
+ },
+ {
+  l: "klin",
+  d: [
+   "até",
+   "tchau"
+  ]
+ },
+ {
+  l: "knep",
+  d: [
+   "certo",
+   "correto",
+   "verdade",
+   "verdadeiro",
+   "real",
+   "realidade"
+  ]
+ },
+ {
+  l: "knet",
+  d: [
+   "série"
+  ]
+ },
+ {
+  l: "knyh",
+  d: [
+   "briga",
+   "luta"
+  ]
+ },
+ {
+  l: "kral",
+  d: [
+   "livre"
+  ]
+ },
+ {
+  l: "krat",
+  d: [
+   "problema"
+  ]
+ },
+ {
+  l: "krfi",
+  d: [
+   "favor"
+  ]
+ },
+ {
+  l: "krka",
+  d: [
+   "preso"
+  ]
+ },
+ {
+  l: "kruk",
+  d: [
+   "tradução"
+  ]
+ },
+ {
+  l: "ktra",
+  d: [
+   "entre"
+  ]
+ },
+ {
+  l: "ktuh",
+  d: [
+   "atenção"
+  ]
+ },
+ {
+  l: "kuil",
+  d: [
+   "saúde"
+  ]
+ },
+ {
+  l: "kuky",
+  d: [
+   "céu"
+  ]
+ },
+ {
+  l: "kulh",
+  d: [
+   "máquina"
+  ]
+ },
+ {
+  l: "kurp",
+  d: [
+   "inútil"
+  ]
+ },
+ {
+  l: "kwyh",
+  d: [
+   "espaço (não muito grande)",
+   "quarto"
+  ]
+ },
+ {
+  l: "kyek",
+  d: [
+   "mendigo"
+  ]
+ },
+ {
+  l: "kyia",
+  d: [
+   "oi",
+   "olá"
+  ]
+ },
+ {
+  l: "kyna",
+  d: [
+   "porra"
+  ]
+ },
+ {
+  l: "lala",
+  d: [
+   "gelo",
+   "gelado",
+   "sorvete",
+   "picolé"
+  ]
+ },
+ {
+  l: "larb",
+  d: [
+   "trabalhador"
+  ]
+ },
+ {
+  l: "lare",
+  d: [
+   "alguém"
+  ]
+ },
+ {
+  l: "lari",
+  d: [
+   "algum",
+   "alguma"
+  ]
+ },
+ {
+  l: "lark",
+  d: [
+   "ocupado"
+  ]
+ },
+ {
+  l: "lhun",
+  d: [
+   "pulso"
+  ]
+ },
+ {
+  l: "lide",
+  d: [
+   "ímã"
+  ]
+ },
+ {
+  l: "lifu",
+  d: [
+   "decepcionado",
+   "desmotivado"
+  ]
+ },
+ {
+  l: "liit",
+  d: [
+   "frio",
+   "inverno"
+  ]
+ },
+ {
+  l: "liku",
+  d: [
+   "antigo",
+   "relíquia",
+   "histórico",
+   "outrora"
+  ]
+ },
+ {
+  l: "lili",
+  d: [
+   "riso"
+  ]
+ },
+ {
+  l: "lily",
+  d: [
+   "sorriso"
+  ]
+ },
+ {
+  l: "limy",
+  d: [
+   "biscoito",
+   "bolacha"
+  ]
+ },
+ {
+  l: "lint",
+  d: [
+   "língua"
+  ]
+ },
+ {
+  l: "liuf",
+  d: [
+   "mal",
+   "mau",
+   "triste"
+  ]
+ },
+ {
+  l: "liuk",
+  d: [
+   "péssimo",
+   "horrível",
+   "terrível"
+  ]
+ },
+ {
+  l: "lofh",
+  d: [
+   "padrinho",
+   "madrinha"
+  ]
+ },
+ {
+  l: "lofi",
+  d: [
+   "branco"
+  ]
+ },
+ {
+  l: "lohp",
+  d: [
+   "trás"
+  ]
+ },
+ {
+  l: "loht",
+  d: [
+   "cara",
+   "face",
+   "frente"
+  ]
+ },
+ {
+  l: "lokl",
+  d: [
+   "acaso"
+  ]
+ },
+ {
+  l: "lokt",
+  d: [
+   "para",
+   "pra"
+  ]
+ },
+ {
+  l: "loku",
+  d: [
+   "osso"
+  ]
+ },
+ {
+  l: "lolk",
+  d: [
+   "da",
+   "de",
+   "do",
+   "por"
+  ]
+ },
+ {
+  l: "lolo",
+  d: [
+   "ovo"
+  ]
+ },
+ {
+  l: "lope",
+  d: [
+   "folha",
+   "papel",
+   "pena"
+  ]
+ },
+ {
+  l: "lopk",
+  d: [
+   "deus"
+  ]
+ },
+ {
+  l: "lowe",
+  d: [
+   "universidade"
+  ]
+ },
+ {
+  l: "lual",
+  d: [
+   "viagem"
+  ]
+ },
+ {
+  l: "luka",
+  d: [
+   "perna"
+  ]
+ },
+ {
+  l: "luly",
+  d: [
+   "semente"
+  ]
+ },
+ {
+  l: "lumu",
+  d: [
+   "caderno",
+   "livro"
+  ]
+ },
+ {
+  l: "lung",
+  d: [
+   "ombro"
+  ]
+ },
+ {
+  l: "luph",
+  d: [
+   "coxa"
+  ]
+ },
+ {
+  l: "lurd",
+  d: [
+   "distante",
+   "longe"
+  ]
+ },
+ {
+  l: "lure",
+  d: [
+   "gênio",
+   "inteligente"
+  ]
+ },
+ {
+  l: "luyo",
+  d: [
+   "dragão"
+  ]
+ },
+ {
+  l: "lyka",
+  d: [
+   "reino"
+  ]
+ },
+ {
+  l: "lyru",
+  d: [
+   "feio"
+  ]
+ },
+ {
+  l: "lyvo",
+  d: [
+   "mesquinho",
+   "fútil"
+  ]
+ },
+ {
+  l: "maly",
+  d: [
+   "redação",
+   "texto"
+  ]
+ },
+ {
+  l: "maah",
+  d: [
+   "sim",
+   "claro"
+  ]
+ },
+ {
+  l: "maeh",
+  d: [
+   "certeza "
+  ]
+ },
+ {
+  l: "mana",
+  d: [
+   "não",
+   "incerto"
+  ]
+ },
+ {
+  l: "mank",
+  d: [
+   "contrário",
+   "inverso",
+   "des-",
+   "a-"
+  ]
+ },
+ {
+  l: "maol",
+  d: [
+   "então",
+   "portanto"
+  ]
+ },
+ {
+  l: "medy",
+  d: [
+   "medicina",
+   "médico"
+  ]
+ },
+ {
+  l: "mhat",
+  d: [
+   "matemática"
+  ]
+ },
+ {
+  l: "mhut",
+  d: [
+   "constante",
+   "estável"
+  ]
+ },
+ {
+  l: "molg",
+  d: [
+   "macarrão"
+  ]
+ },
+ {
+  l: "molh",
+  d: [
+   "boi",
+   "vaca"
+  ]
+ },
+ {
+  l: "muna",
+  d: [
+   "ou",
+   "entretanto"
+  ]
+ },
+ {
+  l: "munu",
+  d: [
+   "lição",
+   "tarefa"
+  ]
+ },
+ {
+  l: "nagt",
+  d: [
+   "estresse"
+  ]
+ },
+ {
+  l: "nape",
+  d: [
+   "apenas",
+   "só"
+  ]
+ },
+ {
+  l: "naqi",
+  d: [
+   "escolha",
+   "opção",
+   "configuração"
+  ]
+ },
+ {
+  l: "nheh",
+  d: [
+   "igreja"
+  ]
+ },
+ {
+  l: "nhoe",
+  d: [
+   "nove"
+  ]
+ },
+ {
+  l: "nhum",
+  d: [
+   "sorte"
+  ]
+ },
+ {
+  l: "nili",
+  d: [
+   "frase "
+  ]
+ },
+ {
+  l: "njvn",
+  d: [
+   "alho"
+  ]
+ },
+ {
+  l: "noag",
+  d: [
+   "batata"
+  ]
+ },
+ {
+  l: "nofy",
+  d: [
+   "(deixado) sozinho",
+   "só"
+  ]
+ },
+ {
+  l: "nolc",
+  d: [
+   "anti",
+   "sem"
+  ]
+ },
+ {
+  l: "nuki",
+  d: [
+   "coitado"
+  ]
+ },
+ {
+  l: "nukn",
+  d: [
+   "colaboração"
+  ]
+ },
+ {
+  l: "nune",
+  d: [
+   "fluente"
+  ]
+ },
+ {
+  l: "nury",
+  d: [
+   "permanente",
+   "para sempre"
+  ]
+ },
+ {
+  l: "nyht",
+  d: [
+   "essa",
+   "esse",
+   "esta",
+   "este"
+  ]
+ },
+ {
+  l: "nyil",
+  d: [
+   "pior"
+  ]
+ },
+ {
+  l: "nyta",
+  d: [
+   "química",
+   "químico"
+  ]
+ },
+ {
+  l: "oaut",
+  d: [
+   "espelho"
+  ]
+ },
+ {
+  l: "ohde",
+  d: [
+   "um"
+  ]
+ },
+ {
+  l: "ohte",
+  d: [
+   "oito"
+  ]
+ },
+ {
+  l: "olal",
+  d: [
+   "a",
+   "ao",
+   "o",
+   "à",
+   "as",
+   "aos",
+   "os",
+   "às"
+  ]
+ },
+ {
+  l: "olar",
+  d: [
+   "fórmula",
+   "receita",
+   "dicionário"
+  ]
+ },
+ {
+  l: "oloj",
+  d: [
+   "menor",
+   "menos",
+   "pequeno",
+   "pouco",
+   "menor"
+  ]
+ },
+ {
+  l: "otsi",
+  d: [
+   "carnívoro"
+  ]
+ },
+ {
+  l: "otun",
+  d: [
+   "música",
+   "músico"
+  ]
+ },
+ {
+  l: "ougt",
+  d: [
+   "olho"
+  ]
+ },
+ {
+  l: "oyye",
+  d: [
+   "loiro"
+  ]
+ },
+ {
+  l: "ozuk",
+  d: [
+   "onda"
+  ]
+ },
+ {
+  l: "pane",
+  d: [
+   "próton"
+  ]
+ },
+ {
+  l: "pate",
+  d: [
+   "planta",
+   "árvore"
+  ]
+ },
+ {
+  l: "paut",
+  d: [
+   "caralho"
+  ]
+ },
+ {
+  l: "pedt",
+  d: [
+   "antes",
+   "último"
+  ]
+ },
+ {
+  l: "penk",
+  d: [
+   "anormal",
+   "errado",
+   "erro",
+   "falha",
+   "falso",
+   "virtual",
+   "emulado",
+   "mentira"
+  ]
+ },
+ {
+  l: "phaf",
+  d: [
+   "farmacêutico",
+   "farmácia"
+  ]
+ },
+ {
+  l: "phed",
+  d: [
+   "foto",
+   "imagem"
+  ]
+ },
+ {
+  l: "phlo",
+  d: [
+   "alto"
+  ]
+ },
+ {
+  l: "phoa",
+  d: [
+   "fone"
+  ]
+ },
+ {
+  l: "phor",
+  d: [
+   "português"
+  ]
+ },
+ {
+  l: "phuf",
+  d: [
+   "cotovelada"
+  ]
+ },
+ {
+  l: "phus",
+  d: [
+   "física"
+  ]
+ },
+ {
+  l: "pitn",
+  d: [
+   "nariz"
+  ]
+ },
+ {
+  l: "pikt",
+  d: [
+   "alicate"
+  ]
+ },
+ {
+  l: "plar",
+  d: [
+   "trabalho"
+  ]
+ },
+ {
+  l: "plep",
+  d: [
+   "café",
+   "cafeína"
+  ]
+ },
+ {
+  l: "plek",
+  d: [
+   "bebida energética",
+   "energético",
+   "eletricidade, elétrico"
+  ]
+ },
+ {
+  l: "plof",
+  d: [
+   "responsável"
+  ]
+ },
+ {
+  l: "plug",
+  d: [
+   "pulsação"
+  ]
+ },
+ {
+  l: "poad",
+  d: [
+   "massa"
+  ]
+ },
+ {
+  l: "poag",
+  d: [
+   "manteiga"
+  ]
+ },
+ {
+  l: "podr",
+  d: [
+   "capô"
+  ]
+ },
+ {
+  l: "pody",
+  d: [
+   "pudim",
+   "pé"
+  ]
+ },
+ {
+  l: "pofh",
+  d: [
+   "chute"
+  ]
+ },
+ {
+  l: "pohl",
+  d: [
+   "frente"
+  ]
+ },
+ {
+  l: "poje",
+  d: [
+   "padre"
+  ]
+ },
+ {
+  l: "pola",
+  d: [
+   "saco"
+  ]
+ },
+ {
+  l: "pole",
+  d: [
+   "detalhe",
+   "ponto",
+   "pixel"
+  ]
+ },
+ {
+  l: "polh",
+  d: [
+   "joelhada"
+  ]
+ },
+ {
+  l: "polt",
+  d: [
+   "lábio"
+  ]
+ },
+ {
+  l: "poly",
+  d: [
+   "algo",
+   "coisa",
+   "objeto"
+  ]
+ },
+ {
+  l: "pope",
+  d: [
+   "bebida"
+  ]
+ },
+ {
+  l: "pora",
+  d: [
+   "futebol"
+  ]
+ },
+ {
+  l: "pote",
+  d: [
+   "tela",
+   "arte",
+   "janela"
+  ]
+ },
+ {
+  l: "potr",
+  d: [
+   "penal"
+  ]
+ },
+ {
+  l: "pous",
+  d: [
+   "sopa"
+  ]
+ },
+ {
+  l: "praf",
+  d: [
+   "pediatra",
+   "pediatria"
+  ]
+ },
+ {
+  l: "pred",
+  d: [
+   "som"
+  ]
+ },
+ {
+  l: "proe",
+  d: [
+   "adaptador",
+   "conector"
+  ]
+ },
+ {
+  l: "prud",
+  d: [
+   "cabo",
+   "fio",
+   "internet",
+   "net",
+   "enrolado",
+   "embaralhado"
+  ]
+ },
+ {
+  l: "ptha",
+  d: [
+   "plástico"
+  ]
+ },
+ {
+  l: "ptos",
+  d: [
+   "geralmente"
+  ]
+ },
+ {
+  l: "puag",
+  d: [
+   "margarina"
+  ]
+ },
+ {
+  l: "pulh",
+  d: [
+   "porco"
+  ]
+ },
+ {
+  l: "qene",
+  d: [
+   "quente"
+  ]
+ },
+ {
+  l: "qnad",
+  d: [
+   "quando"
+  ]
+ },
+ {
+  l: "qute",
+  d: [
+   "quatro"
+  ]
+ },
+ {
+  l: "qwut",
+  d: [
+   "malandragem",
+   "malandro"
+  ]
+ },
+ {
+  l: "raki",
+  d: [
+   "guerra"
+  ]
+ },
+ {
+  l: "raih",
+  d: [
+   "assim"
+  ]
+ },
+ {
+  l: "raik",
+  d: [
+   "martelo"
+  ]
+ },
+ {
+  l: "rara",
+  d: [
+   "bora",
+   "em boa hora",
+   "em perfeito estado",
+   "ao ponto, no ponto",
+   "temperado"
+  ]
+ },
+ {
+  l: "rauk",
+  d: [
+   "sonho"
+  ]
+ },
+ {
+  l: "raut",
+  d: [
+   "mouse",
+   "rato",
+   "peste"
+  ]
+ },
+ {
+  l: "regh",
+  d: [
+   "relógio"
+  ]
+ },
+ {
+  l: "reka",
+  d: [
+   "aqui"
+  ]
+ },
+ {
+  l: "reko",
+  d: [
+   "rumo"
+  ]
+ },
+ {
+  l: "rela",
+  d: [
+   "ali"
+  ]
+ },
+ {
+  l: "relo",
+  d: [
+   "caminho",
+   "percurso"
+  ]
+ },
+ {
+  l: "rhfa",
+  d: [
+   "rádio"
+  ]
+ },
+ {
+  l: "rhis",
+  d: [
+   "história"
+  ]
+ },
+ {
+  l: "rifn",
+  d: [
+   "cabelo"
+  ]
+ },
+ {
+  l: "ripy",
+  d: [
+   "perigo"
+  ]
+ },
+ {
+  l: "rirt",
+  d: [
+   "escuro",
+   "escuridão",
+   "noite",
+   "preto"
+  ]
+ },
+ {
+  l: "rote",
+  d: [
+   "filme"
+  ]
+ },
+ {
+  l: "roti",
+  d: [
+   "remoto"
+  ]
+ },
+ {
+  l: "ruka",
+  d: [
+   "barra",
+   "régua"
+  ]
+ },
+ {
+  l: "ruky",
+  d: [
+   "alavanca"
+  ]
+ },
+ {
+  l: "rury",
+  d: [
+   "tipo"
+  ]
+ },
+ {
+  l: "rutu",
+  d: [
+   "desenho"
+  ]
+ },
+ {
+  l: "rwes",
+  d: [
+   "porta"
+  ]
+ },
+ {
+  l: "ryke",
+  d: [
+   "droga",
+   "porcaria"
+  ]
+ },
+ {
+  l: "ryty",
+  d: [
+   "início",
+   "menu"
+  ]
+ },
+ {
+  l: "saan",
+  d: [
+   "bolado"
+  ]
+ },
+ {
+  l: "sadu",
+  d: [
+   "separado"
+  ]
+ },
+ {
+  l: "saki",
+  d: [
+   "paz"
+  ]
+ },
+ {
+  l: "salu",
+  d: [
+   "cursinho",
+   "curso"
+  ]
+ },
+ {
+  l: "saqi",
+  d: [
+   "idade"
+  ]
+ },
+ {
+  l: "sari",
+  d: [
+   "mas",
+   "porém"
+  ]
+ },
+ {
+  l: "sase",
+  d: [
+   "total"
+  ]
+ },
+ {
+  l: "sele",
+  d: [
+   "nem"
+  ]
+ },
+ {
+  l: "shie",
+  d: [
+   "ciências"
+  ]
+ },
+ {
+  l: "skaa",
+  d: [
+   "janeiro"
+  ]
+ },
+ {
+  l: "skab",
+  d: [
+   "fevereiro"
+  ]
+ },
+ {
+  l: "skac",
+  d: [
+   "março"
+  ]
+ },
+ {
+  l: "skad",
+  d: [
+   "abril"
+  ]
+ },
+ {
+  l: "skae",
+  d: [
+   "maio"
+  ]
+ },
+ {
+  l: "skaf",
+  d: [
+   "junho"
+  ]
+ },
+ {
+  l: "skag",
+  d: [
+   "julho"
+  ]
+ },
+ {
+  l: "skah",
+  d: [
+   "agosto"
+  ]
+ },
+ {
+  l: "skai",
+  d: [
+   "setembro"
+  ]
+ },
+ {
+  l: "skaj",
+  d: [
+   "outubro"
+  ]
+ },
+ {
+  l: "skak",
+  d: [
+   "novembro"
+  ]
+ },
+ {
+  l: "skal",
+  d: [
+   "dezembro"
+  ]
+ },
+ {
+  l: "skra",
+  d: [
+   "imbecil"
+  ]
+ },
+ {
+  l: "slag",
+  d: [
+   "salgado"
+  ]
+ },
+ {
+  l: "sleg",
+  d: [
+   "cera"
+  ]
+ },
+ {
+  l: "smug",
+  d: [
+   "cigarro"
+  ]
+ },
+ {
+  l: "snop",
+  d: [
+   "jamais",
+   "nunca"
+  ]
+ },
+ {
+  l: "snuz",
+  d: [
+   "cama"
+  ]
+ },
+ {
+  l: "sofy",
+  d: [
+   "filosofia",
+   "filósofo"
+  ]
+ },
+ {
+  l: "spet",
+  d: [
+   "sombra"
+  ]
+ },
+ {
+  l: "spot",
+  d: [
+   "sempre"
+  ]
+ },
+ {
+  l: "srag",
+  d: [
+   "frango"
+  ]
+ },
+ {
+  l: "srak",
+  d: [
+   "dada"
+  ]
+ },
+ {
+  l: "sret",
+  d: [
+   "faxina"
+  ]
+ },
+ {
+  l: "stop",
+  d: [
+   "nunca"
+  ]
+ },
+ {
+  l: "stor",
+  d: [
+   "host"
+  ]
+ },
+ {
+  l: "sufe",
+  d: [
+   "sete"
+  ]
+ },
+ {
+  l: "suff",
+  d: [
+   "novo",
+   "novamente",
+   "de novo"
+  ]
+ },
+ {
+  l: "suft",
+  d: [
+   "suco"
+  ]
+ },
+ {
+  l: "sufy",
+  d: [
+   "infernal",
+   "inferno",
+   "diabo"
+  ]
+ },
+ {
+  l: "sulu",
+  d: [
+   "diferente"
+  ]
+ },
+ {
+  l: "sute",
+  d: [
+   "seis"
+  ]
+ },
+ {
+  l: "swag",
+  d: [
+   "servidor"
+  ]
+ },
+ {
+  l: "swap",
+  d: [
+   "agora",
+   "versão"
+  ]
+ },
+ {
+  l: "swen",
+  d: [
+   "preguiçoso"
+  ]
+ },
+ {
+  l: "swyn",
+  d: [
+   "forma"
+  ]
+ },
+ {
+  l: "tahi",
+  d: [
+   "resposta",
+   "solução"
+  ]
+ },
+ {
+  l: "tart",
+  d: [
+   "estalactite"
+  ]
+ },
+ {
+  l: "taek",
+  d: [
+   "estado"
+  ]
+ },
+ {
+  l: "tdod",
+  d: [
+   "tomate"
+  ]
+ },
+ {
+  l: "tdou",
+  d: [
+   "ou"
+  ]
+ },
+ {
+  l: "teak",
+  d: [
+   "rico",
+   "riqueza"
+  ]
+ },
+ {
+  l: "tofh",
+  d: [
+   "irmão",
+   "irmã"
+  ]
+ },
+ {
+  l: "tohd",
+  d: [
+   "todo",
+   "tudo",
+   "toda",
+   "cada"
+  ]
+ },
+ {
+  l: "tops",
+  d: [
+   "vez"
+  ]
+ },
+ {
+  l: "topt",
+  d: [
+   "divertido",
+   "legal"
+  ]
+ },
+ {
+  l: "topk",
+  d: [
+   "chata",
+   "chato"
+  ]
+ },
+ {
+  l: "tort",
+  d: [
+   "hoje"
+  ]
+ },
+ {
+  l: "totr",
+  d: [
+   "amanhã"
+  ]
+ },
+ {
+  l: "tpos",
+  d: [
+   "raramente"
+  ]
+ },
+ {
+  l: "trar",
+  d: [
+   "estalagmite"
+  ]
+ },
+ {
+  l: "trat",
+  d: [
+   "eletricidade"
+  ]
+ },
+ {
+  l: "trie",
+  d: [
+   "século"
+  ]
+ },
+ {
+  l: "trir",
+  d: [
+   "dia"
+  ]
+ },
+ {
+  l: "troa",
+  d: [
+   "morno"
+  ]
+ },
+ {
+  l: "troe",
+  d: [
+   "três"
+  ]
+ },
+ {
+  l: "trot",
+  d: [
+   "ontem"
+  ]
+ },
+ {
+  l: "trta",
+  d: [
+   "dentro",
+   "em",
+   "na",
+   "no",
+   "que",
+   "se"
+  ]
+ },
+ {
+  l: "true",
+  d: [
+   "forte"
+  ]
+ },
+ {
+  l: "trui",
+  d: [
+   "computador"
+  ]
+ },
+ {
+  l: "trur",
+  d: [
+   "lado"
+  ]
+ },
+ {
+  l: "trus",
+  d: [
+   "vidro",
+   "copo",
+   "balde",
+   "reservatório",
+   "bacia"
+  ]
+ },
+ {
+  l: "trut",
+  d: [
+   "esquerda",
+   "esquerdo"
+  ]
+ },
+ {
+  l: "turt",
+  d: [
+   "direita",
+   "direito"
+  ]
+ },
+ {
+  l: "tute",
+  d: [
+   "cérebro"
+  ]
+ },
+ {
+  l: "tuti",
+  d: [
+   "amigo"
+  ]
+ },
+ {
+  l: "tyrr",
+  d: [
+   "hora",
+   "momento"
+  ]
+ },
+ {
+  l: "uadu",
+  d: [
+   "junto",
+   "unido"
+  ]
+ },
+ {
+  l: "uhfu",
+  d: [
+   "joelho"
+  ]
+ },
+ {
+  l: "uhle",
+  d: [
+   "apoio (moral ou material)",
+   "suporte"
+  ]
+ },
+ {
+  l: "uhly",
+  d: [
+   "mesa"
+  ]
+ },
+ {
+  l: "uhno",
+  d: [
+   "estômago"
+  ]
+ },
+ {
+  l: "uhpe",
+  d: [
+   "baleia"
+  ]
+ },
+ {
+  l: "uhro",
+  d: [
+   "dez"
+  ]
+ },
+ {
+  l: "uhso",
+  d: [
+   "zero"
+  ]
+ },
+ {
+  l: "uhtr",
+  d: [
+   "clima",
+   "relógio",
+   "tempo"
+  ]
+ },
+ {
+  l: "uise",
+  d: [
+   "fácil"
+  ]
+ },
+ {
+  l: "ulus",
+  d: [
+   "igual"
+  ]
+ },
+ {
+  l: "unmu",
+  d: [
+   "mão"
+  ]
+ },
+ {
+  l: "uolo",
+  d: [
+   "arroz"
+  ]
+ },
+ {
+  l: "urno",
+  d: [
+   "intestino"
+  ]
+ },
+ {
+  l: "utro",
+  d: [
+   "cem"
+  ]
+ },
+ {
+  l: "uviu",
+  d: [
+   "peixe"
+  ]
+ },
+ {
+  l: "varu",
+  d: [
+   "lobo"
+  ]
+ },
+ {
+  l: "valk",
+  d: [
+   "queijo"
+  ]
+ },
+ {
+  l: "vest",
+  d: [
+   "leite "
+  ]
+ },
+ {
+  l: "waag",
+  d: [
+   "louça"
+  ]
+ },
+ {
+  l: "waki",
+  d: [
+   "adolescente",
+   "jovem"
+  ]
+ },
+ {
+  l: "wala",
+  d: [
+   "palavra"
+  ]
+ },
+ {
+  l: "wany",
+  d: [
+   "criança"
+  ]
+ },
+ {
+  l: "warq",
+  d: [
+   "dedo"
+  ]
+ },
+ {
+  l: "witi",
+  d: [
+   "sério",
+   "sinceramente",
+   "carinhosamente"
+  ]
+ },
+ {
+  l: "woka",
+  d: [
+   "outro"
+  ]
+ },
+ {
+  l: "wuag",
+  d: [
+   "aula"
+  ]
+ },
+ {
+  l: "wuha",
+  d: [
+   "vampiro",
+   "máquina relacionada a sangue",
+   "sangue"
+  ]
+ },
+ {
+  l: "wuhp",
+  d: [
+   "super"
+  ]
+ },
+ {
+  l: "wuje",
+  d: [
+   "quem"
+  ]
+ },
+ {
+  l: "wuky",
+  d: [
+   "adolescência"
+  ]
+ },
+ {
+  l: "wune",
+  d: [
+   "onde"
+  ]
+ },
+ {
+  l: "wuni",
+  d: [
+   "infância"
+  ]
+ },
+ {
+  l: "wupe",
+  d: [
+   "qual"
+  ]
+ },
+ {
+  l: "wuqa",
+  d: [
+   "pergunta"
+  ]
+ },
+ {
+  l: "wuqe",
+  d: [
+   "aleatório",
+   "qualquer"
+  ]
+ },
+ {
+  l: "wush",
+  d: [
+   "academia"
+  ]
+ },
+ {
+  l: "wusu",
+  d: [
+   "relação"
+  ]
+ },
+ {
+  l: "wuyh",
+  d: [
+   "extremo",
+   "intensivo"
+  ]
+ },
+ {
+  l: "yair",
+  d: [
+   "família"
+  ]
+ },
+ {
+  l: "yaye",
+  d: [
+   "água "
+  ]
+ },
+ {
+  l: "yayu",
+  d: [
+   "vida"
+  ]
+ },
+ {
+  l: "yela",
+  d: [
+   "laranja"
+  ]
+ },
+ {
+  l: "yelo",
+  d: [
+   "marrom"
+  ]
+ },
+ {
+  l: "yemo",
+  d: [
+   "memória"
+  ]
+ },
+ {
+  l: "yepo",
+  d: [
+   "verde"
+  ]
+ },
+ {
+  l: "yeur",
+  d: [
+   "inscrito"
+  ]
+ },
+ {
+  l: "yhrn",
+  d: [
+   "e",
+   "também"
+  ]
+ },
+ {
+  l: "yloy",
+  d: [
+   "cenoura"
+  ]
+ },
+ {
+  l: "yuoa",
+  d: [
+   "lua",
+   "ferrugem",
+   "desgastado",
+   "torrado"
+  ]
+ },
+ {
+  l: "ymer",
+  d: [
+   "vídeo"
+  ]
+ },
+ {
+  l: "yohu",
+  d: [
+   "baú",
+   "caixa"
+  ]
+ },
+ {
+  l: "yoio",
+  d: [
+   "roxo"
+  ]
+ },
+ {
+  l: "yoiu",
+  d: [
+   "vermelho"
+  ]
+ },
+ {
+  l: "yolo",
+  d: [
+   "azul"
+  ]
+ },
+ {
+  l: "yomu",
+  d: [
+   "cartão"
+  ]
+ },
+ {
+  l: "yopo",
+  d: [
+   "turquesa"
+  ]
+ },
+ {
+  l: "yopu",
+  d: [
+   "dourado"
+  ]
+ },
+ {
+  l: "youn",
+  d: [
+   "vina",
+   "linguiça",
+   "salsicha"
+  ]
+ },
+ {
+  l: "youo",
+  d: [
+   "bege"
+  ]
+ },
+ {
+  l: "youp",
+  d: [
+   "prata"
+  ]
+ },
+ {
+  l: "yout",
+  d: [
+   "jeito"
+  ]
+ },
+ {
+  l: "yoyo",
+  d: [
+   "aparelho"
+  ]
+ },
+ {
+  l: "yoyu",
+  d: [
+   "celular",
+   "telefone"
+  ]
+ },
+ {
+  l: "yrui",
+  d: [
+   "sono"
+  ]
+ },
+ {
+  l: "yryr",
+  d: [
+   "alienígena",
+   "invasor"
+  ]
+ },
+ {
+  l: "ytre",
+  d: [
+   "bissexto"
+  ]
+ },
+ {
+  l: "ytyr",
+  d: [
+   "fim"
+  ]
+ },
+ {
+  l: "yuiu",
+  d: [
+   "amarelo"
+  ]
+ },
+ {
+  l: "yumu",
+  d: [
+   "tecido",
+   "têxtil",
+   "textura"
+  ]
+ },
+ {
+  l: "yuno",
+  d: [
+   "braço"
+  ]
+ },
+ {
+  l: "yupo",
+  d: [
+   "moreno"
+  ]
+ },
+ {
+  l: "yuuh",
+  d: [
+   "cinza"
+  ]
+ },
+ {
+  l: "zuyh",
+  d: [
+   "sentido"
+  ]
+ },
+ {
+  l: "zold",
+  d: [
+   "velocidade",
+   "velocímetro"
+  ]
+ },
+ {
+  l: "yort",
+  d: [
+   "rosa"
+  ]
+ },
+ {
+  l: "yopy",
+  d: [
+   "foca"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "grye",
+  d: [
+   "trocado para => gkuku",
+   "medo",
+   "susto",
+   "assustador, medonho, aterrorizante, amedrontador",
+   "amedrontado, assustado"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "nilt",
+  d: [
+   "trocado para => byhku",
+   "banho"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "uyok",
+  d: [
+   "trocado para => uyoku",
+   "amor"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "pohl",
+  d: [
+   "trocado para => loht",
+   "frente"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "krum",
+  d: [
+   "trocado para => nakjor",
+   "homem",
+   "macho"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "murk",
+  d: [
+   "trocado para => nikjor",
+   "garota",
+   "mulher"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "warf",
+  d: [
+   "trocado para => niwany",
+   "menina"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "fraw",
+  d: [
+   "trocado para => nawany",
+   "menino"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "tefh",
+  d: [
+   "trocado para => nitofh",
+   "irmã"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "walu",
+  d: [
+   "trocado para => wa",
+   "aquilo"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "cunt",
+  d: [
+   "trocado para => cunk"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "egua",
+  d: [
+   "trocado para => egka"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "eigi",
+  d: [
+   "trocado para => egka"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "gofh",
+  d: [
+   "trocado para => nagefh",
+   "pai"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "ifol",
+  d: [
+   "trocado para => rirt",
+   "preto"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "lefh",
+  d: [
+   "trocado para => nilofh",
+   "madrinha"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "lohk",
+  d: [
+   "trocado para => lopk"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "yauh",
+  d: [
+   "trocado para => rirt",
+   "escuridão",
+   "escuro"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "liyn",
+  d: [
+   "trocado para => jolo"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "slep",
+  d: [
+   "trocado para => knep"
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "fylu",
+  d: [
+   "trocado para => fraq (verifique definição)",
+   "que tem interesse de estar perto de semelhantes, do mesmo sexo, ou que se parecem ser do mesmo",
+   "atraído por membros do mesmo sexo",
+   "homossexual, gay."
+  ]
+ },
+ {
+  "discontinued": true,
+  l: "grafaw",
+  d: [
+   "trocado para => woka",
+   "outra",
+   "outro"
+  ]
+ }
 ];
 
