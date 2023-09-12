@@ -1,137 +1,89 @@
-var __lsw_mouse = {
-    last_mx: 0,
-    last_my: 0,
-    grabbed_element: null
-}
-
-addEventListener("mousemove", __lsw_mousemove);
-addEventListener("mouseup", __lsw_mouseup);
-
-function __lsw_mousemove(ev) {
-    const dx = ev.clientX - __lsw_mouse.last_mx;
-    const dy = ev.clientY - __lsw_mouse.last_my;
-    __lsw_mouse.last_mx = ev.clientX;
-    __lsw_mouse.last_my = ev.clientY;
-
-    const obj = __lsw_mouse.grabbed_element;
-    if (obj === null) return;
+var __lsw_mouse_objects = [];
     
-    const curr_x = (dx + Number(obj.getAttribute('__lsw-pos_x')));
-    const curr_y = (dy + Number(obj.getAttribute('__lsw-pos_y')));
+    addEventListener("mousemove", __lsw_mousemove);
+    addEventListener("mouseup", __lsw_mouseup);
 
-    obj.setAttribute('__lsw-pos_x', curr_x);
-    obj.setAttribute('__lsw-pos_y', curr_y);
-    
-    const max_x = obj.getAttribute('__lsw-max_x');
-    const max_y = obj.getAttribute('__lsw-max_y');
+    function __lsw_mousemove(ev)
+    {
+        for(let i = 0; i < __lsw_mouse_objects.length; ++i)
+        {
+            const obj = __lsw_mouse_objects[i];
+            const rect = obj.getBoundingClientRect();
+            const x = ev.clientX - rect.left; // x position within the element.
+            const y = ev.clientY - rect.top;  // y position within the element.
+            const dx = (x * 1.0 / obj.clientWidth);
+            const dy = (y * 1.0 / obj.clientHeight);
+            const delete_soon = x > (rect.right - rect.left) || y > (rect.bottom - rect.top);
 
-    obj.style.left = (curr_x > max_x ? max_x : (curr_x < 0 ? 0 : curr_x)) + "px";
-    obj.style.top  = (curr_y > max_y ? max_y : (curr_y < 0 ? 0 : curr_y)) + "px";
-    
-    if (typeof obj.onmousemove === 'function') obj.onmousemove();
-}
-function __lsw_mouseup() {
-    if (__lsw_mouse.grabbed_element !== null) {
-        const obj = __lsw_mouse.grabbed_element;
-        __lsw_mouse.grabbed_element = null;
+            const work = {
+                on: (!delete_soon),
+                x: (x > (rect.right - rect.left) ? (rect.right - rect.left) : x),
+                y: (y >  (rect.bottom - rect.top) ?  (rect.bottom - rect.top) : y),
+                px: (dx > 1.0 ? 1.0 : (dx < 0.0 ? 0.0 : dx)),
+                py: (dy > 1.0 ? 1.0 : (dy < 0.0 ? 0.0 : dy))
+            };
 
-        // update to real position. 
+            obj.setAttribute("lsw_mouse_on", (delete_soon ? "false": "true"));
+            obj.setAttribute("lsw_mouse_x",  "" + work.x); //"" + x > (rect.right - rect.left) ? (rect.right - rect.left) : x);
+            obj.setAttribute("lsw_mouse_y",  "" + work.y); //"" + y >  (rect.bottom - rect.top) ?  (rect.bottom - rect.top) : y);
+            obj.setAttribute("lsw_mouse_px", "" + work.px);//(dx > 1.0 ? 1.0 : (dx < 0.0 ? 0.0 : dx)));
+            obj.setAttribute("lsw_mouse_py", "" + work.py);//(dy > 1.0 ? 1.0 : (dy < 0.0 ? 0.0 : dy)));
 
-        obj.setAttribute(
-            '__lsw-pos_x', 
-            obj.style.left.substring(
-                    0,
-                    obj.style.left.length - 2
-                )
-            );
-            obj.setAttribute(
-                '__lsw-pos_y', 
-                obj.style.top.substring(
-                    0,
-                    obj.style.top.length - 2
-                )
-            );
-
-        if (typeof obj.onmousemove === 'function') obj.onmousemove();
+            const fcn = eval(obj.getAttribute("onslider"));
+            if (typeof fcn === 'function') fcn(obj, work); // self call
+            if (delete_soon) {
+                __lsw_mouse_objects.splice(i--, 1);
+            }
+        }
     }
-}
+    function __lsw_mouseup(ev)
+    {
+        for(let i = 0; i < __lsw_mouse_objects.length; ++i)
+        {
+            const obj = __lsw_mouse_objects[i];
+            const rect = obj.getBoundingClientRect();
+            const x = ev.clientX - rect.left; // x position within the element.
+            const y = ev.clientY - rect.top;  // y position within the element.
+            const dx = (x * 1.0 / obj.clientWidth);
+            const dy = (y * 1.0 / obj.clientHeight);
+            
+            const work = {
+                on: false,
+                x: (x > (rect.right - rect.left) ? (rect.right - rect.left) : x),
+                y: (y >  (rect.bottom - rect.top) ?  (rect.bottom - rect.top) : y),
+                px: (dx > 1.0 ? 1.0 : (dx < 0.0 ? 0.0 : dx)),
+                py: (dy > 1.0 ? 1.0 : (dy < 0.0 ? 0.0 : dy))
+            };
 
-function lsw_make_slider_of(div_id, max_x, max_y, callback, keep_select_text_enabled)
-{
-    let element = document.getElementById(div_id);
-    if (element === null) return false;
+            obj.setAttribute("lsw_mouse_on", "false");
+             obj.setAttribute("lsw_mouse_x",  "" + work.x); //+ x);
+             obj.setAttribute("lsw_mouse_y",  "" + work.y); //+ y);
+             obj.setAttribute("lsw_mouse_px", "" + work.px);// + (dx > 1.0 ? 1.0 : (dx < 0.0 ? 0.0 : dx)));
+             obj.setAttribute("lsw_mouse_py", "" + work.py);// + (dy > 1.0 ? 1.0 : (dy < 0.0 ? 0.0 : dy)));
 
-    element.setAttribute('__lsw-pos_x', '0');
-    element.setAttribute('__lsw-pos_y', '0');
-    element.setAttribute('__lsw-max_x', max_x);
-    element.setAttribute('__lsw-max_y', max_y);
-
-    //element.style.position = "absolute";
-
-    element.onmousedown = function(e) {
-        __lsw_mouse.grabbed_element = this;
-    };
-
-    element.onmousemove = function() {
-        if (this !== __lsw_mouse.grabbed_element || typeof callback !== 'function') return;
-
-        const pdx = Number(this.getAttribute('__lsw-pos_x')) * 100.0 / Number(this.getAttribute('__lsw-max_x'));
-        const pdy = Number(this.getAttribute('__lsw-pos_y')) * 100.0 / Number(this.getAttribute('__lsw-max_y'));
-
-        callback((pdx > 100.0 ? 100.0 : (pdx < 0.0 ? 0.0 : pdx)), (pdy > 100.0 ? 100.0 : (pdy < 0.0 ? 0.0 : pdy)));
-    };
-    
-    if ((keep_select_text_enabled != true) && (' ' + element.parentElement.className + ' ').indexOf(' lsw-__no_mouse_select ') == -1) { //(!element.classList.contains('lsw-__no_mouse_select')) {
-        element.parentElement.className += " lsw-__no_mouse_select";
+             try {
+                const fcn = eval(obj.getAttribute("onslider"));
+                if (typeof fcn === 'function') fcn(obj, work); // self call
+            }
+            catch(err) {
+                console.log("[SLIDER] Error: " + err);
+            }
+        }
+        __lsw_mouse_objects = [];
     }
-}
-
-function lsw_slider_get_horizontal_perc(div_id) {
-
-    let element = document.getElementById(div_id);
-    if (element === null) return -1;
-    
-    const pdx = Number(element.getAttribute('__lsw-pos_x')) * 100.0 / Number(element.getAttribute('__lsw-max_x'));
-
-    return (pdx > 100.0 ? 100.0 : (pdx < 0.0 ? 0.0 : pdx));
-}
-
-function lsw_slider_get_vertical_perc(div_id) {
-
-    let element = document.getElementById(div_id);
-    if (element === null) return -1;
-    
-    const pdy = Number(element.getAttribute('__lsw-pos_y')) * 100.0 / Number(element.getAttribute('__lsw-max_y'));
-
-    return (pdy > 100.0 ? 100.0 : (pdy < 0.0 ? 0.0 : pdy));
-}
-
-function lsw_slider_position_like_perc(div_id, w, h)
-{
-    if (!w && !h) return false;
-
-    let element = document.getElementById(div_id);
-    if (element === null) return false;
-
-    if (w) {
-        w = Number(w);
-        if (w > 100.0) w = 100.0;
-        if (w < 0.0) w = 0.0;
-
-        const max_w = element.getAttribute('__lsw-max_x');
-        element.setAttribute('__lsw-pos_x', w * 0.01 * max_w);
-        
-        element.style.left = (w * 0.01 * max_w) + "px";
+    // auto apply
+    {
+        const onload = window.onload;
+        window.onload = function(){
+            const lst = document.querySelectorAll("[sliderenable='true']");
+            for(let i = 0; i < lst.length; ++i) {
+                const self = lst[i];
+                self.onmousemove = function(ev) {
+                    if (__lsw_mouse_objects.indexOf(self) < 0 && ev.buttons > 0) {
+                        __lsw_mouse_objects[__lsw_mouse_objects.length] = self;
+                    }
+                }
+            }
+            if (typeof onload === 'function') onload();
+        }
     }
-
-    if (h) {
-        h = Number(h);
-        if (h > 100.0) h = 100.0;
-        if (h < 0.0) h = 0.0;
-
-        const max_h = element.getAttribute('__lsw-max_y');
-        element.setAttribute('__lsw-pos_y', h * 0.01 * max_h);
-        
-        element.style.top = (h * 0.01 * max_h) + "px";
-    }
-}

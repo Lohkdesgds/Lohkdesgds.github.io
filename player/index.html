@@ -15,6 +15,14 @@
     <link href="/css/common.css" media="all" rel="stylesheet" />
 </head>
 <body>
+    
+    <input id="youtube_search" placeholder="Youtube URL (video or playlist) here and hit ENTER!">
+    
+    <div class="lsw-slider_default" style="position: relative; overflow: hidden; width: 100%; height: 36px; margin: 27px auto 0 auto; border-radius: 10px; box-shadow: 1px 1px 5px 2px #7e7e7e, inset 0 0 2px 1px #fff;" sliderenable="true" onslider="progress_callback">
+        <div id="youtube_progress" style="width: 100%; min-width: 18px; height: 36px; background-color: rgb(255, 189, 67); border-radius: 10px;"></div>
+        <p style="position: absolute; text-shadow: 1px 1px rgba(0,0,0,0.6); top: -3px; left: 0; width: 100%; text-align: center;" id="progress_text">Loading...</p>
+    </div>
+
     <ul class="lsw-ul_inline">
         <li>
             <a class="lsw-btn_default" id='youtube_text' href="#" onclick="my_youtube.PlayPause()">
@@ -22,12 +30,12 @@
             </a>
         </li>
         <li>
-            <a class="lsw-btn_default" href="#" onclick="my_youtube.Next()">
+            <a class="lsw-btn_default" href="#" id="youtube_next" onclick="my_youtube.Next()">
                 Next
             </a>
         </li>
         <li>
-            <a class="lsw-btn_default"  href="#" onclick="my_youtube.Previous()">
+            <a class="lsw-btn_default"  href="#" id="youtube_prev" onclick="my_youtube.Previous()">
                 Previous
             </a>
         </li>
@@ -36,9 +44,11 @@
         <li>
             <div class="lsw-blk_default">
                 <p>Volume:</p>
-                <div class="lsw-bar_default" style="width: 200px; height: 10px;">
-                    <div style=" width: 10px; height: 10px;" id="youtube_volume"></div>    
-                </div>
+                <div class="lsw-slider_default" style="border-radius: 8px; height: 10px; width: 200px; background-color: red;" sliderenable="true" onslider="volume_callback">
+                    <div style="border-radius: 8px;width: 10px; height: 10px;  background-color: blue" id="volume_slider_inn"></div>
+            </div>                
+        <li>
+        </li>
             </div>
         </li>
     </ul>
@@ -50,57 +60,5 @@
     </div>
 
 </body>
+<script type="text/javascript" src="assets/player.js"></script>
 </html>
-<script>    
-    YouTube_setLogID('loglist');
-
-    const vid_vol = lsw_http_get('vid_vol') || 5;
-    const vid_id = lsw_http_get('vid_id');
-    const vid_pl = lsw_http_get('vid_pl') || 'PLJGtI1TtwC21g9ePKmmaJgjxfqqn816gx'; // Plug & Play
-
-    const txt_elem = document.getElementById('youtube_text');
-
-    var my_youtube = YouTube();
-
-    my_youtube.OnReady(function(){
-        console.log('= OnReady!');
-
-        my_youtube.SetVolume(vid_vol);
-        lsw_slider_position_like_perc('youtube_volume', vid_vol);
-        my_youtube.Shuffle();
-        my_youtube.Next(); 
-        my_youtube.Play();
-        txt_elem.innerHTML = "Ready! ...";
-    });
-    my_youtube.OnPlay(function(){ 
-        console.log('= OnPlay!');
-        my_youtube.SetVolume(lsw_slider_get_horizontal_perc('youtube_volume'));
-        txt_elem.innerHTML = "Playing";
-    });
-    my_youtube.OnPause(function(){ 
-        console.log('= OnPause!');
-        txt_elem.innerHTML = "Paused";
-    });
-    my_youtube.OnStop(function(){ 
-        console.log('= OnStop!');
-        txt_elem.innerHTML = "Stopped";
-    });
-    my_youtube.OnLoading(function(){ 
-        console.log('= OnLoading'); 
-        txt_elem.innerHTML = "Loading...";
-    });
-    my_youtube.OnLoadFail(function(){ 
-        console.log('= OnLoadFail! Next');
-        my_youtube.Next();
-        txt_elem.innerHTML = "Error. Loading...";
-     });
-
-    if (vid_id === null) {
-        my_youtube.Load(vid_pl, true, '0', '0');
-    }
-    else {
-        my_youtube.Load(vid_id, false, '0', '0');
-    }
-    
-    lsw_make_slider_of('youtube_volume', 189, 0, function(w,h) { my_youtube.SetVolume(w); });
-</script>
