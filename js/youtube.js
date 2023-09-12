@@ -66,6 +66,13 @@ function YouTube(own_id, debug_list_id)
         OnLoading: __lsw_yt_on_loading,     // OnLoading(cb: function)
         OnLoadFail: __lsw_yt_on_load_fail,  // OnReady(cb: function)
         Log: __lsw_yt_on_log_external,      // Log(text: string)
+        GetInfo: __lsw_yt_get_info,         // GetInfo()
+        GetCurrentTime: __lsw_yt_get_ctime, // GetCurrentTime()
+        GetTotalTime: __lsw_yt_get_ttime,   // GetTotalTime()
+        SetCurrentTime: __lsw_yt_set_ctime, // SetCurrentTime(time: number)
+        GetPlaylist: __lsw_yt_get_pl,       // GetPlaylist()
+        GetPlaylistLength: __lsw_yt_get_pll,// GetPlaylistLength()
+        GetPlaylistIndex: __lsw_yt_get_pl_i,// GetPlaylistIndex()
 
         // hooks
         m_hooks: {
@@ -458,6 +465,57 @@ function __lsw_yt_on_log_external(text)
 {
     __lsw_yt_log("[EXT] " + text);
 }
+function __lsw_yt_get_info() // get array of properties (format: '{prop: string, value: string}')
+{
+    if (this.m_player == null) return []; // empty array of properties
+
+    let obj = [];
+
+    if (this.m_recipe.type === 'video') {
+        obj[obj.length] = {prop: 'current_time', value: this.m_player.getCurrentTime()};
+        obj[obj.length] = {prop: 'duration', value: this.m_player.getDuration()};
+        obj[obj.length] = {prop: 'video_url', value: this.m_player.getVideoUrl()};
+    }
+    else { // playlist
+        obj[obj.length] = {prop: 'current_time', value: this.m_player.getCurrentTime()};
+        obj[obj.length] = {prop: 'duration', value: this.m_player.getDuration()};
+        obj[obj.length] = {prop: 'video_url', value: this.m_player.getVideoUrl()};
+        obj[obj.length] = {prop: 'playlist_id', value: this.m_player.getPlaylistId()};
+        obj[obj.length] = {prop: 'playlist_index', value: this.m_player.getPlaylistIndex()};
+    }
+    return obj;
+}
+function __lsw_yt_get_ctime()
+{
+    if (this.m_player == null) return 0.0;
+    return this.m_player.getCurrentTime();
+}
+function __lsw_yt_get_ttime()
+{
+    if (this.m_player == null) return 0.0;
+    return this.m_player.getDuration();
+}
+function __lsw_yt_set_ctime(val)
+{
+    if (this.m_player == null) return;
+    __lsw_yt_log("% Seek: " + val);
+    this.m_player.seekTo(val);
+}
+function __lsw_yt_get_pl()
+{
+    if (this.m_player == null || this.m_recipe.type !== 'playlist') return null;
+    return this.m_player.getPlaylist();
+}
+function __lsw_yt_get_pll() {
+    if (this.m_player == null || this.m_recipe.type !== 'playlist') return -1;
+    return this.m_player.getPlaylist().length;
+}
+function __lsw_yt_get_pl_i() {
+    if (this.m_player == null || this.m_recipe.type !== 'playlist') return -1;
+    return this.m_player.getPlaylistIndex();
+}
+
+
 function __lsw_yt_genname() // make sure there is no
 {
     while(1) {

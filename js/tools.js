@@ -66,16 +66,49 @@ function lsw_redirect(url, raw_url) {
 }
 
 /*
-Get a value from a GET parameter from URL directly
+Get or set (updated) url params
 */
-function lsw_http_get(name) {
-    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+function lsw_manage_get(parameter, set)
+{
+    if (parameter == null) return;
+    let get_http = document.location.search;
+    if (get_http.indexOf('?') == 0) get_http = get_http.substring(1);
 
-    if (results == null)
-        return null;
+    let lst = get_http.split('&');
+    let return_str = "";
+    let got_one = false;
 
-    return decodeURI(results[1]) || 0;
+
+    for(let i = 0; i < lst.length; ++i) {
+        if (lst[i].indexOf(parameter) === 0) {
+            if (set === null) {
+                lst.splice(i, 1);
+            }
+            else if (set !== undefined){
+                lst[i] = parameter + "=" + set;
+                return_str = set;
+            }
+            else {
+                return_str = lst[i].substring(parameter.length + 1);
+            }
+            got_one = true;
+            break;
+        }
+    }
+    if (!got_one && set !== null && set !== undefined) {
+        lst[lst.length] = parameter + "=" + set;
+        return_str = set;
+    }
+
+    let str = "";
+    for(let i = 0; i < lst.length; ++i) {
+        str += lst[i] + "&";
+    }
+
+    window.history.replaceState(null, null, "?" + str.substring(0, str.length - 1));
+    return return_str;
 }
+
 
 /*
 Get current URL without arguments
@@ -89,6 +122,18 @@ function lsw_location_base() {
     if (search !== -1) href = href.substring(0, search);
     return href;
 }
+
+/*
+Replace all characters X to Y in string (return)
+*/
+function lsw_replace_all(text, what, to) {
+    let i = text.indexOf(what);
+    while(i >= 0 ){
+      text = text.substring(0, i) + to + text.substring(i + what.length);
+      i = text.indexOf(what);
+    }
+    return text;
+  }
 
 /*
 Download a file from a URL async
@@ -151,12 +196,12 @@ function lsw_current_user_exxon(callback)
         return;
     }
 
-    lsw_download("https://ishareteam4.na.xom.com/sites/curitiba/_api/web/currentuser",
+    lsw_download("https://ishareteam4.na.xom.com/sites/curitiba/_api/web/CurrentUser",
         function(content) {
             let res = {
-                'username': __lsw_parse_xml(content, "d:Title"),
-                'email': __lsw_parse_xml(content, "d:Email"),
-                'id': __lsw_parse_xml(content, "d:Id")
+                username: __lsw_parse_xml(content, "d:Title"),
+                email: __lsw_parse_xml(content, "d:Email"),
+                id: __lsw_parse_xml(content, "d:Id")
             };
 
             if (typeof callback === 'function') {
@@ -250,15 +295,15 @@ function lsw_storage_save_to(item_name, item_obj)
 Get object or value from localStorage item. Doesn't work with raw data, only data saved with lsw_storage_save_to or JSON.stringify'ed.
 - Returns object or null if fail
 */
-function lsw_storage_get_from(item_name)
+function lsw_storage_get_from(item_name, defaults)
 {
     try {
         const str_obj = localStorage.getItem(item_name);
-        return (str_obj === null) ? null : JSON.parse(str_obj);
+        return (str_obj === null) ? (defaults ? defaults : null) : JSON.parse(str_obj);
     }
     catch(err) {
         console.log("[STORAGE] Cannot get back object typed '" + (typeof item_obj) + "' @ " + item_name);
-        return null;
+        return (defaults ? defaults : null);
     }
 }
 
@@ -421,38 +466,205 @@ function lsw_import_file(cb_data)
 PopUp (WIP)
 Make a fullscreen pop up on top of everything. It is self-served, I mean, no need for a object. It should work by itself
 - params:
-  - title: The big h2 title
+  - title*: The big h2 title
+  - width: pop up size, percent [10..100]
+  - height: pop up size, percent [10..100]
   - paragraphs: array of strings for <p>
   - buttons: array of strings to generate buttons <button>
   - inputs_defaults: array of strings for default inputs (can be empty for just an input)
   - callback: function with (event, index, extra); extra:
-    - on button: {elem: element}
-    - on input: {elem: element, key: key pressed down, value: value of input }
+    - on button: {elem: element, root: top div parent}
+    - on input: {elem: element, root: top div parent, key: key pressed down, value: value of input }
 */
-////function PopUp(params)
-////{
-////    if (params == null) return null;
-////
-////    let obj = {
-////        _params: params,
-////        _root_elem: null
-////    };
-////
-////    /* ROOT */
-////    const elem = document.createElement('div');
-////    elem.style.width = '100%';
-////    elem.style.height = '100%';
-////    elem.style.backgroundColor = 'rgba(0,0,0,0.3)';
-////    elem.style.zIndex = 99999
-////    elem.style.position = 'absolute';
-////
-////    // WORKING ON IT
-////
-////    document.body.insertBefore(elem, document.body.firstChild);
-////
-////    obj._root_elem = elem;
-////
-////    return obj;
-////}
+var __lsw_current_popup = null; // used for further deletion of self if multiple are called
+
+// on input do
+function __lsw_i_popup_redir_in(event, idx){
+    if (__lsw_current_popup == null) return;
+    __lsw_current_popup._params.callback('text', idx, {
+        elem: event.target,
+        root: event.target.parentNode.parentNode.parentNode, // need double check on implementation
+        value: event.target.value, // should work
+        key: event.key // should work
+    });
+}
+// on button do
+function __lsw_i_popup_redir_btn(event, idx){
+    if (__lsw_current_popup == null) return;
+    __lsw_current_popup._params.callback('button', idx, {
+        elem: event.target,
+        root: event.target.parentNode.parentNode.parentNode 
+    });
+}
+// function itself
+function PopUp(params)
+{
+    if (params == null) return null;
+    if (__lsw_current_popup != null && __lsw_current_popup["_root_elem"] != null) {
+        try {
+            const item = __lsw_current_popup._root_elem;
+            item.parentNode.removeChild(item);
+            __lsw_current_popup = null;
+        } catch(err) {
+            console.log("[POPUP] Warn on element removal (may be because it was removed before recall): " + err);
+        }
+    }
+
+    let obj = {
+        _params: params,
+        _root_elem: null
+    };
+
+    let width = 70;
+    let height = 40;
+    
+    if (params["width"] != null && params.width >= 10 && params.width <= 100) width = params.width;
+    if (params["height"] != null && params.height >= 10 && params.height <= 100) height = params.height;
+
+    /* ROOT */
+    const elem = document.createElement('div');
+    elem.style.width = '100%';
+    elem.style.height = '100%';
+    elem.style.backgroundColor = 'rgba(0,0,0,0.3)';
+    elem.style.zIndex = 99999
+    elem.style.position = 'fixed';
+    elem.style.top = '0';
+    elem.style.left = '0';
+    elem.style.overflow = 'hidden';
+    elem.style.transition = 'all 1s';
+
+    const over_elem = document.createElement('div');
+    over_elem.style.minWidth = width + '%';
+    over_elem.style.minHeight = height + '%';
+    over_elem.style.width = 'auto';
+    over_elem.style.height = 'auto';
+    over_elem.style.position = 'absolute';
+    over_elem.style.backgroundColor = 'hsla(0, 0%, 100%, 0.95)';
+    over_elem.style.border = '1px solid black';
+    over_elem.style.borderRadius = '30px';
+    over_elem.style.top = '50%';
+    over_elem.style.left = '50%';
+    over_elem.style.padding = '3em';
+    over_elem.style.transform = 'translate(-50%,-50%)';
+    over_elem.style.boxShadow = '7px 7px 34px hsla(0, 0%, 5%, 0.8), inset 8px 5px 3px hsl(0, 0%, 100%), inset -3px -5px 3px hsla(0, 0%, 40%, 0.6)';
+
+    let htm = " \
+<style> \
+.__lbtn { \
+    transition: 0.5s ease; \
+    padding: 0.4em 1.2em; \
+    margin: 0.1em; \
+    border-radius: 7px; \
+    color: #fff; \
+    font-style: normal; \
+    font-size: 16px; \
+    letter-spacing: 0.01rem; \
+    border: 0; \
+    -webkit-font-smoothing: antialiased; \
+    background-color: #2a86b8; \
+    flex-grow: 1; \
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.3); \
+} \
+ \
+.__lbtn:hover { \
+    transform: scale(1.02) translate(-1px, -1px); \
+    box-shadow: 3px 3px 2px 1px rgba(0, 0, 0, 0.5), inset 0 0 500px 1px rgba(255, 255, 255, 0.3); \
+    transition: all 0.1s; \
+} \
+ \
+.__lbtn:active{ \
+    transform: translate(1px, 1px); \
+    box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.1); \
+    transition: all 0.2s; \
+} \
+.__lh2{ \
+    color: rgb(0, 0, 0); \
+    font-size: 2.5em; \
+    text-align: center; \
+    padding: 0 0.1em 1.2em 0.1em; \
+    margin: 0 auto; \
+    display: flex; \
+    justify-content: center; \
+    text-decoration: underline; \
+} \
+.__lp { \
+    color: rgb(0, 0, 0); \
+    margin: 0.3em auto; \
+    padding: 0 0.1em 0.45em 0.1em; \
+    text-align: justify; \
+    justify-content: initial; \
+    text-align-last: left; \
+    display: block; \
+} \
+.__linput { \
+padding: 0.3em; \
+border-radius: 7px; \
+} \
+.__ldiv3, .__ldiv1 { \
+    align-items: center; \
+    display: flex; \
+    flex-wrap: wrap; \
+    margin: 0 !important; \
+    padding: 0 !important; \
+    grid-template-columns: 1fr 1fr; \
+    gap: 0.5rem; \
+} \
+.__ldiv3 > * { \
+    flex-grow: 1; \
+    width: calc(33% - 2 * 1rem);\
+}\
+.__ldiv1 > * { \
+    flex-grow: 1; \
+    width: calc(100% - 2 * 1rem);\
+}\
+</style> \
+\
+<h2 class=\"__lh2\">" + params.title + "</h2>";
+
+    for(let i = 0; params.paragraphs != null && i < params.paragraphs.length; ++i) {
+        htm += "<p class=\"__lp\">" + params.paragraphs[i] + "</p>";
+    }
+
+    // NEED INPUT THINGYS HERE
+    if (params.inputs_defaults != null) {        
+        htm += "<div class=\"__ldiv1\">";
+
+        for(let i = 0; i < params.inputs_defaults.length; ++i) {
+            const str = params.inputs_defaults[i];
+            htm += "<input class=\"__linput\" type=\"text\"" + (str.length ? (" value=\"" + str + "\"") : "") + " onkeyup=\"__lsw_i_popup_redir_in(event, " + i + ")\">";
+        }
+
+        htm += "</div>";
+    }
+
+    if (params.buttons != null) {
+        htm += "<div class=\"__ldiv3\" style=\" \
+width: 90%; \
+position: absolute; \
+bottom: 10%; \
+left: 5%; \
+\">";
+
+        for (let i = 0; params.buttons != null && i < params.buttons.length; ++i)
+        {
+            htm += "<button class=\"__lbtn\" onclick=\"__lsw_i_popup_redir_btn(event, " + i + ")\">" + params.buttons[i] + "</button>\n"
+        }
+
+        htm += "</div>";
+    }
+
+    over_elem.innerHTML = htm;
+
+    elem.appendChild(over_elem);
+
+    // WORKING ON IT
+
+    document.body.insertBefore(elem, document.body.firstChild);
+
+    obj._root_elem = elem;
+    __lsw_current_popup = obj;
+
+    return obj;
+}
 
 // Table array only available on tools_objectified because as 'class'-like it is much easier to manage

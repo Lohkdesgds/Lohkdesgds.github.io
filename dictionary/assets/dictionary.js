@@ -1762,9 +1762,13 @@ const __dict =
  {
   l: "brod",
   d: [
-   "comida, alimento, refeição, lanche",
-   "piquenique, intervalo para alimentar-se",
-   "remédio ingerível (euyt)"
+   "comida",
+   "alimento",
+   "refeição",
+   "lanche",
+   "piquenique",
+   "remédio",
+   "ingerível"
   ]
  },
  {
@@ -2151,7 +2155,9 @@ const __dict =
    "vacina",
    "cura",
    "seringa",
-   "remédio, drogas, medicamento (nyht euyt tue brod tdou ai tue ena?: esse remédio é de comer ou é vacina?)"
+   "remédio",
+   "drogas", 
+   "medicamento"
   ]
  },
  {
@@ -3887,6 +3893,17 @@ const __dict =
   l: "pulh",
   d: [
    "porco"
+  ]
+ },
+ {
+  l: "pury",
+  d: [
+   "estágio",
+   "parcial",
+   "temporário",
+   "estagiário",
+   "estação",
+   "período"
   ]
  },
  {
