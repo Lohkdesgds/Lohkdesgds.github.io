@@ -552,95 +552,174 @@ const __dict =
    "acanalhar",
    "falsar"
   ]
- }, // stopped here #######
+ },
  {
   l: "def",
   d: [
-   "criar, inovar",
-   "transformar uma ideia em algo novo, converter",
-   "cuidar de algo com carinho e/ou atenção",
-   "trabalhar com a cria de animais ou relacionado a sobrevivência e/ou procriação (ae trta def'ury?: você que cria/cuida/trata animais?)"
+   "criar",
+   "inovar",
+   "transformar",
+   "converter",
+   "cuidar",
+   "atentar",
+   "zelar"
   ]
  },
  {
   l: "dek",
   d: [
    "ensinar",
-   "mostrar, apresentar, apontar, descobrir (algo, para mostrar)",
-   "descamuflar (para se mostrar), aparecer, reaparecer, tirar fantasia, roupa, proteção, cobertor, o que estiver por cima"
+   "mostrar",
+   "apresentar",
+   "apontar",
+   "descobrir",
+   "descamuflar",
+   "aparecer",
+   "reaparecer",
+   "despir",
+   "desproteger"
   ]
  },
  {
   l: "des",
   d: [
-   "humilhar, se fazer acima de algo ou alguém, insinuar que algo ou alguém é superior a outra coisa (ae tue eu desga: você está me humilhando / tentando se passar como alguém melhor ou superiora mim)"
+   "humilhar",//", se fazer acima de algo ou alguém, insinuar que algo ou alguém é superior a outra coisa (ae tue eu desga: você está me humilhando / tentando se passar como alguém melhor ou superiora mim)"
+   "degradar",
+   "rebaixar",
+   "macular",
+   "desonrar",
+   "diminuir",
+   "infamar"
   ]
  },
  {
   l: "dla",
   d: [
-   "montar, juntar, combinar",
-   "construir, fundir",
-   "gerar, fazer forma, transformar"
+   "montar",
+   "juntar",
+   "combinar",
+   "construir",
+   "fundir",
+   "gerar",
+   "formar",
+   "transformar",
+   "subir",
+   "somar",
+   "adotar",
+   "acolher",
+   "aprovar",
+   "aderir"
   ]
  },
  {
   l: "dos",
   d: [
-   "processar, fazer algo com algo, trabalhar com coisas para resultar em algo",
-   "tratar um ferimento",
-   "tratar de negócios (dos clon ae lokt bty nyht hute: trate com ele para comprar essa casa)",
-   "processar alguém por algo que fez, processo, defesa (uegno ea dos!: vou te processar!)"
+   "processar", // fazer algo com algo, trabalhar com coisas para resultar em algo",
+   "trabalhar",
+   "tratar",
+   "negociar",
+   "processar",
+   "defender",
+   "cuidar",
+   "zelar",
+   "vigiar",
+   "cautelar",
+   "acautelar",
+   "precaver",
   ]
  },
  {
   l: "duh",
   d: [
-   "funcionar, encaixar, caber",
-   "costumar, acostumar, afazer, afeiçoar",
-   "habituar, praticar, treinar"
+   "funcionar",
+   "encaixar",
+   "caber",
+   "costumar",
+   "acostumar",
+   "afazer",
+   "afeiçoar",
+   "habituar",
+   "praticar",
+   "treinar"
   ]
  },
  {
   l: "dwa",
   d: [
-   "detonar, acabar com, explodir",
-   "foder, transar"
+   "detonar",
+   "explodir",
+   "foder",
+   "transar",
+   "estourar",
+   "penetrar",
+   "romper",
+   "jorrar",
+   "estalar",
+   "estralar",
+   "soar",
+   "zoar"
   ]
  },
  {
   l: "dyd",
   d: [
    "duvidar",
-   "perguntar, questionar"
+   "perguntar",
+   "questionar",
+   "hesitar",
+   "flutuar",
+   "oscilar",
+   "indagar",
+   "interrogar",
+   "sindicar"
   ]
  },
  {
   l: "ena",
   d: [
    "usar",
-   "aplicar (uegto ena nyht euyt trta'e: vou aplicar esta vacina em você)"
+   "aplicar",
+   "executar",
+   "empregar",
+   "recorrer",
+   "aproveitar",
+   "servir",
+   "explorar"
   ]
  },
  {
   l: "ene",
   d: [
    "lembrar",
-   "anotar (para lembrar depois)",
-   "decorar"
+   "anotar",
+   "escrever",
+   "decorar",
+   "fotografar",
+   "registrar",
+   "revelar",
+   "imprimir",
+   "colar",
+   "clonar",
+   "memorar",
+   "memorizar",
+   "recordar",
+   "relembrar",
+   "repassar"
   ]
- },
+ },// stopped here #######
  {
   l: "eny",
   d: [
-   "energizar, ligar",
+   "energizar",
+   "ligar",
    "levantar"
   ]
  },
  {
   l: "epy",
   d: [
-   "desligar, tirar energia",
+   "desligar",
+   "desenergizar",
    "agachar"
   ]
  },
