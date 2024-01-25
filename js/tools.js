@@ -106,7 +106,7 @@ function lsw_manage_get(parameter, set)
     }
 
     window.history.replaceState(null, null, "?" + str.substring(0, str.length - 1));
-    return return_str;
+    return decodeURI(return_str);
 }
 
 
@@ -121,6 +121,21 @@ function lsw_location_base() {
     search = href.lastIndexOf("?");
     if (search !== -1) href = href.substring(0, search);
     return href;
+}
+
+/*
+Get current URL without arguments
+- If you want to apply new get params, use this as base path
+*/
+function lsw_location()
+{
+    let href = window.location.href;
+    let search = href.indexOf("://");
+    search = href.indexOf("/", search < 0 ? 0 : search + 3);    
+    if (search !== -1) href = href.substring(0, search);
+    
+
+    return (href.lastIndexOf("/") !== href.length - 1) ? (href + "/") : href;
 }
 
 /*
@@ -140,8 +155,9 @@ Download a file from a URL async
 - url: string
 - callback: function(string)
 - error_callback: function(int, XMLHttpRequest)
+- headers_array_array: [[header, value], ...]
 */
-function lsw_download(url, callback, error_callback) {
+function lsw_download(url, callback, error_callback, headers_array_array) {
     let xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
@@ -155,6 +171,14 @@ function lsw_download(url, callback, error_callback) {
 
     };
     xhr.open("GET", url, true);
+
+    if (headers_array_array != null) {
+        for (let i = 0; i < headers_array_array.length; ++i) {
+            const pair = headers_array_array[i];
+            xhr.setRequestHeader(pair[0], pair[1]);
+        }
+    }
+
     xhr.send();
 }
 
@@ -178,40 +202,6 @@ function lsw_replace_download(div_id, url, callback)
         },
         function(err) {
             if (typeof callback === 'function') callback(false);
-        }
-    );
-}
-
-
-// ======================== EXXON USER INFORMATION ======================== //
-
-/*
-Request user information from API and callback with array of that data
-- callback: function(map|null)  | if null, failed. If map, contains 'username', 'email' and 'id'
-*/
-function lsw_current_user_exxon(callback)
-{
-    if (typeof callback !== 'function') { // nonsense
-        alert("Why are you calling this without a function to handle the data? You are wasting CPU");
-        return;
-    }
-
-    lsw_download("https://ishareteam4.na.xom.com/sites/curitiba/_api/web/CurrentUser",
-        function(content) {
-            let res = {
-                username: __lsw_parse_xml(content, "d:Title"),
-                email: __lsw_parse_xml(content, "d:Email"),
-                id: __lsw_parse_xml(content, "d:Id")
-            };
-
-            if (typeof callback === 'function') {
-                callback(res);
-            }
-        },
-        function(fail) {
-            if (typeof callback === 'function') {
-                callback(null);
-            }
         }
     );
 }
@@ -463,7 +453,7 @@ function lsw_import_file(cb_data)
 }
 
 /*
-PopUp (WIP)
+PopUp
 Make a fullscreen pop up on top of everything. It is self-served, I mean, no need for a object. It should work by itself
 - params:
   - title*: The big h2 title

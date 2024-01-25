@@ -20,7 +20,7 @@
     <script type="text/javascript" src="/js/tools.js"></script>
     <script type="text/javascript" src="/dictionary/assets/dictionary.js"></script>
 </head>
-<body>
+<body class="lsw-font-hidden">
     <div class="lsw-center"><a href="#" onclick="_reset()"><h1 class="lsw-title avali-font">Larinuim Dictionary Online</h1></a></div>
     <hr class="gray" />
     <div class="lsw-autoflex-up2">
@@ -471,6 +471,13 @@
 </html>
 
 <script>
+
+function remove_filter_font() {
+    const els = document.querySelectorAll("[class=\"lsw-font-hidden\"]");
+    for(let i = 0; i < els.length; ++i) els[i].classList.remove("lsw-font-hidden");
+}
+
+try { document.fonts.ready.then(remove_filter_font); } catch(e) { setTimeout(remove_filter_font, 100); }
 
 let last_result = larinuim_REMOVE_MODS("");
 

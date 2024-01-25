@@ -1,0 +1,330 @@
+/* ** => MAIN BLOCKS <= ** */
+
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;    
+    font-family: 'Segoe UI Emoji', 'Segoe UI Variable', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+body {
+    width: 100%;
+    max-width: 100%;
+    padding: 1em;
+    color: hsl(0, 0%, 100%);
+    text-shadow: 0px 0px 2px black;
+    background-color: hsl(52, 7%, 80%);
+}
+body.iframed { /* when iframed, transparent and small */
+    background-color: transparent !important;
+    padding: 0 !important;
+}
+
+.ym-hide {
+    display: none !important;
+}
+
+.ym-remove-on-load { /* user won't see things popping back or away while loading for a sec */
+    display: none !important;
+    background-color: transparent;
+}
+
+.ym-main-block {
+    background-color: hsl(0, 58%, 54%);
+    border-radius: 15px;
+    padding: 1.6em 2em 1.4em 2em;
+}
+
+.ym-header {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.ym-header > a > img {
+    max-height: 90px;
+    max-width: 100%;
+    display: block;
+    margin: auto;
+    padding: 0;
+}
+
+.ym-input {
+    margin: 1em 0 0.4em 0;
+}
+
+.ym-input > input {
+    width: 100%;
+    margin: 0;
+    padding-block: 0;
+    padding-inline: 0;
+    border-width: 0;
+    border-radius: 8px;
+    padding-left: 10px;
+    height: 42px;
+    box-sizing: border-box;
+}
+
+.ym-br {
+    width: 100%;
+    height: 1px;
+    background-color: rgb(0, 0, 0);
+    margin: 0;
+    padding: 0;
+    box-shadow: 0 0 1px 0.3px rgb(0, 0, 0);
+}
+
+.ym-canvas-title {
+    margin: 0.1em 0 0 0;
+    width: 100%;
+    height: 20px;
+}
+
+.ym-logging {
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    padding-inline-start: 0;
+    background-color: rgb(234, 234, 234);
+    padding: 0.7em;
+    margin: 0.6em 0;
+    list-style: none;
+    box-sizing: border-box;
+    display: block;
+    color: #112;
+    border-radius: 15px;    
+    text-shadow: none;
+}
+
+.ym-logging > li::before {
+    content: attr(date) ": ";
+    font-weight: 900;
+}
+
+.ym-array {
+    width: 100%;
+    display: flex;
+}
+
+.ym-array-gap-x {
+    width: 5px;
+    min-width: 5px;
+    max-width: 5px;
+    height: 1px;
+    margin: 0;
+}
+
+.ym-noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
+
+/* ** => BUTTONS CONFIG <= ** */
+
+.ym-button {
+    display: inline-block;
+
+    width: auto;
+    height: 40px;
+    line-height: 40px;
+
+    text-wrap: nowrap;
+    text-align: center;
+    text-shadow: 0px 0px 2px black;
+    font-size: large;
+
+    border-radius: 10px;
+    
+    margin: 0;
+    padding: 0;
+    border: 1px solid black;
+    
+    background-color: hsl(186, 37%, 35%);
+    transition: all 0.2s;
+    user-select: none;
+    
+    flex: 1 1 0px;
+}
+
+.ym-button.small {
+    width: 17px;
+    max-width: 17px;
+    height: 17px;
+    max-height: 17px;
+    line-height: 17px;
+
+    font-size: 12px;
+
+    border-radius: 8px;
+    
+    margin: 7px 2px;
+    padding: 0;
+    
+    background-color: hsl(230, 50%, 30%);
+    transition: all 0.2s;
+    user-select: none;
+    
+    flex: 0 0 auto;
+}
+
+.ym-button:hover {
+    transition: all 0.5s;
+    background-color: hsl(200, 60%, 65%);
+}
+.ym-button:active {
+    transition: all 0.5s;
+    background-color: hsl(210, 37%, 24%);
+}
+
+.ym-button.disabled { /* cannot use */
+    background-color: hsl(0, 0%, 30%);
+}
+.ym-button.disabled:hover {
+    transition: all 0.5s;
+    background-color: hsl(0, 0%, 40%);
+}
+.ym-button.disabled:active {
+    transition: all 1.5s;
+    background-color: hsl(0, 50%, 40%);
+}
+
+.ym-button.active { /* switch kind, on */
+    background-color: hsl(135, 60%, 37%);
+}
+.ym-button.active:hover {
+    transition: all 0.2s;
+    background-color: hsl(135, 77%, 47%);
+}
+.ym-button.active:active {
+    transition: all 0.2s;
+    background-color: hsl(135, 70%, 30%);
+}
+
+.ym-button.deactive { /* switch kind, off */
+    background-color: hsl(0, 60%, 37%);
+}
+.ym-button.deactive:hover {
+    transition: all 0.2s;
+    background-color: hsl(5, 70%, 55%)
+}
+.ym-button.deactive:active {
+    transition: all 0.2s;
+    background-color: hsl(0, 70%, 30%);
+}
+
+
+/* ** => BARS CONFIG <= ** */
+
+.ym-progress-bar {
+    width: 80%;
+    height: 17px;
+    background-color: rgb(116, 92, 0);
+    margin: 0;
+    padding: 0;
+    box-shadow: 0 0 1px 0.3px rgb(0, 0, 0);
+    border-radius: 8px;
+    margin: 0.5em 0.1em;
+    box-sizing: border-box;
+    border: 1px solid black;
+    position: relative;
+}
+.ym-progress-bar > span {
+    pointer-events: none;
+    user-select: none;
+    text-align: center;
+    width: 100%;
+    display: inline-block;
+    transform: translate(0, -4px);
+    font-size: 14px;
+    text-shadow: 1px 1px 2px black;
+}
+.ym-volume-bar {
+    width: 20%;
+    height: 17px;
+    background-color: rgb(116, 0, 0);
+    margin: 0;
+    padding: 0;
+    box-shadow: 0 0 1px 0.3px rgb(0, 0, 0);
+    border-radius: 8px;
+    margin: 0.5em 0.1em;
+    box-sizing: border-box;
+    border: 1px solid black;
+    position: relative;
+}
+.ym-volume-bar > span {
+    pointer-events: none;
+    user-select: none;
+    text-align: center;
+    width: 100%;
+    display: inline-block;
+    transform: translate(0, -4px);
+    font-size: 14px;
+    text-shadow: 1px 1px 2px black;
+}
+.ym-volume-bar-text-emoji {
+    line-height: 17px;
+    text-align: center;
+    padding: 0.44em 0.1em;
+}
+
+
+/* ** => PLAYER CONFIG <= ** */
+
+.ym-player {
+    box-sizing: border-box;
+    padding: 1em;
+    margin: 0.6em 0;
+    background-color: hsl(0, 50%, 50%);
+    border-radius: 15px;
+    pointer-events: none;
+}
+
+.ym-player > iframe { 
+    border-radius: 10px;
+}
+
+.ym-fadein {
+    /* time, times, normal/reverse, name*/
+    animation: fadeInM 1s forwards;
+}
+.ym-fadeout {
+    /* time, times, normal/reverse, name*/
+    animation: fadeOutM 1s forwards;
+}
+
+@keyframes fadeInM {
+    0% {
+        display: inherit;
+        opacity: 0;
+    }
+    100% {
+        display: inherit;
+        opacity: 1;
+    }
+}
+@keyframes fadeOutM {
+    0% {
+        display: inherit;
+        opacity: 1;
+        max-height: max-content;
+    }
+    80% {
+        max-height: 520px;
+    }
+    99.9% {
+        display: inherit;
+        max-height: 1px;
+        opacity: 0;
+    }
+    100% {
+        display: none;
+        opacity: 0;
+    }
+}

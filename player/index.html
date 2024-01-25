@@ -3,62 +3,98 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE11">
     <html lang="en">
-        
-    <title>Simple Player v2</title>
+
+    <title>Your Music V2</title>
     
-    <script type="text/javascript" src="/js/youtube.js"></script>
-    <script type="text/javascript" src="/js/sliders.js"></script>
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+
+    <!-- Shared stuff -->
     <script type="text/javascript" src="/js/tools.js"></script>
-    <link href="/css/sliders.css" media="all" rel="stylesheet" />
-    <link href="/css/common.css" media="all" rel="stylesheet" />
+    
+    <!-- Specific to this site -->
+    <link href="css/music.css" media="all" rel="stylesheet" />
+    <script type="text/javascript" src="js/music.js" defer></script>
+    <script type="text/javascript" src="js/youtube.js" defer></script>
 </head>
-<body>
-    
-    <input id="youtube_search" placeholder="Youtube URL (video or playlist) here and hit ENTER!">
-    
-    <div class="lsw-slider_default" style="position: relative; overflow: hidden; width: 100%; height: 36px; margin: 27px auto 0 auto; border-radius: 10px; box-shadow: 1px 1px 5px 2px #7e7e7e, inset 0 0 2px 1px #fff;" sliderenable="true" onslider="progress_callback">
-        <div id="youtube_progress" style="width: 100%; min-width: 18px; height: 36px; background-color: rgb(255, 189, 67); border-radius: 10px;"></div>
-        <p style="position: absolute; text-shadow: 1px 1px rgba(0,0,0,0.6); top: -3px; left: 0; width: 100%; text-align: center;" id="progress_text">Loading...</p>
-    </div>
+<body class="iframed">
+    <div class="ym-remove-on-load">
+        <div class="ym-main-block">
 
-    <ul class="lsw-ul_inline">
-        <li>
-            <a class="lsw-btn_default" id='youtube_text' href="#" onclick="my_youtube.PlayPause()">
-                Starting...
-            </a>
-        </li>
-        <li>
-            <a class="lsw-btn_default" href="#" id="youtube_next" onclick="my_youtube.Next()">
-                Next
-            </a>
-        </li>
-        <li>
-            <a class="lsw-btn_default"  href="#" id="youtube_prev" onclick="my_youtube.Previous()">
-                Previous
-            </a>
-        </li>
-    </ul>
-    <ul class="lsw-ul_inline">
-        <li>
-            <div class="lsw-blk_default">
-                <p>Volume:</p>
-                <div class="lsw-slider_default" style="border-radius: 8px; height: 10px; width: 200px; background-color: red;" sliderenable="true" onslider="volume_callback">
-                    <div style="border-radius: 8px;width: 10px; height: 10px;  background-color: blue" id="volume_slider_inn"></div>
-            </div>                
-        <li>
-        </li>
+            <div class="ym-header" id="img_header" role="header" remove_on_iframe>
+                <a href="#"><img title="Reload" src="images/header.png"></img></a>
             </div>
-        </li>
-    </ul>
-    
-    <br />
+            
+            <div class="ym-input" id="input_block" remove_on_iframe>
+                <input id="search" placeholder="Youtube URL (video, playlist, YouTube Music, ...) here and hit ENTER!">
+            </div>
 
-    <div style="width: 100%; margin: 0 auto;">
-        <ul class="lsw-list_log" id='loglist'></ul>
+            <div class="ym-br"></div>
+
+            <canvas id="scrolling_text" class="ym-canvas-title"></canvas>
+            
+            <div class="ym-br"></div>
+            
+            <div class="ym-array">
+                <div class="ym-button small ym-hide" id="pl_play_alt" show_on_iframe>⏯️</div>
+                <div
+                    class="ym-progress-bar"
+                    id="slider_progress"
+                    colorlow="hsl(30, 60%, 20%)"
+                    colorhigh="hsl(45, 75%, 50%)"
+                    colorliveback="rgb(1, 112, 255)"
+                    colorlivehighlight="rgb(0, 197, 115)"
+                >
+                    <span>00:00:00</span>
+                </div>
+                <span class="ym-volume-bar-text-emoji ym-noselect">🔊</span>
+                <div
+                    class="ym-volume-bar"
+                    id="slider_vol"
+                    colorlow="hsl(140, 40%, 20%)"
+                    colorhigh="hsl(140, 70%, 50%)"
+                >
+                    <span>80%</span>
+                </div>
+            </div>
+
+            <div class="ym-array ym-noselect" id="control_bar" remove_on_iframe>
+                <div class="ym-button deactive" style="max-width: 28px;" id="pl_show" remove_on_iframe>🔆</div>
+
+                  <div class="ym-array-gap-x"></div>
+
+                <div class="ym-button disabled" id="pl_back">⏮️</div>
+
+                  <div class="ym-array-gap-x"></div>
+
+                <div class="ym-button       "   id="pl_play">⏯️</div>
+
+                  <div class="ym-array-gap-x"></div>
+
+                <div class="ym-button disabled" id="pl_forw">⏭️</div>
+
+                  <div class="ym-array-gap-x"></div>
+
+                <div class="ym-button deactive disabled" id="pl_shuf">🔀</div>
+
+                  <div class="ym-array-gap-x"></div>
+
+                <div class="ym-button deactive" id="pl_rept">🔁</div>
+
+                  <div class="ym-array-gap-x"></div>
+
+                <div class="ym-button" style="max-width: 28px;" id="loglisttoggle" remove_on_iframe>⚙️</div>
+
+            </div>
+        </div>
+
+        <div class="ym-player ym-fadeout" id="yt-wrapper" currentheight="500px" style="display: none;">
+            <div id="yt-player"></div>
+        </div>
+        
+        <ul id="loglist" maxlines="20" class="ym-logging ym-fadeout" currentheight="500px" style="display: none;" remove_on_iframe>
+        </ul>
     </div>
-
 </body>
-<script type="text/javascript" src="assets/player.js"></script>
 </html>
