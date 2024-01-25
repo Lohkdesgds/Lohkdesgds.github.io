@@ -474,7 +474,7 @@
 
 function remove_filter_font() {
     const els = document.querySelectorAll("[class=\"lsw-font-hidden\"]");
-    for(let i = 0; i < els.length; ++i) els[i].classList.remove(els);
+    for(let i = 0; i < els.length; ++i) els[i].classList.remove("lsw-font-hidden");
 }
 
 try { document.fonts.ready.then(remove_filter_font); } catch(e) { setTimeout(remove_filter_font, 100); }
