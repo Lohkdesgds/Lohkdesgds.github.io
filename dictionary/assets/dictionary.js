@@ -728,70 +728,99 @@ const __dict =
   d: [
    "chupar",
    "sugar",
-   "remover (sugando)",
+   "remover",
    "inspirar"
   ]
  },
  {
   l: "ety",
   d: [
-   "afastar, distanciar algo",
+   "afastar", 
+   "distanciar",
    "separar",
-   "desconectar, desplugar",
-   "terminar (namoro, relação, algo que dependa de duas partes ou mais juntas)"
+   "desconectar", 
+   "desplugar",
+   "terminar"
   ]
  },
  {
   l: "faq",
   d: [
    "levar",
-   "transportar (para algum lugar)",
-   "carregar (algo para outro lugar distante)"
+   "transportar",
+   "carregar"
   ]
  },
  {
   l: "fla",
   d: [
-   "copiar, parecer (ae fla inna lope: você parece/\"se apresenta como\" uma folha / \"você veio vestido de folha\"), disfarçar (como algo)",
-   "vestir (algo para disfarce ou para se apresentar em algum lugar especial)(ue gno eu fla lokt inna plar: eu vou me arrumar para o trabalho)",
-   "imprimir, fazer parecer, fazer algo parecer"
+   "copiar",
+   "parecer",
+   "disfarçar",
+   "apresentar",
+   "vestir",
+   "arrumar",
+   "imprimir",
+   "transformar"
   ]
  },
  {
   l: "fle",
   d: [
-   "dizer, falar sério",
-   "ditado, algo sempre falado, que dizem muito, comum"
+   "dizer",
+   "impor",
+   "falar",
+   "ditar",
+   "comandar"
   ]
  },
  {
   l: "flo",
   d: [
-   "cair, tropeçar",
-   "afundar, descer bastante",
-   "mergulhar de cabeça em algo, aprofundar",
-   "estar presente entre outras coisas (ae flo trta olal klan yoiu: você caiu/entrou no time vermelho)",
-   "soltar, deixar de estar preso em algo, desamarrar"
+   "cair",
+   "tropeçar",
+   "afundar",
+   "mergulhar",
+   "aprofundar",
+   "entrar",
+   "soltar",
+   "desprender",
+   "desamarrar"
   ]
  },
  {
   l: "fti",
   d: [
-   "adicionar, somar",
-   "obter algo por meio da soma, junção ou transformação",
-   "adquirir (a si ou para algo)",
-   "entrar em um grupo, equipe, para adicionar algo (somar forças)"
+   "adicionar",
+   "somar",
+   "incrementar",
+   "juntar",
+   "transformar",
+   "adquirir",
+   "entrar"
   ]
  },
  {
   l: "fur",
   d: [
-   "conseguir, obter com sucesso",
-   "solucionar, resolver",
-   "terminar, acabar, finalizar",
-   "conquistar, capturar",
-   "prender, trancar, trancafiar, bloquear, fechar",
-   "resistir, sobreviver, garantir, sustentar"
+   "conseguir",
+   "dominar",
+   "solucionar",
+   "resolver",
+   "terminar",
+   "acabar",
+   "finalizar",
+   "conquistar",
+   "capturar",
+   "prender",
+   "trancar",
+   "trancafiar",
+   "bloquear",
+   "fechar",
+   "resistir",
+   "sobreviver",
+   "garantir",
+   "sustentar"
   ]
  },
  {
