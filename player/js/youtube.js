@@ -189,6 +189,8 @@ function yt_get_duration_time_obj()
 
 function yt_get_relative_duration_time_obj_from_perc(x)
 {
+    if (yt_data.player_itself == null || typeof yt_data.player_itself["getDuration"] !== 'function') return 0;
+
     let ans = {
         days: 0,
         hours: 0,
@@ -207,6 +209,8 @@ function yt_get_relative_duration_time_obj_from_perc(x)
 
 function yt_get_current_time_obj()
 {
+    if (yt_data.player_itself == null || typeof yt_data.player_itself["getCurrentTime"] !== 'function') return 0;
+
     let ans = {
         days: 0,
         hours: 0,
@@ -233,16 +237,16 @@ function yt_get_is_playlist()
 }
 function yt_is_playing()
 {
-    return yt_data.player_itself == null ? false : (yt_data.player_itself.getPlayerState() !== 2 && yt_data.player_itself.getPlayerState() !== -1);
+    return yt_data.player_itself == null ? false : (typeof yt_data.player_itself["getPlayerState"] === 'function' ? (yt_data.player_itself.getPlayerState() !== 2 && yt_data.player_itself.getPlayerState() !== -1) : false);
 }
 function ys_has_video_failed()
 {
-    return yt_data.player_itself == null ? true : yt_data.player_itself.getPlayerState() < 0;
+    return yt_data.player_itself == null ? true : (typeof yt_data.player_itself["getPlayerState"] === 'function' ? (yt_data.player_itself.getPlayerState() < 0) : true);
 }
 
 function yt_get_progress_perc()
 {
-    return yt_data.player_itself == null ? 0 : yt_data.player_itself.getCurrentTime() / yt_data.player_itself.getDuration();
+    return yt_data.player_itself == null ? 0 : (typeof yt_data.player_itself["getCurrentTime"] === 'function' && typeof yt_data.player_itself["getDuration"] === 'function' ? (yt_data.player_itself.getCurrentTime() / yt_data.player_itself.getDuration()) : 0);
 }
 
 function __yt_on_ready(event) {
@@ -287,6 +291,9 @@ function __yt_on_state(event)
         }
         yt_data.player_itself.setVolume(Math.round(yt_data.user_props.volume * 100));
         setTimeout(function(){ yt_data.player_itself.setVolume(Math.round(yt_data.user_props.volume * 100)); }, 500);
+
+        if (yt_data.player_itself.getCurrentTime() > 43200 /* 12 hours, max upload time raw (or 256 GB) */) yt_data.user_props.is_livestream = true;
+        
         yt_data.user_props.is_paused = false;
         break;
     case 2: // pause
