@@ -182,8 +182,8 @@ const __dict =
   l: "av",
   d: [
    "seu",
-   "sua", 
-   "seus", 
+   "sua",
+   "seus",
    "suas"
   ]
  },
@@ -260,7 +260,7 @@ const __dict =
    "produzir",
    "ajustar",   
    "prontificar",
-   "(fazer) existir"
+   "existir"
   ]
  },
  {
@@ -706,13 +706,23 @@ const __dict =
    "relembrar",
    "repassar"
   ]
- },// stopped here #######
+ },
  {
   l: "eny",
   d: [
    "energizar",
    "ligar",
-   "levantar"
+   "levantar",
+   "subir",
+   "empoderar",
+   "conectar",
+   "plugar",
+   "inserir",
+   "alimentar",
+   "engravidar",
+   "revidar",
+   "bater",
+   "golpear"
   ]
  },
  {
@@ -720,7 +730,14 @@ const __dict =
   d: [
    "desligar",
    "desenergizar",
-   "agachar"
+   "agachar",
+   "descer",
+   "renunciar",
+   "desconectar",
+   "desplugar",
+   "remover",
+   "esfomear",
+   "abortar"
   ]
  },
  {
@@ -729,7 +746,12 @@ const __dict =
    "chupar",
    "sugar",
    "remover",
-   "inspirar"
+   "inspirar",
+   "comprimir",
+   "compactar",
+   "esmagar",
+   "apertar",
+   "pressionar"
   ]
  },
  {
@@ -740,7 +762,14 @@ const __dict =
    "separar",
    "desconectar", 
    "desplugar",
-   "terminar"
+   "terminar",
+   "abortar",
+   "analisar",
+   "desdobrar",
+   "decifrar",
+   "combater",
+   "relaxar",
+   "descansar"
   ]
  },
  {
@@ -748,7 +777,11 @@ const __dict =
   d: [
    "levar",
    "transportar",
-   "carregar"
+   "carregar",
+   "enviar",
+   "transferir",
+   "promover",
+   "movimentar"
   ]
  },
  {
@@ -756,6 +789,7 @@ const __dict =
   d: [
    "copiar",
    "parecer",
+   "clonar",
    "disfarçar",
    "apresentar",
    "vestir",
@@ -768,10 +802,15 @@ const __dict =
   l: "fle",
   d: [
    "dizer",
-   "impor",
    "falar",
+   "impor",
    "ditar",
-   "comandar"
+   "comandar",
+   "anunciar",
+   "postar",
+   "enviar",
+   "apresentar",
+   "motivar"
   ]
  },
  {
@@ -797,7 +836,8 @@ const __dict =
    "juntar",
    "transformar",
    "adquirir",
-   "entrar"
+   "entrar",
+   "sincronizar"
   ]
  },
  {
@@ -826,19 +866,29 @@ const __dict =
  {
   l: "fyl",
   d: [
-   "animar, alegrar, deixar pessoas felizes de alguma forma",
-   "enfeitar, melhorar, embelezar, produzir-se",
-   "reanimar, acordar, nascer",
-   "irradiar, brilhar, crescer (como uma flor cresce e floresce)",
-   "revelar, desmascarar"
+   "animar",
+   "alegrar",
+   "enfeitar",
+   "melhorar",
+   "embelezar",
+   "produzir",
+   "reanimar",
+   "acordar",
+   "nascer",
+   "irradiar",
+   "brilhar",
+   "crescer",
+   "revelar",
+   "desmascarar"
   ]
  },
- {
+ { // ######## stopped here ################
   l: "gaq",
   d: [
    "conduzir, guiar",
-   "seguir, trilhar o mesmo caminho que alguém",
-   "inscrever, assinar"
+   "seguir, trilhar",
+   "inscrever, assinar",
+   "caminhar"
   ]
  },
  {
@@ -846,25 +896,25 @@ const __dict =
   d: [
    "ajudar",
    "colaborar",
-   "participar em algo positivamente",
+   "participar",
    "retribuir",
-   "investir, aplicar, fazer algo para positivamente influenciar algo",
-   "doar, oferecer algo, para ajudar o próximo"
+   "investir, aplicar",
+   "doar, oferecer"
   ]
  },
  {
   l: "gku",
   d: [
-   "preocupar, deixar preocupado",
+   "preocupar",
    "assustar",
-   "destacar, deixar destacado, fazer aparecer, aparecer em destaque",
-   "fixar, colocar em foco, dar destaque a algo para pesquisar sobre, tachar"
+   "destacar, aparecer, destacar",
+   "fixar, focar, tachar"
   ]
  },
  {
   l: "gno",
   d: [
-   "Ir",
+   "ir",
    "passar",
    "expirar, perecer",
    "acabar, terminar, finalizar"
@@ -1043,7 +1093,7 @@ const __dict =
  {
   l: "lar",
   d: [
-   "trabalhar (uma ideia, desenvolver)",
+   "trabalhar, desenvolver",
    "manusear"
   ]
  },
@@ -1504,10 +1554,12 @@ const __dict =
  {
   l: "tbd",
   d: [
-   "ficar bem",
    "melhorar",
-   "ficar saudável",
-   "deixar de passar mal ou ter dor"
+   "sarar",
+   "revigorar",
+   "recuperar",
+   "restaurar",
+   "resistir"
   ]
  },
  {
@@ -1521,7 +1573,7 @@ const __dict =
   l: "tol",
   d: [
    "ganhar",
-   "vencer (vitória)"
+   "vencer"
   ]
  },
  {
@@ -1565,7 +1617,7 @@ const __dict =
   l: "ugs",
   d: [
    "retornar",
-   "voltar (de um lugar ou estado)"
+   "voltar"
   ]
  },
  {
@@ -1749,29 +1801,29 @@ const __dict =
  {
   l: "abia",
   d: [
-   "lama, terra molhada",
+   "lama, terra",
    "sujeira, sujo"
   ]
  },
  {
   l: "aete",
   d: [
-   "nome, identificação, palavra que identifique alguém"
+   "nome, identificação, palavra, título"
   ]
  },
  {
   l: "afoh",
   d: [
-   "cachorro, cadela (animal doméstico)",
-   "pet, bichinho de estimação",
+   "cachorro, cadela",
+   "pet, estimação",
    "subordinado, dependente",
-   "derivado, originado de"
+   "derivado, originado"
   ]
  },
  {
   l: "ahly",
   d: [
-   "ilha, monte de terra rodeado por água geralmente grande"
+   "ilha, monte, círculo, área"
   ]
  },
  {
@@ -1796,17 +1848,17 @@ const __dict =
   l: "anoa",
   d: [
    "sol",
-   "fogo, quente, fonte de calor, fogueira",
+   "fogo, quente, fonte, fogueira",
    "centro, origem",
    "verão",
-   "destaque, destacado, em foco, ponto, argumento"
+   "destaque, destacado, foco, ponto, argumento"
   ]
  },
  {
   l: "aout",
   d: [
    "tomada, plugue, encaixe, conector",
-   "buraco (para passagem ou transporte), veia, artéria, via"
+   "buraco, túnel, viaduto, veia, artéria, via"
   ]
  },
  {
@@ -1824,20 +1876,20 @@ const __dict =
  {
   l: "awfo",
   d: [
-   "recuperação, o ato de recuperar, o processo de conserto, correção"
+   "recuperação, conserto, correção"
   ]
  },
  {
   l: "bduh",
   d: [
-   "bobo, no sentido de um erro engraçado ou numa conversa casual, sem sentido negativo em si"
+   "bobo, palhaço, animador, humorista"
   ]
  },
  {
   l: "bite",
   d: [
-   "ano, 365 dias, conjunto de meses que formam o ano",
-   "luz, luminosidade, energia (de luz)"
+   "ano",
+   "luz, luminosidade, energia"
   ]
  },
  {
@@ -1849,10 +1901,10 @@ const __dict =
  {
   l: "body",
   d: [
-   "bolo, massa em formato de bolo, alimento à base de massa",
-   "conjunto, objetos juntos em um espaço",
-   "conjunto de peças que fazem sentido juntas, organizadas de alguma maneira",
-   "lista, pasta (de documentos, por exemplo)"
+   "bolo, massa, alimento, pasta",
+   "conjunto, molho",
+   "lista, vetor",
+   "pasta, arquivo"
   ]
  },
  {
@@ -1864,7 +1916,7 @@ const __dict =
  {
   l: "brad",
   d: [
-   "pão, massa de pão"
+   "pão, massa"
   ]
  },
  {
@@ -1882,13 +1934,13 @@ const __dict =
  {
   l: "brot",
   d: [
-   "boca, orifício bucal"
+   "boca, orifício"
   ]
  },
  {
   l: "brum",
   d: [
-   "cotovelo, canto do braço",
+   "cotovelo, canto",
    "maluco, doido, insano",
    "maravilha, maravilhoso, incrível"
   ]
@@ -1896,69 +1948,69 @@ const __dict =
  {
   l: "brus",
   d: [
-   "ônibus, veículo de transporte para muitas pessoas",
-   "multidão, conjunto de pessoas em um lugar ou em algo"
+   "ônibus, transporte",
+   "multidão, conjunto, grupo, turma"
   ]
  },
  {
   l: "buno",
   d: [
-   "parte traseira, de trás",
-   "orifício anal"
+   "traseira, trás",
+   "ânus"
   ]
  },
  {
   l: "bunt",
   d: [
-   "mil, multiplicador, multiplicado por mil"
+   "mil, multiplicador, fator"
   ]
  },
  {
   l: "bvor",
   d: [
-   "executável, jogo, programa, código executável do computador, aplicativo",
-   "programa, calendário, rotina, roteiro pro dia"
+   "executável, jogo, programa, código, aplicativo",
+   "programa, calendário, rotina, roteiro"
   ]
  },
  {
   l: "carr",
   d: [
-   "caro, não barato, custoso",
-   "cansativo, que custa tempo ou energia, demorado"
+   "caro, custoso",
+   "cansativo, demorado, desgastante"
   ]
  },
  {
   l: "cite",
   d: [
-   "cinco, número cinco"
+   "cinco"
   ]
  },
  {
   l: "cloc",
   d: [
    "feijão",
-   "borrado, não nítido",
-   "esquecido, lembrança confusa"
+   "borrado, oblíquo",
+   "esquecido, confuso"
   ]
  },
  {
   l: "clon",
   d: [
-   "com, como, com o (clon alul: com o cavalo)"
+   "com, como"
   ]
  },
  {
   l: "colk",
   d: [
-   "mistura de alimentos, prato misturado",
+   "mistura, prato",
    "feijoada"
   ]
  },
  {
   l: "coln",
   d: [
-   "controle (remoto), ferramenta de controle (de algo ou alguém)",
-   "poder de controlar algo, controlador (ae tar coln lolk cruy: você tem o controle do mundo)"
+   "controle, ferramenta",
+   "controlador, administrador"
   ]
  },
  {
