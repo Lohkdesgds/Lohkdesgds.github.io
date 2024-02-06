@@ -1,5 +1,13 @@
 // Larinuim dictionary in array/objectified way
 
+function count_string_match(str1, str2)
+{
+    let i = 0;
+    if (str1 === str2) return 1000;
+    while(i < str1.length && i < str2.length && str1[i] === str2[i]) ++i;
+    return i;
+}
+
 function larinuim_FIND_ANY(word) {
     if (word.startsWith("exact:")){
         return larinuim_FIND_WORD(word.substring(("exact:").length));
@@ -11,7 +19,7 @@ function larinuim_FIND_ANY(word) {
         if (obj.l.indexOf(word) != -1) {
             opts[opts.length] = {
                 o: obj,
-                w: (obj.l === word ? -999 : 0)
+                w: (-10 - count_string_match(obj.l, word))
             };
         }
         else {
@@ -20,7 +28,7 @@ function larinuim_FIND_ANY(word) {
                 if (obj.d[j].indexOf(word) >= 0) {
                     opts[opts.length] = { 
                         o: __dict[i],
-                        w: (obj.d[j] === word ? (j - 300) : (j + 50)) + (obj["discontinued"] === true ? 1000 : 0)
+                        w: (10 - 2 * count_string_match(obj.d[j], word)) + (obj["discontinued"] === true ? 1000 : 0)
                     };
                     found = true;
                     break;
@@ -31,14 +39,14 @@ function larinuim_FIND_ANY(word) {
                     if (obj.e[j][0].indexOf(word) >= 0) {
                         opts[opts.length] = { 
                             o: __dict[i],
-                            w: (obj.e[j][0] === word ? (j - 100) : (j + 200)) + (obj["discontinued"] === true ? 1000 : 0)
+                            w: (30 - 6 * count_string_match(obj.e[j][0], word)) + (obj["discontinued"] === true ? 1000 : 0)
                         };
                         break;
                     }
                     if (obj.e[j][1].indexOf(word) >= 0) {
                         opts[opts.length] = { 
                             o: __dict[i],
-                            w: (obj.e[j][1] === word ? (j - 100) : (j + 200)) + (obj["discontinued"] === true ? 1000 : 0)
+                            w: (30 - 6 * count_string_match(obj.e[j][1], word)) + (obj["discontinued"] === true ? 1000 : 0)
                         };
                         break;
                     }
@@ -175,6 +183,10 @@ const __dict =
    "você",
    "ele",
    "sujeito"
+  ],
+  e: [
+    ["ae tue gatx","você é bonito"],
+    ["ae pod jap", "ele pode voar"]
   ]
  },
  {
@@ -182,6 +194,10 @@ const __dict =
   d: [
    "isso",
    "isto"
+  ],
+  e: [
+    ["ai tue topt","isso é divertido"],
+    ["maol ai tuepa wafku","então isso foi concluído"]
   ]
  },
  {
@@ -189,6 +205,9 @@ const __dict =
   d: [
    "vosso",
    "vossa"
+  ],
+  e: [
+    ["as kjor, ueqne kik","vossa senhoria, desejo dormir"]
   ]
  },
  {
@@ -196,6 +215,9 @@ const __dict =
   d: [
    "nosso",
    "nossa"
+  ],
+  e: [
+    ["au brad lol tohd etit","nosso pão de cada dia"]
   ]
  },
  {
@@ -3528,7 +3550,9 @@ const __dict =
   l: "kjor",
   d: [
    "personalidade",
-   "pessoa"
+   "pessoa",
+   "senhor",
+   "senhoria"
   ]
  },
  {
