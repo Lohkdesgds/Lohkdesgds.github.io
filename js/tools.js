@@ -120,6 +120,8 @@ function lsw_location_base() {
     if (search !== -1) href = href.substring(0, search);
     search = href.lastIndexOf("?");
     if (search !== -1) href = href.substring(0, search);
+    search = href.lastIndexOf("/");
+    if (search !== -1) href = href.substring(0, search);
     return href;
 }
 
