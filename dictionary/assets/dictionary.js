@@ -15,13 +15,33 @@ function larinuim_FIND_ANY(word) {
             };
         }
         else {
+            let found = false;
             for(let j = 0; j < obj.d.length; ++j) {
                 if (obj.d[j].indexOf(word) >= 0) {
                     opts[opts.length] = { 
                         o: __dict[i],
-                        w: (obj.d[j] === word ? (j - 300) : j)
+                        w: (obj.d[j] === word ? (j - 300) : (j + 50)) + (obj["discontinued"] === true ? 1000 : 0)
                     };
+                    found = true;
                     break;
+                }
+            }
+            if (!found) {                
+                for(let j = 0; obj["e"] != null && j < obj.e.length; ++j) {
+                    if (obj.e[j][0].indexOf(word) >= 0) {
+                        opts[opts.length] = { 
+                            o: __dict[i],
+                            w: (obj.e[j][0] === word ? (j - 100) : (j + 200)) + (obj["discontinued"] === true ? 1000 : 0)
+                        };
+                        break;
+                    }
+                    if (obj.e[j][1].indexOf(word) >= 0) {
+                        opts[opts.length] = { 
+                            o: __dict[i],
+                            w: (obj.e[j][1] === word ? (j - 100) : (j + 200)) + (obj["discontinued"] === true ? 1000 : 0)
+                        };
+                        break;
+                    }
                 }
             }
         }
@@ -182,8 +202,8 @@ const __dict =
   l: "av",
   d: [
    "seu",
-   "sua", 
-   "seus", 
+   "sua",
+   "seus",
    "suas"
   ]
  },
@@ -258,9 +278,9 @@ const __dict =
    "preparar",
    "gerar",
    "produzir",
-   "ajustar",   
+   "ajustar",
    "prontificar",
-   "(fazer) existir"
+   "existir"
   ]
  },
  {
@@ -583,7 +603,9 @@ const __dict =
  {
   l: "des",
   d: [
-   "humilhar",//", se fazer acima de algo ou alguém, insinuar que algo ou alguém é superior a outra coisa (ae tue eu desga: você está me humilhando / tentando se passar como alguém melhor ou superiora mim)"
+   "humilhar",
+   "se fazer acima de algo ou alguém",
+   "insinuar que algo ou alguém é superior a outra coisa",
    "degradar",
    "rebaixar",
    "macular",
@@ -614,8 +636,9 @@ const __dict =
  {
   l: "dos",
   d: [
-   "processar", // fazer algo com algo, trabalhar com coisas para resultar em algo",
-   "trabalhar",
+   "processar",
+   "fazer algo com algo",
+   "trabalhar (com coisas para resultar em algo)",
    "tratar",
    "negociar",
    "processar",
@@ -706,13 +729,23 @@ const __dict =
    "relembrar",
    "repassar"
   ]
- },// stopped here #######
+ },
  {
   l: "eny",
   d: [
    "energizar",
    "ligar",
-   "levantar"
+   "levantar",
+   "subir",
+   "empoderar",
+   "conectar",
+   "plugar",
+   "inserir",
+   "alimentar",
+   "engravidar",
+   "revidar",
+   "bater",
+   "golpear"
   ]
  },
  {
@@ -720,7 +753,14 @@ const __dict =
   d: [
    "desligar",
    "desenergizar",
-   "agachar"
+   "agachar",
+   "descer",
+   "renunciar",
+   "desconectar",
+   "desplugar",
+   "remover",
+   "esfomear",
+   "abortar"
   ]
  },
  {
@@ -729,18 +769,30 @@ const __dict =
    "chupar",
    "sugar",
    "remover",
-   "inspirar"
+   "inspirar",
+   "comprimir",
+   "compactar",
+   "esmagar",
+   "apertar",
+   "pressionar"
   ]
  },
  {
   l: "ety",
   d: [
-   "afastar", 
+   "afastar",
    "distanciar",
    "separar",
-   "desconectar", 
+   "desconectar",
    "desplugar",
-   "terminar"
+   "terminar",
+   "abortar",
+   "analisar",
+   "desdobrar",
+   "decifrar",
+   "combater",
+   "relaxar",
+   "descansar"
   ]
  },
  {
@@ -748,7 +800,11 @@ const __dict =
   d: [
    "levar",
    "transportar",
-   "carregar"
+   "carregar",
+   "enviar",
+   "transferir",
+   "promover",
+   "movimentar"
   ]
  },
  {
@@ -756,6 +812,7 @@ const __dict =
   d: [
    "copiar",
    "parecer",
+   "clonar",
    "disfarçar",
    "apresentar",
    "vestir",
@@ -768,10 +825,15 @@ const __dict =
   l: "fle",
   d: [
    "dizer",
-   "impor",
    "falar",
+   "impor",
    "ditar",
-   "comandar"
+   "comandar",
+   "anunciar",
+   "postar",
+   "enviar",
+   "apresentar",
+   "motivar"
   ]
  },
  {
@@ -797,7 +859,8 @@ const __dict =
    "juntar",
    "transformar",
    "adquirir",
-   "entrar"
+   "entrar",
+   "sincronizar"
   ]
  },
  {
@@ -826,19 +889,32 @@ const __dict =
  {
   l: "fyl",
   d: [
-   "animar, alegrar, deixar pessoas felizes de alguma forma",
-   "enfeitar, melhorar, embelezar, produzir-se",
-   "reanimar, acordar, nascer",
-   "irradiar, brilhar, crescer (como uma flor cresce e floresce)",
-   "revelar, desmascarar"
+   "animar",
+   "alegrar",
+   "enfeitar",
+   "melhorar",
+   "embelezar",
+   "produzir",
+   "reanimar",
+   "acordar",
+   "nascer",
+   "irradiar",
+   "brilhar",
+   "crescer",
+   "revelar",
+   "desmascarar"
   ]
  },
- {
+ { // ######## stopped here ################
   l: "gaq",
   d: [
-   "conduzir, guiar",
-   "seguir, trilhar o mesmo caminho que alguém",
-   "inscrever, assinar"
+   "conduzir",
+   "guiar",
+   "seguir",
+   "trilhar",
+   "inscrever",
+   "assinar",
+   "caminhar"
   ]
  },
  {
@@ -846,28 +922,37 @@ const __dict =
   d: [
    "ajudar",
    "colaborar",
-   "participar em algo positivamente",
+   "participar",
    "retribuir",
-   "investir, aplicar, fazer algo para positivamente influenciar algo",
-   "doar, oferecer algo, para ajudar o próximo"
+   "investir",
+   "aplicar",
+   "doar",
+   "oferecer"
   ]
  },
  {
   l: "gku",
   d: [
-   "preocupar, deixar preocupado",
+   "preocupar",
    "assustar",
-   "destacar, deixar destacado, fazer aparecer, aparecer em destaque",
-   "fixar, colocar em foco, dar destaque a algo para pesquisar sobre, tachar"
+   "destacar",
+   "aparecer",
+   "destacar",
+   "fixar",
+   "focar",
+   "tachar"
   ]
  },
  {
   l: "gno",
   d: [
-   "Ir",
+   "ir",
    "passar",
-   "expirar, perecer",
-   "acabar, terminar, finalizar"
+   "expirar",
+   "perecer",
+   "acabar",
+   "terminar",
+   "finalizar"
   ]
  },
  {
@@ -1043,7 +1128,8 @@ const __dict =
  {
   l: "lar",
   d: [
-   "trabalhar (uma ideia, desenvolver)",
+   "trabalhar",
+   "desenvolver",
    "manusear"
   ]
  },
@@ -1504,10 +1590,12 @@ const __dict =
  {
   l: "tbd",
   d: [
-   "ficar bem",
    "melhorar",
-   "ficar saudável",
-   "deixar de passar mal ou ter dor"
+   "sarar",
+   "revigorar",
+   "recuperar",
+   "restaurar",
+   "resistir"
   ]
  },
  {
@@ -1521,7 +1609,7 @@ const __dict =
   l: "tol",
   d: [
    "ganhar",
-   "vencer (vitória)"
+   "vencer"
   ]
  },
  {
@@ -1565,7 +1653,7 @@ const __dict =
   l: "ugs",
   d: [
    "retornar",
-   "voltar (de um lugar ou estado)"
+   "voltar"
   ]
  },
  {
@@ -1749,70 +1837,107 @@ const __dict =
  {
   l: "abia",
   d: [
-   "lama, terra molhada",
-   "sujeira, sujo"
+   "lama",
+   "terra",
+   "sujeira",
+   "sujo"
   ]
  },
  {
   l: "aete",
   d: [
-   "nome, identificação, palavra que identifique alguém"
+   "nome",
+   "identificação",
+   "palavra",
+   "título"
   ]
  },
  {
   l: "afoh",
   d: [
-   "cachorro, cadela (animal doméstico)",
-   "pet, bichinho de estimação",
-   "subordinado, dependente",
-   "derivado, originado de"
+   "cachorro",
+   "cadela",
+   "pet",
+   "estimação",
+   "subordinado",
+   "dependente",
+   "derivado",
+   "originado"
   ]
  },
  {
   l: "ahly",
   d: [
-   "ilha, monte de terra rodeado por água geralmente grande"
+   "ilha",
+   "monte",
+   "círculo",
+   "área"
   ]
  },
  {
   l: "alfk",
   d: [
-   "dom, habilidade"
+   "dom",
+   "habilidade"
   ]
  },
  {
   l: "alul",
   d: [
-   "cavalo, égua"
+   "cavalo",
+   "égua"
   ]
  },
  {
   l: "amya",
   d: [
-   "tanto, tantos, tantas, tão"
+   "tanto",
+   "tantos",
+   "tantas",
+   "tão"
   ]
  },
  {
   l: "anoa",
   d: [
    "sol",
-   "fogo, quente, fonte de calor, fogueira",
-   "centro, origem",
+   "fogo",
+   "quente",
+   "fonte",
+   "fogueira",
+   "centro",
+   "origem",
    "verão",
-   "destaque, destacado, em foco, ponto, argumento"
+   "destaque",
+   "destacado",
+   "foco",
+   "ponto",
+   "argumento"
   ]
  },
  {
   l: "aout",
   d: [
-   "tomada, plugue, encaixe, conector",
-   "buraco (para passagem ou transporte), veia, artéria, via"
+   "tomada",
+   "plugue",
+   "encaixe",
+   "conector",
+   "buraco",
+   "túnel",
+   "viaduto",
+   "veia",
+   "artéria",
+   "via"
   ]
  },
  {
   l: "asse",
   d: [
-   "possível, provável, possibilidade, chance, oportunidade"
+   "possível",
+   "provável",
+   "possibilidade",
+   "chance",
+   "oportunidade"
   ]
  },
  {
@@ -1824,35 +1949,51 @@ const __dict =
  {
   l: "awfo",
   d: [
-   "recuperação, o ato de recuperar, o processo de conserto, correção"
+   "recuperação",
+   "conserto",
+   "correção"
   ]
  },
  {
   l: "bduh",
   d: [
-   "bobo, no sentido de um erro engraçado ou numa conversa casual, sem sentido negativo em si"
+   "bobo",
+   "palhaço",
+   "animador",
+   "humorista"
   ]
  },
  {
   l: "bite",
   d: [
-   "ano, 365 dias, conjunto de meses que formam o ano",
-   "luz, luminosidade, energia (de luz)"
+   "ano",
+   "luz",
+   "luminosidade",
+   "energia"
   ]
  },
  {
   l: "blar",
   d: [
-   "conversa, papo, mensagem, comentário"
+   "conversa",
+   "papo",
+   "mensagem",
+   "comentário"
   ]
  },
  {
   l: "body",
   d: [
-   "bolo, massa em formato de bolo, alimento à base de massa",
-   "conjunto, objetos juntos em um espaço",
-   "conjunto de peças que fazem sentido juntas, organizadas de alguma maneira",
-   "lista, pasta (de documentos, por exemplo)"
+   "bolo",
+   "massa",
+   "alimento",
+   "pasta",
+   "conjunto",
+   "molho",
+   "lista",
+   "vetor",
+   "pasta",
+   "arquivo"
   ]
  },
  {
@@ -1864,7 +2005,8 @@ const __dict =
  {
   l: "brad",
   d: [
-   "pão, massa de pão"
+   "pão",
+   "massa"
   ]
  },
  {
@@ -1882,142 +2024,196 @@ const __dict =
  {
   l: "brot",
   d: [
-   "boca, orifício bucal"
+   "boca",
+   "orifício"
   ]
  },
  {
   l: "brum",
   d: [
-   "cotovelo, canto do braço",
-   "maluco, doido, insano",
-   "maravilha, maravilhoso, incrível"
+   "cotovelo",
+   "canto",
+   "maluco",
+   "doido",
+   "insano",
+   "maravilha",
+   "maravilhoso",
+   "incrível"
   ]
  },
  {
   l: "brus",
   d: [
-   "ônibus, veículo de transporte para muitas pessoas",
-   "multidão, conjunto de pessoas em um lugar ou em algo"
+   "ônibus",
+   "transporte",
+   "multidão",
+   "conjunto",
+   "grupo",
+   "turma"
   ]
  },
  {
   l: "buno",
   d: [
-   "parte traseira, de trás",
-   "orifício anal"
+   "traseira",
+   "trás",
+   "ânus"
   ]
  },
  {
   l: "bunt",
   d: [
-   "mil, multiplicador, multiplicado por mil"
+   "mil",
+   "multiplicador",
+   "fator"
   ]
  },
  {
   l: "bvor",
   d: [
-   "executável, jogo, programa, código executável do computador, aplicativo",
-   "programa, calendário, rotina, roteiro pro dia"
+   "executável",
+   "jogo",
+   "programa",
+   "código",
+   "aplicativo",
+   "programa",
+   "calendário",
+   "rotina",
+   "roteiro"
   ]
  },
  {
   l: "carr",
   d: [
-   "caro, não barato, custoso",
-   "cansativo, que custa tempo ou energia, demorado"
+   "caro",
+   "custoso",
+   "cansativo",
+   "demorado",
+   "desgastante"
   ]
  },
  {
   l: "cite",
   d: [
-   "cinco, número cinco"
+   "cinco",
+   "número cinco"
   ]
  },
  {
   l: "cloc",
   d: [
    "feijão",
-   "borrado, não nítido",
-   "esquecido, lembrança confusa"
+   "borrado",
+   "oblíquo",
+   "esquecido",
+   "confuso"
   ]
  },
  {
   l: "clon",
   d: [
-   "com, como, com o (clon alul: com o cavalo)"
+   "com",
+   "como"
   ]
  },
  {
   l: "colk",
   d: [
-   "mistura de alimentos, prato misturado",
+   "mistura",
+   "prato",
    "feijoada"
   ]
  },
  {
   l: "coln",
   d: [
-   "controle (remoto), ferramenta de controle (de algo ou alguém)",
-   "poder de controlar algo, controlador (ae tar coln lolk cruy: você tem o controle do mundo)"
+   "controle",
+   "ferramenta",
+   "controlador",
+   "administrador"
   ]
  },
  {
   l: "crar",
   d: [
-   "automotivo, carro, meio de transporte para poucas ou uma pessoa",
-   "ferramenta mecânica que ajuda no movimento de algo (motorizada ou elétrica), meio de transporte de um objeto ou ser vivo por algum meio mecânico (motorizado ou elétrico)"
+   "automotivo",
+   "carro",
+   "transporte",
+   "meio",
+   "ferramenta mecânica que ajuda no movimento de algo",
+   "meio de transporte de um objeto ou ser vivo por algum meio mecânico"
   ]
  },
  {
   l: "cret",
   d: [
    "sobrancelha",
-   "algo que expresse sentimento ou emoção, expressão",
-   "forma de dizer algo, expressão"
+   "expressão",
+   "algo que expresse sentimento ou emoção",
+   "forma de dizer algo"
   ]
  },
  {
   l: "crue",
   d: [
-   "burro, burra, jumento, jumenta"
+   "burro",
+   "burra",
+   "jumento",
+   "jumenta"
   ]
  },
  {
   l: "cruy",
   d: [
-   "mundo, globo, um planeta",
-   "um grande espaço (definido), conjunto em um espaço, conjunto de algo",
-   "ecossistema, organismo"
+   "mundo",
+   "globo",
+   "planeta",
+   "um grande espaço",
+   "conjunto em um espaço",
+   "conjunto de algo",
+   "ecossistema",
+   "organismo"
   ]
  },
  {
   l: "cunk",
   d: [
-   "milhão, milésimo, multiplicador"
+   "milhão",
+   "milésimo",
+   "multiplicador"
   ]
  },
  {
   l: "daeh",
   d: [
    "colega",
-   "membro, participante de um grupo, de uma turma",
+   "membro",
+   "participante de um grupo",
+   "de uma turma",
    "conhecido amigável"
   ]
  },
  {
   l: "dayh",
   d: [
-   "sócio, membro de alta classe de um grupo, dono, criador, mestre, administração"
+   "sócio",
+   "membro de alta classe de um grupo",
+   "dono",
+   "criador",
+   "mestre",
+   "administração"
   ]
  },
  {
   l: "daew",
   d: [
-   "externo, fora (de algo)",
+   "externo",
+   "fora",
    "vizinho",
    "estrangeiro",
-   "desconhecido, novo na área não conhecido pelo bairro",
-   "importado (veio de fora)"
+   "desconhecido",
+   "novo na área não conhecido pelo bairro",
+   "importado"
   ]
  },
  {
@@ -2025,53 +2221,87 @@ const __dict =
   d: [
    "cabeça",
    "parte superior",
-   "controle (cérebro), aquele ou aquilo que controla ou direciona",
-   "volante, guidão"
+   "controle",
+   "cérebro",
+   "aquele ou aquilo que controla ou direciona",
+   "volante",
+   "guidão"
   ]
  },
  {
   l: "daih",
   d: [
-   "adulto, maior de idade, responsável",
-   "para maior de idade, inapropriado, nsfw"
+   "adulto",
+   "maior de idade",
+   "responsável",
+   "para maior de idade",
+   "inapropriado",
+   "nsfw"
   ]
  },
  {
   l: "daiw",
   d: [
-   "interno, dentro",
-   "exportado (de dentro)",
-   "submerso, debaixo de algo, coberto",
-   "profundo, fundo, bem abaixo",
-   "detalhado (profundamente), bem feito, perfeccionista, perfeito, perfeitamente feito, bom trabalho"
+   "interno",
+   "dentro",
+   "exportado",
+   "submerso",
+   "debaixo de algo",
+   "coberto",
+   "profundo",
+   "fundo",
+   "bem abaixo",
+   "detalhado profundamente",
+   "bem feito",
+   "perfeccionista",
+   "perfeito",
+   "perfeitamente feito",
+   "bom trabalho"
   ]
  },
  {
   l: "daoh",
   d: [
-   "idoso, terceira idade",
-   "algo que parece velho, antigo, antiguidade"
+   "idoso",
+   "terceira idade",
+   "algo que parece velho",
+   "antigo",
+   "antiguidade"
   ]
  },
  {
   l: "dapa",
   d: [
-   "capaz, ter a capacidade de",
-   "que aguenta, tem força para carregar, forte, competente"
+   "capaz",
+   "ter a capacidade de",
+   "que aguenta",
+   "tem força para carregar",
+   "forte",
+   "competente"
   ]
  },
  {
   l: "deft",
   d: [
-   "deficiente, com falta de, em falta, terminou (olal brad tue deft: o pão está em falta, acabou)"
+   "deficiente",
+   "com falta de",
+   "em falta",
+   "terminou",
+   "fim"
   ]
  },
  {
   l: "defy",
   d: [
-   "a criação em si, algo criado, algo novo criado ou transformado, novo",
-   "resultado de um trabalho criado, feito manualmente (rifn defy: belo trabalho – de criação, como \"bela pintura\")",
-   "preparado, feito, depois de um tempo"
+   "a criação em si",
+   "algo criado",
+   "algo novo criado ou transformado",
+   "novo",
+   "resultado de um trabalho criado",
+   "feito manualmente",
+   "preparado",
+   "feito",
+   "depois de um tempo"
   ]
  },
  {
@@ -2083,80 +2313,115 @@ const __dict =
  {
   l: "dept",
   d: [
-   "depois, após, posterior"
+   "depois",
+   "após",
+   "posterior"
   ]
  },
  {
   l: "dlet",
   d: [
    "principal",
-   "que aparece primeiro, se destaca ou é importante para o corpo ou objeto",
-   "preciso, necessário, importante",
-   "oficial, genuíno"
+   "que aparece primeiro",
+   "se destaca ou é importante para o corpo ou objeto",
+   "preciso",
+   "necessário",
+   "importante",
+   "oficial",
+   "genuíno"
   ]
  },
  {
   l: "doht",
   d: [
-   "nada, nenhum, nulo, inexistente, sem traços, vazio",
-   "desaparecido, escondido, perdido"
+   "nada",
+   "nenhum",
+   "nulo",
+   "inexistente",
+   "sem traços",
+   "vazio",
+   "desaparecido",
+   "escondido",
+   "perdido"
   ]
  },
  {
   l: "dout",
   d: [
-   "doutor, pessoa com grande experiência em algo, com ensino completo em algo, doutorado"
+   "doutor",
+   "pessoa com grande experiência em algo",
+   "com ensino completo em algo",
+   "doutorado"
   ]
  },
  {
   l: "dovk",
   d: [
-   "modo, meio, forma de fazer"
+   "modo",
+   "meio",
+   "forma de fazer"
   ]
  },
  {
   l: "drib",
   d: [
-   "pelado, nu, nude, despido, sem roupa",
-   "original, puro",
+   "pelado",
+   "nu",
+   "nude",
+   "despido",
+   "sem roupa",
+   "original",
+   "puro",
    "cru",
-   "completo, sem filtros, total, inteiro (ue qne nyht fpri drib: eu quero esse documento por inteiro / sem filtro / completo)"
+   "completo",
+   "sem filtros",
+   "total",
+   "inteiro"
   ]
  },
  {
   l: "dtie",
   d: [
-   "digital, geralmente não mecânico, que funciona de forma digital"
+   "digital",
+   "geralmente não mecânico",
+   "que funciona de forma digital"
   ]
  },
  {
   l: "dtye",
   d: [
-   "futurista, à frente, adiantado"
+   "futurista",
+   "à frente",
+   "adiantado"
   ]
  },
  {
   l: "dude",
   d: [
-   "dois, número dois"
+   "dois",
+   "número dois"
   ]
  },
  {
   l: "dued",
   d: [
-   "nota, resultado, valor"
+   "nota",
+   "resultado",
+   "valor"
   ]
  },
  {
   l: "duly",
   d: [
-   "plural, múltiplo"
+   "plural",
+   "múltiplo"
   ]
  },
  {
   l: "duut",
   d: [
-   "nádega, bunda",
+   "nádega",
+   "bunda",
    "parte traseira",
    "que aparece por último"
   ]
@@ -2164,22 +2429,27 @@ const __dict =
  {
   l: "dwat",
   d: [
-   "secreto, segredo",
-   "protegido, lacrado",
+   "secreto",
+   "segredo",
+   "protegido",
+   "lacrado",
    "mantido fora do alcance"
   ]
  },
  {
   l: "edof",
   d: [
-   "dinheiro, moeda"
+   "dinheiro",
+   "moeda"
   ]
  },
  {
   l: "egka",
   d: [
-   "ave, pássaro",
-   "algo que voe, avião",
+   "ave",
+   "pássaro",
+   "algo que voe",
+   "avião",
    "águia"
   ]
  },
@@ -2194,7 +2464,8 @@ const __dict =
  {
   l: "elgh",
   d: [
-   "duro, rígido",
+   "duro",
+   "rígido",
    "resistente",
    "egoísta"
   ]
@@ -2202,14 +2473,19 @@ const __dict =
  {
   l: "enge",
   d: [
-   "engenharia, engenheiro"
+   "engenharia",
+   "engenheiro"
   ]
  },
  {
   l: "esge",
   d: [
-   "artista, aquele que desenha, cria arte",
-   "criativo, inovador, que pensa fora da caixa"
+   "artista",
+   "aquele que desenha",
+   "cria arte",
+   "criativo",
+   "inovador",
+   "que pensa fora da caixa"
   ]
  },
  {
@@ -2217,22 +2493,29 @@ const __dict =
   d: [
    "difícil",
    "complicado",
-   "fechado, difícil acesso, trancado"
+   "fechado",
+   "difícil acesso",
+   "trancado"
   ]
  },
  {
   l: "esja",
   d: [
    "dificuldade",
-   "resistência, força contra",
-   "defesa, defensivo"
+   "resistência",
+   "força contra",
+   "defesa",
+   "defensivo"
   ]
  },
  {
   l: "espa",
   d: [
    "pois",
-   "por que, porque, por quê, porquê"
+   "por que",
+   "porque",
+   "por quê",
+   "porquê"
   ]
  },
  {
@@ -2244,7 +2527,8 @@ const __dict =
  {
   l: "etit",
   d: [
-   "data, dia",
+   "data",
+   "dia",
    "reserva",
    "encontro"
   ]
@@ -2254,7 +2538,9 @@ const __dict =
   d: [
    "fraco",
    "frágil",
-   "inseguro (ae fla eurt giit ai: você parece inseguro sobre isso)"
+   "inseguro",
+   "temporário",
+   "alugado"
   ]
  },
  {
@@ -2264,7 +2550,7 @@ const __dict =
    "cura",
    "seringa",
    "remédio",
-   "drogas", 
+   "drogas",
    "medicamento"
   ]
  },
@@ -2284,14 +2570,17 @@ const __dict =
  {
   l: "fafs",
   d: [
-   "velho, idoso",
-   "antigo, clássico"
+   "velho",
+   "idoso",
+   "antigo",
+   "clássico"
   ]
  },
  {
   l: "fakk",
   d: [
-   "obrigado, agradecido",
+   "obrigado",
+   "agradecido",
    "agradecimento"
   ]
  },
@@ -2299,35 +2588,47 @@ const __dict =
   l: "fein",
   d: [
    "combustível",
-   "origem (de algo ou acontecimento)",
-   "herança"
+   "origem",
+   "herança",
+   "fonte",
+   "pesquisa"
   ]
  },
  {
   l: "feni",
   d: [
-   "acima, em cima, cima (feni lolk uhly: em cima da mesa)",
-   "maior (em poder), mais (em algum atributo)(feni lure trta ae: mais inteligente que você)"
+   "acima",
+   "em cima",
+   "cima",
+   "maior",
+   "mais (em algo)"
   ]
  },
  {
   l: "fert",
   d: [
-   "professor, orientador, comandante (o que ensina, orienta ou comanda com um objetivo educacional ou prático)"
+   "professor",
+   "orientador",
+   "comandante",
+   "o que ensina",
+   "o que orienta ou comanda com um objetivo educacional ou prático"
   ]
  },
  {
   l: "fery",
   d: [
-   "parte, pedaço",
+   "parte",
+   "pedaço",
    "contexto",
-   "membro (do corpo), órgão"
+   "membro",
+   "órgão"
   ]
  },
  {
   l: "fglu",
   d: [
-   "normal, padrão",
+   "normal",
+   "padrão",
    "universal"
   ]
  },
@@ -2335,31 +2636,40 @@ const __dict =
   l: "fhlo",
   d: [
    "automático",
-   "individual (trabalho para uma pessoa, onde ela faz tudo)"
+   "individual",
+   "faz-tudo"
   ]
  },
  {
   l: "fini",
   d: [
-   "agudo, pontudo",
+   "agudo",
+   "pontudo",
    "alto",
    "alta frequência",
-   "singular, único, especial"
+   "singular",
+   "único",
+   "especial"
   ]
  },
  {
   l: "flai",
   d: [
-   "álcool, líquido, como para automóveis ou limpeza",
+   "álcool",
+   "líquido (como para automóveis ou limpeza)",
    "bebida alcoólica"
   ]
  },
  {
   l: "flar",
   d: [
-   "impressora, equipamento que imprime",
-   "impressionador, que impressiona, causa impressão",
-   "cópia, semelhante"
+   "impressora",
+   "equipamento que imprime",
+   "impressionador",
+   "que impressiona",
+   "causa impressão",
+   "cópia",
+   "semelhante"
   ]
  },
  {
@@ -2367,78 +2677,125 @@ const __dict =
   d: [
    "ouvido",
    "audição",
-   "microfone, dispositivo de captura de som ou frequência",
-   "frequencímetro, gravador, aparelho de som (para captura de som)"
+   "microfone",
+   "dispositivo de captura de som ou frequência",
+   "frequencímetro",
+   "gravador",
+   "aparelho de som (para captura de som)"
   ]
  },
  {
   l: "flix",
   d: [
-   "gato, felino",
-   "cheio de energia, radical, animal"
+   "gato",
+   "felino",
+   "cheio de energia",
+   "radical",
+   "animal"
   ]
  },
  {
   l: "floi",
   d: [
-   "diesel, combustível de fácil explosão",
-   "pessoa com temperamento sensível"
+   "diesel",
+   "combustível de fácil explosão",
+   "pessoa sensível a variações",
+   "ansiedade",
+   "ansioso"
   ]
  },
  {
   l: "flui",
   d: [
    "gasolina",
-   "pessoa atraente, que causa \"calor\""
+   "pessoa atraente",
+   "que causa calor",
+   "alimento",
+   "fonte",
+   "causa"
   ]
  },
  {
   l: "fout",
   d: [
-   "tórax, peitoral, frente de um corpo",
-   "proteção frontal de algo importante, capô",
-   "armadura, roupa extremamente resistente",
-   "tampa, fechadura, trava, cadeado",
-   "bloqueado, trancado, fechado"
+   "tórax",
+   "peitoral",
+   "frente de um corpo",
+   "proteção frontal de algo importante",
+   "capô",
+   "armadura",
+   "roupa extremamente resistente",
+   "tampa",
+   "fechadura",
+   "trava",
+   "cadeado",
+   "bloqueado",
+   "trancado",
+   "fechado"
   ]
  },
  {
   l: "fouk",
   d: [
    "seio",
-   "curva, sinuosidade",
-   "o mais interno de um ser, alma, espírito",
-   "cavidade, canal interno que contém ou por onde passa algo, buraco, túnel, passagem"
+   "curva",
+   "sinuosidade",
+   "o mais interno de um ser",
+   "alma",
+   "espírito",
+   "cavidade",
+   "canal interno que contém ou por onde passa algo",
+   "buraco",
+   "túnel",
+   "passagem"
   ]
  },
  {
   l: "fpri",
   d: [
-   "documento, arquivo, folha",
-   "identidade, algo que represente algum ser",
-   "registro, traço, pista de algo que indique a alguém",
-   "conta, contato"
+   "documento",
+   "arquivo",
+   "folha",
+   "identidade",
+   "algo que represente algum ser",
+   "registro",
+   "traço",
+   "pista de algo que indique a alguém",
+   "conta",
+   "contato"
   ]
  },
  {
   l: "frav",
   d: [
-   "ser aquilo ou aquilo que tem entre as pernas (definido pelo sexo, ou indefinido caso não interessado, como em ue tue nifrav: eu (sou) / (tenho um(a)) (órgão do sexo feminino)), genitália"
+   "ser aquilo ou aquilo que tem entre as pernas (definido pelo sexo ou indefinido caso não interessado",
+   "genitália"
+  ],
+  e: [
+    [ "ue tue nifrav","eu (sou) / (tenho um(a)) (órgão do sexo feminino)" ]
   ]
  },
  {
   l: "fraq",
   d: [
-   "ser aquele que tem interesse no sexo que for definido na palavra, ou ambos (ou qualquer um) caso não definido (ue tue nafraq: eu (sou interessado) / (gosto de) homens (órgão sexual masculino))",
-   "Relacionado a palavras como: hétero, homossexual, bissexual"
-  ]
+   "ser aquele que tem interesse em um sexo específico ou ambos (veja exemplos)"
+  ],
+  e: [
+    [ "nifraq","interessado em sexo feminino (homossexual ou hétero dependendo do sujeito)" ],
+    [ "nafraq","interessado em sexo masculino (homossexual ou hétero dependendo do sujeito)" ],
+    [ "fraq","interessado em qualquer sexo ou indefinido" ]
+  ]  
  },
  {
   l: "frax",
   d: [
-   "bomba, mina, granada, explosivo",
+   "bomba",
+   "mina",
+   "granada",
+   "explosivo",
    "spam",
-   "irritante, o que não se quer perto"
+   "irritante",
+   "o que não se quer perto"
   ]
  },
  {
@@ -2452,33 +2809,47 @@ const __dict =
  {
   l: "frex",
   d: [
-   "colega próximo, parceiro, dupla, faz parte de sua equipe pessoal"
+   "colega próximo",
+   "parceiro",
+   "dupla",
+   "faz parte de sua equipe pessoal"
   ]
  },
  {
   l: "froc",
   d: [
-   "rocha, pedra",
-   "duro, resistente",
+   "rocha",
+   "pedra",
+   "duro",
+   "resistente",
    "persistente ou cabeça dura",
-   "pouco valioso, comum"
+   "pouco valioso",
+   "comum"
   ]
  },
  {
   l: "frot",
   d: [
-   "frita, tostada com calor",
-   "queimado, colocado à lenha rapidamente",
-   "febre, acima da temperatura normal, aquecido de forma irregular",
-   "machucado de \"queimar\" (tanto emocional quanto real)"
+   "frita",
+   "tostada com calor",
+   "queimado",
+   "colocado à lenha rapidamente",
+   "febre",
+   "acima da temperatura normal",
+   "aquecido de forma irregular",
+   "machucado de queimar (tanto emocional quanto real)"
   ]
  },
  {
   l: "fruf",
   d: [
-   "pelo, pelugem",
-   "penas, plumagem (caso esteja falando de aves)",
-   "cobertura, cobertor, algo que cobre e mantém quente ou protege de algo",
+   "pelo",
+   "pelugem",
+   "penas",
+   "plumagem (caso esteja falando de aves)",
+   "cobertura",
+   "cobertor",
+   "algo que cobre e mantém quente ou protege de algo",
    "armadura mística ou especial que te mantém protegido"
   ]
  },
@@ -2486,10 +2857,12 @@ const __dict =
   l: "ftik",
   d: [
    "forçado",
-   "feito sob medida, apertado",
+   "feito sob medida",
+   "apertado",
    "planejado perfeitamente",
    "limitado",
-   "pressionado (a fazer algo), obrigado"
+   "pressionado (a fazer algo)",
+   "obrigado"
   ]
  },
  {
@@ -2502,41 +2875,69 @@ const __dict =
  {
   l: "fual",
   d: [
-   "decente, bem feito, bem trabalhado",
-   "robusto, competente, garantido",
-   "preparado (bem), organizado (de forma decente)",
-   "encaixado perfeitamente (com um conector bem colocado, sem problemas), combinado (em cor, formato ou qualquer outra característica)",
-   "conectado (com perfeição ou com grandes garantias de sucesso), montado perfeitamente, construído sem erros"
+   "decente",
+   "bem feito",
+   "bem trabalhado",
+   "robusto",
+   "competente",
+   "garantido",
+   "preparado (bem)",
+   "organizado (de forma decente)",
+   "encaixado perfeitamente (com um conector bem colocado)",
+   "combinado (em cor, formato ou qualquer outra característica)",
+   "conectado (com perfeição ou com grandes garantias de sucesso)",
+   "montado perfeitamente",
+   "construído sem erros"
   ]
  },
  {
   l: "fuil",
   d: [
-   "bem, bom, estar bem, feliz, alegre",
+   "bem",
+   "bom",
+   "estar bem",
+   "feliz",
+   "alegre",
    "positivo",
    "felicidade",
-   "certo, correto, perfeitamente bem",
-   "bem cuidado, em perfeitas condições"
+   "certo",
+   "correto",
+   "perfeitamente bem",
+   "bem cuidado",
+   "em perfeitas condições"
   ]
  },
  {
   l: "fury",
   d: [
-   "ser vivo, corpo com vida",
+   "ser vivo",
+   "corpo com vida",
    "animal",
-   "espontâneo, animado, motivado",
-   "independente, maduro, adulto (parecer adulto), responsável"
+   "espontâneo",
+   "animado",
+   "motivado",
+   "independente",
+   "maduro",
+   "adulto (parecer adulto)",
+   "responsável"
   ]
  },
  {
   l: "fytu",
   d: [
-   "nenhum, ninguém",
-   "vazio, desocupado, sem gente",
-   "desistente, cancelado, estar fora",
-   "sem ninguém, sozinho",
+   "nenhum",
+   "ninguém",
+   "vazio",
+   "desocupado",
+   "sem gente",
+   "desistente",
+   "cancelado",
+   "estar fora",
+   "sem ninguém",
+   "sozinho",
    "assexual",
-   "sem interesses, sem desejos",
+   "sem interesses",
+   "sem desejos",
    "inativo",
    "ausente"
   ]
@@ -2544,45 +2945,79 @@ const __dict =
  {
   l: "gale",
   d: [
-   "acesso, entrada, porta",
-   "acessibilidade, assistência"
+   "acesso",
+   "entrada",
+   "porta",
+   "acessibilidade",
+   "assistência"
   ]
  },
  {
   l: "game",
   d: [
-   "pá, ferramenta manual para escavar",
-   "paz, símbolo de paz",
-   "estar calmo, sem estresse, relaxado",
-   "conquistar terras, novo território, conquista, com sucesso e pacífico; terminar algo sem estresse, na calma"
+   "pá",
+   "ferramenta manual para escavar",
+   "paz",
+   "símbolo de paz",
+   "estar calmo",
+   "sem estresse",
+   "relaxado",
+   "conquistar terras",
+   "novo território",
+   "conquista",
+   "com sucesso e pacífico",
+   "terminar algo sem estresse",
+   "na calma"
   ]
  },
  {
   l: "gatx",
   d: [
-   "lindo, belo, bonito, elegante",
-   "bem feito, bem trabalhado, que dá orgulho",
-   "bem composto, bem misturado, destaque entre outros",
+   "lindo",
+   "belo",
+   "bonito",
+   "elegante",
+   "bem feito",
+   "bem trabalhado",
+   "que dá orgulho",
+   "bem composto",
+   "bem misturado",
+   "destaque entre outros",
    "gostoso"
   ]
  },
  {
   l: "gaty",
   d: [
-   "bem produzido, sem falhas, perfeito (dado algo para comparar)",
-   "exemplar, ideal",
-   "molde, norma, original, marca",
-   "exemplo, template"
+   "bem produzido",
+   "sem falhas",
+   "perfeito (dado algo para comparar)",
+   "exemplar",
+   "ideal",
+   "molde",
+   "norma",
+   "original",
+   "marca",
+   "exemplo",
+   "modelo"
   ]
  },
  {
   l: "gdaj",
   d: [
-   "socorro, ajuda (não necessariamente médica)",
-   "pedido, carta, mensagem ou qualquer sinal pedindo ajuda",
+   "socorro",
+   "ajuda (não necessariamente médica)",
+   "pedido",
+   "carta",
+   "mensagem ou qualquer sinal pedindo ajuda",
    "sinalização de emergência ou de assistência (local de origem ou vindo ao local)",
-   "substantivo indicando que está \"precisando de ajuda\" (ae tue gdaj: você está \"precisando de ajuda\")",
-   "doação, investimento, aplicação (para ajudar o próximo)"
+   "substantivo indicando que está \"precisando de ajuda\"",
+   "doação",
+   "investimento",
+   "aplicação (para ajudar o próximo)"
+  ],
+  e: [
+    [ "ae tue gdaj","você está \"precisando de ajuda\""]
   ]
  },
  {
@@ -2597,35 +3032,62 @@ const __dict =
  {
   l: "geft",
   d: [
-   "teclado, instrumentos de múltiplas teclas",
+   "teclado",
+   "instrumentos de múltiplas teclas",
    "interface de um dispositivo",
-   "senha, palavra-chave, resposta, chave",
-   "ponto importante, relevante, sobre algo"
+   "senha",
+   "palavra-chave",
+   "resposta",
+   "chave",
+   "ponto importante",
+   "relevante"
   ]
  },
  {
   l: "gfad",
   d: [
-   "prova, teste",
-   "prova, registro",
-   "memória, registro de memória, anotação",
-   "trilha, pegadas, traços, registro de algum acontecimento",
-   "resposta (final), fato inquestionável, a verdade pura"
+   "prova",
+   "teste",
+   "registro",
+   "memória",
+   "registro de memória",
+   "anotação",
+   "trilha",
+   "pegadas",
+   "traços",
+   "registro de algum acontecimento",
+   "resposta (final)",
+   "fato inquestionável",
+   "a verdade pura"
   ]
  },
  {
   l: "gflu",
   d: [
-   "estranho, alienígena, intruso",
-   "irregular, diferente, fora do padrão, incomum",
-   "desconhecido, novo"
+   "estranho",
+   "alienígena",
+   "intruso",
+   "irregular",
+   "diferente",
+   "fora do padrão",
+   "incomum",
+   "desconhecido",
+   "novo"
   ]
  },
  {
   l: "gfoh",
   d: [
-   "desde, a partir de, a datar de, a contar de, com início em",
-   "já, já em, agora, imediatamente, no momento"
+   "desde",
+   "a partir de",
+   "a datar de",
+   "a contar de",
+   "com início em",
+   "já",
+   "já em",
+   "agora",
+   "imediatamente",
+   "no momento"
   ]
  },
  {
@@ -2633,67 +3095,121 @@ const __dict =
   d: [
    "geografia",
    "terreno",
-   "área, lugar, região",
-   "vizinhança, bairro, pólis, comunidade, cidade-estado"
+   "área",
+   "lugar",
+   "região",
+   "vizinhança",
+   "bairro",
+   "pólis",
+   "comunidade",
+   "cidade-estado"
   ]
  },
  {
   l: "ghit",
   d: [
-   "sob, abaixo, embaixo",
-   "submerso, afundado, tampado, sobreposto por algo",
-   "protegido, escondido por baixo de algo, em segurança",
-   "isolado, controlado, vistoriado"
+   "sob",
+   "abaixo",
+   "embaixo",
+   "submerso",
+   "afundado",
+   "tampado",
+   "sobreposto por algo",
+   "protegido",
+   "escondido por baixo de algo",
+   "em segurança",
+   "isolado",
+   "controlado",
+   "vistoriado"
   ]
  },
  {
   l: "giit",
   d: [
-   "sobre, por cima",
-   "sobrevoando, voando, flutuando, acima, por cima de algo, sobrepondo algo",
-   "exposto, encontrável, visível, desprotegido",
-   "livre, liberto, descontrolado"
+   "sobre",
+   "por cima",
+   "sobrevoando",
+   "voando",
+   "flutuando",
+   "acima",
+   "por cima de algo",
+   "sobrepondo algo",
+   "exposto",
+   "encontrável",
+   "visível",
+   "desprotegido",
+   "livre",
+   "liberto",
+   "descontrolado"
   ]
  },
  {
   l: "gleh",
   d: [
    "mole",
-   "flácido, flexível",
-   "demorado, tardio, pausado",
+   "flácido",
+   "flexível",
+   "demorado",
+   "tardio",
+   "pausado",
    "líquido (estado da matéria)"
   ]
  },
  {
   l: "glut",
   d: [
-   "círculo, esfera, objeto radial sem cantos",
-   "grupo, quadrilha, conjunto, equipe"
+   "círculo",
+   "esfera",
+   "objeto radial sem cantos",
+   "grupo",
+   "quadrilha",
+   "conjunto",
+   "equipe"
   ]
  },
  {
   l: "goto",
   d: [
-   "botão, brinco, pingente",
+   "botão",
+   "brinco",
+   "pingente",
    "gema",
    "broto",
-   "raiz, origem, base originária, início",
-   "ponto, centro, destaque, tacha",
-   "tarefa, problema, origem de trabalho"
+   "raiz",
+   "origem",
+   "base originária",
+   "início",
+   "ponto",
+   "centro",
+   "destaque",
+   "tacha",
+   "tarefa",
+   "problema",
+   "origem de trabalho"
   ]
  },
  {
   l: "graf",
   d: [
-   "mesmo, até, inclusive, também, ainda",
-   "próprio, tal",
-   "precisamente, exatamente, justamente"
+   "mesmo",
+   "até",
+   "inclusive",
+   "também",
+   "ainda",
+   "próprio",
+   "tal",
+   "precisamente",
+   "exatamente",
+   "justamente"
   ]
  },
  {
   l: "grah",
   d: [
-   "já, agora, neste momento, na hora"
+   "já",
+   "agora",
+   "neste momento",
+   "na hora"
   ]
  },
  {
@@ -2715,7 +3231,9 @@ const __dict =
   d: [
    "violão",
    "instrumento de cordas",
-   "instrumento musical de cordas, que vibra, gera som por vibrações"
+   "instrumento musical de cordas",
+   "que vibra",
+   "gera som por vibrações"
   ]
  },
  {
@@ -3824,7 +4342,8 @@ const __dict =
   d: [
    "bebida energética",
    "energético",
-   "eletricidade, elétrico"
+   "eletricidade",
+   "elétrico"
   ]
  },
  {
@@ -4063,7 +4582,8 @@ const __dict =
    "bora",
    "em boa hora",
    "em perfeito estado",
-   "ao ponto, no ponto",
+   "ao ponto",
+   "no ponto",
    "temperado"
   ]
  },
@@ -5179,8 +5699,12 @@ const __dict =
    "trocado para => gkuku",
    "medo",
    "susto",
-   "assustador, medonho, aterrorizante, amedrontador",
-   "amedrontado, assustado"
+   "assustador",
+   "medonho",
+   "aterrorizante",
+   "amedrontador",
+   "amedrontado",
+   "assustado"
   ]
  },
  {
@@ -5339,7 +5863,8 @@ const __dict =
    "trocado para => fraq (verifique definição)",
    "que tem interesse de estar perto de semelhantes, do mesmo sexo, ou que se parecem ser do mesmo",
    "atraído por membros do mesmo sexo",
-   "homossexual, gay."
+   "homossexual",
+   "gay"
   ]
  },
  {

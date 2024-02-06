@@ -39,6 +39,12 @@
         </div>
         
         <hr class="gray"/>
+
+        <section id="mark-wotd" class="lsw-frame_gen">
+            <a href="#mark-wotd"><h2 class="lsw-title">Palavra do dia:</h2></a>
+            <div id="insert_wotd">Carregando...</div>
+
+        </section>
         
         <section id="mark-historia" class="lsw-frame_gen">
             <a href="#mark-historia"><h2 class="lsw-title">História</h2></a>
@@ -472,6 +478,31 @@
 
 <script>
 
+function wotd_make()
+{
+    const el = document.getElementById("insert_wotd");
+    const day_code = ((new Date()).getDate() * 864512) % larinuim_LENGTH();
+    const obj = larinuim_INDEX(day_code);
+
+    let raw_htm = "<ul class=\"lsw-arrow_list\">";
+            
+    raw_htm += "<li id=\"ref_word-" + obj.l + "\"><a href=\"#ref_word-" + obj.l + "\" class=\"lsw-bold\" style=\"text-decoration: underline; font-size: 1.2em" + (obj["discontinued"] === true ? "; color: red" : "") + "\">" + obj.l + ":</a>";
+    
+    for(let j = 0; j < obj.d.length; ++j) {
+        raw_htm += "<p class=\"lsw-low_indent\"><span class=\"lsw-bold\">" + (j + 1) + ".</span> " + obj.d[j] + (j+1 === obj.d.length ? "." : ";") + "</p>";
+    }
+    
+    for(let j = 0; obj["e"] != null && j < obj.e.length; ++j) {
+        raw_htm += "<p class=\"lsw-low_indent\"><span class=\"lsw-bold\">Exemplo #" + (j + 1) + ":</span> <span class=\"lsw-italic\">" + obj.e[j][0] + " </span> ⇒ \"" + obj.e[j][1] + "\"" + (j+1 === obj.e.length ? "." : ";") + "</p>";
+    }
+    
+    raw_htm += "</li></ul>";
+
+    el.innerHTML = raw_htm;
+}
+
+setTimeout(wotd_make, 100);
+
 function remove_filter_font() {
     const els = document.querySelectorAll("[class=\"lsw-font-hidden\"]");
     for(let i = 0; i < els.length; ++i) els[i].classList.remove("lsw-font-hidden");
@@ -559,6 +590,10 @@ function _put()
         
         for(let j = 0; j < obj.d.length; ++j) {
             raw_htm += "<p class=\"lsw-low_indent\"><span class=\"lsw-bold\">" + (j + 1) + ".</span> " + obj.d[j] + (j+1 === obj.d.length ? "." : ";") + "</p>";
+        }
+        
+        for(let j = 0; obj["e"] != null && j < obj.e.length; ++j) {
+            raw_htm += "<p class=\"lsw-low_indent\"><span class=\"lsw-bold\">Exemplo #" + (j + 1) + ":</span> <span class=\"lsw-italic\">" + obj.e[j][0] + " </span> ⇒ \"" + obj.e[j][1] + "\"" + (j+1 === obj.e.length ? "." : ";") + "</p>";
         }
         raw_htm += "</li>";
     }
