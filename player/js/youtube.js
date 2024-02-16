@@ -285,14 +285,12 @@ function __yt_on_state(event)
     case 0:
         break;
     case 1:
-        if (!yt_data.user_props.is_paused) {
-            if (yt_data.user_props.is_livestream == -1) yt_data.user_props.is_livestream = (yt_data.player_itself.getCurrentTime() > 10);
-            else yt_data.user_props.is_livestream = false;
-        }
+        if (yt_data.player_itself.getCurrentTime() > 43200 /* 12 hours, max upload time raw (or 256 GB) */) { yt_data.user_props.is_livestream = true; }
+        else if (yt_data.user_props.is_livestream === -2) { yt_data.user_props.is_livestream = (yt_data.player_itself.getCurrentTime() > 10); }
+
         yt_data.player_itself.setVolume(Math.round(yt_data.user_props.volume * 100));
         setTimeout(function(){ yt_data.player_itself.setVolume(Math.round(yt_data.user_props.volume * 100)); }, 500);
 
-        if (yt_data.player_itself.getCurrentTime() > 43200 /* 12 hours, max upload time raw (or 256 GB) */) yt_data.user_props.is_livestream = true;
         
         yt_data.user_props.is_paused = false;
         break;
@@ -300,7 +298,8 @@ function __yt_on_state(event)
         yt_data.user_props.is_paused = true;
         break;
     case 3:
-        if (!yt_data.user_props.is_paused && yt_data.user_props.is_livestream === -2) yt_data.user_props.is_livestream = -1;
+        //if (!yt_data.user_props.is_paused && yt_data.user_props.is_livestream === -2) yt_data.user_props.is_livestream = -1;
+        if (yt_data.user_props.is_livestream === -2) { yt_data.player_itself.seekTo(0); }
         break;
     }
 }
