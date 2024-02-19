@@ -39,12 +39,16 @@
         </div>
         
         <hr class="gray"/>
-
-        <section id="mark-wotd" class="lsw-frame_gen">
-            <a href="#mark-wotd"><h2 class="lsw-title">Palavra do dia:</h2></a>
-            <div id="insert_wotd">Carregando...</div>
-
-        </section>
+        <div style="display: flex; gap: 20px;">
+            <section id="mark-wotd" class="lsw-frame_gen" style="width: 50%;">
+                <a href="#mark-wotd"><h2 class="lsw-title">Palavra do dia:</h2></a>
+                <div id="insert_wotd">Carregando...</div>            
+            </section>
+            <section id="mark-wotd" class="lsw-frame_gen" style="width: 50%;">
+                <button id="button_random_word" style="width: 100%; padding: 0.4em; font-weight: 500; font-size: 1.25em">Buscar palavra aleatória</button>
+                <div id="insert_random">Clique para buscar!</div>
+            </section>
+        </div>
         
         <section id="mark-historia" class="lsw-frame_gen">
             <a href="#mark-historia"><h2 class="lsw-title">História</h2></a>
@@ -478,12 +482,8 @@
 
 <script>
 
-function wotd_make()
+function _from_obj_idx(obj)
 {
-    const el = document.getElementById("insert_wotd");
-    const day_code = ((new Date()).getDate() * 864512) % larinuim_LENGTH();
-    const obj = larinuim_INDEX(day_code);
-
     let raw_htm = "<ul class=\"lsw-arrow_list\">";
             
     raw_htm += "<li id=\"ref_word-" + obj.l + "\"><a href=\"#ref_word-" + obj.l + "\" class=\"lsw-bold\" style=\"text-decoration: underline; font-size: 1.2em" + (obj["discontinued"] === true ? "; color: red" : "") + "\">" + obj.l + ":</a>";
@@ -498,8 +498,26 @@ function wotd_make()
     
     raw_htm += "</li></ul>";
 
-    el.innerHTML = raw_htm;
+    return raw_htm;
 }
+
+function wotd_make()
+{
+    const el = document.getElementById("insert_wotd");
+    const day_code = ((new Date()).getDate() * 864512) % larinuim_LENGTH();
+    const obj = larinuim_INDEX(day_code);
+
+    el.innerHTML = _from_obj_idx(obj);
+}
+
+button_random_word.addEventListener("click", function(ev){
+    const el = document.getElementById("insert_random");
+
+    const day_code = Math.floor(Math.random() * larinuim_LENGTH());
+    const obj = larinuim_INDEX(day_code);
+
+    el.innerHTML = _from_obj_idx(obj);    
+});
 
 setTimeout(wotd_make, 100);
 
