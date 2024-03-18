@@ -1,10 +1,11 @@
 /* ** => MAIN BLOCKS <= ** */
+@font-face { font-family: 'AvaliScratch';           src: url('/fonts/AvaliScratchExtended-Regular.ttf'); }
 
-html, body {
+html {
     margin: 0;
     padding: 0;
     box-sizing: border-box;    
-    font-family: 'Segoe UI Emoji', 'Segoe UI Variable', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-family: 'Segoe UI Emoji', 'Segoe UI Variable', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
@@ -327,4 +328,14 @@ body.iframed { /* when iframed, transparent and small */
         display: none;
         opacity: 0;
     }
+}
+
+
+.avali-font {
+    font-family: 'AvaliScratch' !important;
+    font-size: 1.2em;
+}
+.avali-font input {
+    font-family: 'AvaliScratch' !important;
+    font-size: 1.2em;
 }
