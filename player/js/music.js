@@ -29,6 +29,7 @@ function __hide_inputs(){
     el.style.display = "none";
     el2.style.display = "none";
 }
+
 function auto_hide_input_event_handler()
 {
     const el = document.getElementById("search");
@@ -47,6 +48,10 @@ function remove_element_hidden(id) {
 }
 
 function auto_iframe() {
+    if (getParamValue("avali")) {
+        html_root.classList.toggle("avali-font");
+    }
+
     if (!is_iframe()) {
         document.body.classList.remove("iframed");
 
@@ -112,7 +117,6 @@ function page_loaded_flag(){
     el.classList.remove("ym-remove-on-load");
 }
 
-
 function setup_canvas_text()
 {    
     const canvas = document.getElementById("scrolling_text");
@@ -123,7 +127,7 @@ function setup_canvas_text()
     let offx = 0;
     setInterval(function(){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.font = "16px 'Segoe UI Emoji', 'Segoe UI Variable', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        ctx.font = html_root.classList.contains("avali-font") ? "22px AvaliScratch" : "16px 'Segoe UI Emoji', 'Segoe UI Variable', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
 
         let text = yt_is_playing() ? "Playing: " : "Paused: ";
         const player_el = document.getElementById("yt-player");
@@ -149,7 +153,6 @@ function setup_canvas_text()
     }, 50);
 }
 
-
 function custom_yt_start(url)
 {
     post_line("Trying to start YouTube API...")
@@ -167,12 +170,11 @@ function custom_yt_start(url)
     else setTimeout(function(){ custom_yt_start(url);}, 500);
 
 }
+
 function trigger_yt_start()
 {
     custom_yt_start(__yt_history.list.length > 0 ? work_on_command_or_link(__yt_history.list[__yt_history.list.length - 1]) : null);
 }
-
-
 
 function setup_buttons()
 {
@@ -309,6 +311,7 @@ function trigger_progress_bar(ev)
     
     __set_playback_perc(res);
 }
+
 function trigger_volume_bar(ev)
 {
     const res = common_filter_trigger(ev);
@@ -350,7 +353,7 @@ function setup_input() {
     elsrc.addEventListener("keydown", function(e) {
         switch(e.key) {
         case "Enter":
-            if (e.target.value.length > 0) {
+            if (e.target.value.length > 0 && (e.target.value.indexOf("/avalifont") != 0)) {
                 __yt_history.list[__yt_history.list.length] = e.target.value;
                 __yt_history.idx = 0;
 
@@ -385,7 +388,7 @@ function setup_input() {
 
         if (e.key !== "Enter") return;
         e.target.value = work_on_command_or_link(e.target.value);
-        yt_play_url(e.target.value);
+        if (e.target.value.length > 0) yt_play_url(e.target.value);
     });
 }
 
@@ -435,7 +438,10 @@ function work_on_command_or_link(val)
             }
         }
     }
-
+    else if (val.indexOf("/avalifont") == 0) { // fun
+        html_root.classList.toggle("avali-font");
+        return "";
+    }
     return val;
 }
 
@@ -444,6 +450,7 @@ function on_resize(event)
     if (__yt_props.event_resize_id != 0) clearTimeout(__yt_props.event_resize_id);
     __yt_props.event_resize_id = setTimeout(function(){keep_things_aspect_ratio_up_to_date(true);}, 300);
 }
+
 function check_if_youtube_size_is_zero_then_fix()
 {
     const base = document.getElementById("yt-player");
@@ -452,6 +459,7 @@ function check_if_youtube_size_is_zero_then_fix()
         keep_things_aspect_ratio_up_to_date(false);
     }
 }
+
 function keep_things_aspect_ratio_up_to_date(real_event)
 {
     const base = document.getElementById("yt-player");
@@ -639,7 +647,6 @@ function is_iframe() {
     }
 }
 
-
 function load_from_localstorage()
 {
     if (__yt_props.is_iframe) return;
@@ -653,6 +660,7 @@ function load_from_localstorage()
     __yt_history.was_loop = j.was_loop;
     __yt_history.last_volume = j.last_volume;
 }
+
 function save_to_localstorage()
 {
     if (__yt_props.is_iframe) return;
