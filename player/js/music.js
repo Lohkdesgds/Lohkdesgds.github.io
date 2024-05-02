@@ -248,12 +248,12 @@ function setup_buttons()
 
     if (el_pla) el_pla.addEventListener("click", function(ev) {
         if (yt_play_pause()) {
-            el_ply.classList.add("active");
-            el_ply.classList.remove("deactive");
+            el_pla.classList.add("active");
+            el_pla.classList.remove("deactive");
         }
         else {            
-            el_ply.classList.remove("active");
-            el_ply.classList.add("deactive");
+            el_pla.classList.remove("active");
+            el_pla.classList.add("deactive");
         }
     });
 
