@@ -114,20 +114,33 @@ function larinuim_REMOVE_MODS(word) {
     else { // common word
         dct = __dict_modifiers[0];
     }
+
+    let already_done = [];
     
     for(let i = 0; i < dct.cases_before.length; ++i) {
+        if (already_done.indexOf(i) != -1) continue;
+
         const obj = dct.cases_before[i];
+
         if (l_word.startsWith(obj.l)) {
             l_word = l_word.substring(obj.l.length);
             res.msg[res.msg.length] = [obj.l, obj.m];
+            already_done[already_done.length] = i;
             i = -1;
         }
     }
+
+    already_done = [];
+
     for(let i = 0; i < dct.cases_after.length; ++i) {
+        if (already_done.indexOf(i) != -1) continue;
+
         const obj = dct.cases_after[i];
+        
         if (l_word.endsWith(obj.l)) {
             l_word = l_word.substring(0, l_word.length - obj.l.length);
             res.msg[res.msg.length] = [obj.l, obj.m];
+            already_done[already_done.length] = i;
             i = -1;
         }
     }
@@ -3438,7 +3451,8 @@ const __dict =
  {
   l: "itep",
   d: [
-   "tempero"
+   "tempero",
+   "orégano"
   ]
  },
  {
@@ -4654,6 +4668,12 @@ const __dict =
   d: [
    "caminho",
    "percurso"
+  ]
+ },
+ {
+  l: "relh",
+  d: [
+    "avestruz"
   ]
  },
  {
