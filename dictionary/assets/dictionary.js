@@ -4470,7 +4470,12 @@ const __dict =
   d: [
    "algo",
    "coisa",
-   "objeto"
+   "objeto",
+   "lance", 
+   "parada", 
+   "rolê", 
+   "aposta",
+   "chute"
   ]
  },
  {
