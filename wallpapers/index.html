@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br" id="html_root">
+<head>
+    <META NAME="KEYWORDS" CONTENT="html, css, javascript">
+    <meta name="rating" content="general">
+    <meta name="generator" content="VSCode">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta name="copyright" content="none">
+    <meta charset="utf-8">
+    <meta http-equiv="content-language" content="pt-br">
+    <meta name="author" content="Lohkdesgds Hangi Lhuminury">
+    <meta name="description" content="Lohk's">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--link rel="icon" type="image/x-icon" href="/utfpr/assets/fav.ico"-->
+    
+    <title>Lohk's Wallpapers</title>
+
+    <link rel="stylesheet" href="/css/common.css">
+    <script type="text/javascript" src="/js/tools.js"></script>
+</head>
+<body>
+    <div class="lsw-center"><a href="#" onclick="_reset()"><h1 class="lsw-title">Lohk's <span>Wallpapers</span></h1></a></div>
+    <hr class="gray" />
+
+    <div id="search_header">
+    
+        <div class="lsw-frame_gen lsw-center">
+            <h1 class="lsw-title">Combo de Wallpapers do Lohk!</h1>
+            <h4>Para seu uso pessoal, original do Lohk.</h4>
+        </div>
+        
+        <hr class="gray"/>
+
+        <div class="lsw-autoflex-up4">
+            <button id="btn-mine"  >Minecraft</button>
+            <button id="btn-canon" >Canon</button>
+            <button id="btn-vrchat">VRChat</button>
+        </div>
+
+        
+        <section id="mark-vrchat" class="lsw-frame_gen">
+            <div id="gallery-list" class="lsw-gallery lsw-autoflex-up4">
+            </div>
+        </section>
+        
+        <hr class="gray"/>
+             
+    </div>
+        
+    <p class="lsw-right_text">Site by Lohk, 2024</p>
+</body>
+</html>
+
+<script>
+
+const gallery = document.getElementById("gallery-list");
+
+function cleanup()
+{
+    while(gallery.children.length > 0) gallery.removeChild(gallery.children[0]);
+}
+
+function fill_with(name, max_incl)
+{
+    for(let i = 1; i <= max_incl; ++i) {
+        const el = document.createElement("img");
+        el.src = "files/" + name + " (" + i + ").jpg";
+        gallery.appendChild(el);
+    }
+}
+
+document.getElementById("btn-mine").addEventListener("click", function() {
+    cleanup();
+    const max = 120;
+    const nam = "minecraft";
+    fill_with(nam, max);
+});
+document.getElementById("btn-canon").addEventListener("click", function() {
+    cleanup();
+    const max = 45;
+    const nam = "photo";
+    fill_with(nam, max);
+});
+document.getElementById("btn-vrchat").addEventListener("click", function() {
+    cleanup();
+    const max = 29;
+    const nam = "vrchat";
+    fill_with(nam, max);
+});
+
+
+</script>

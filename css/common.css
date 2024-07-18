@@ -413,3 +413,22 @@ video, img {
     flex-grow: 1;
     width: calc(25% - 2 * 1rem); /* by default force up to 4 items (25% - gap for 3 items) */
 }
+
+.lsw-gallery {
+    gap: 0.85rem;
+    margin: 1em 0 1.5em !important;
+}
+.lsw-gallery > img {
+    border-radius: 6px;
+    border: 2px solid hsl(0, 0%, 60%);
+    box-shadow: hsl(0, 0%, 60%) 3px 3px 6px 2px, inset hsl(0, 0%, 60%) 3px 3px 6px 2px;
+    max-height: 30vh;
+    object-fit:cover;
+    display: inline-block;
+    box-sizing: border-box;
+    transition: all 0.1s;
+}
+.lsw-gallery > img:hover {
+    transform: scale(1.05) rotate(0.7deg);
+    transition: all 0.2s;
+}
