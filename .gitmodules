@@ -1,0 +1,3 @@
+[submodule "ext/jszip"]
+	path = ext/jszip
+	url = https://github.com/Stuk/jszip

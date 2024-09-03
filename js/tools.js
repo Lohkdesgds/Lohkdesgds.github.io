@@ -46,6 +46,7 @@ function lsw_detect_ie() {
 // - https://stackoverflow.com/questions/8055791/how-to-keep-url-parameters-on-javascript-redirect
 // - https://stackoverflow.com/questions/45758837/script5009-urlsearchparams-is-undefined-in-ie-11
 // - https://stackoverflow.com/questions/18045551/how-do-i-download-a-file-from-external-url-to-variable
+// - https://stackoverflow.com/questions/18451856/how-can-i-let-a-user-download-multiple-files-when-a-button-is-clicked
 
 /*
 Redirect user to a page
@@ -184,6 +185,29 @@ function lsw_download(url, callback, error_callback, headers_array_array) {
     xhr.send();
 }
 
+function lsw_download_as_blob(url, callback, error_callback, headers_array_array) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    if (headers_array_array != null) {
+        for (let i = 0; i < headers_array_array.length; ++i) {
+            const pair = headers_array_array[i];
+            xhr.setRequestHeader(pair[0], pair[1]);
+        }
+    }
+    xhr.responseType = "blob";
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            if (xhr.status === 200) {
+                if (typeof callback === 'function') callback(xhr.response);
+            }
+            else {
+                if (typeof error_callback === 'function') error_callback(xhr.status, xhr);
+            }
+        }
+    }
+    xhr.send();
+}
+
 /*
 Insert data from an URL into a div (replace)
 - div_id: string            | What id will have its innerHTML replaced with this content
@@ -206,6 +230,20 @@ function lsw_replace_download(div_id, url, callback)
             if (typeof callback === 'function') callback(false);
         }
     );
+}
+
+function lsw_user_download_from(url) {
+    if (typeof url === 'string') {
+        const ref = document.createElement("a");
+        ref.style.display = "none";
+        ref.setAttribute("href", url);
+        ref.setAttribute("download", decodeURI(url.substring(url.lastIndexOf("/") + 1)));
+        document.body.appendChild(ref);
+        ref.click();
+    }
+    else {
+        for(let i = 0; i < url.length; ++i) lsw_user_download_from(url[i]);
+    }
 }
 
 
