@@ -1,6 +1,6 @@
 const tracks_name_beg = "tracks/track (";
 const tracks_name_end = ").ogg";
-const tracks_amount = 50;//587; // [1..X]
+const tracks_amount = 587; // [1..X]
 
 const tracks_list = [];
 let tracks_loaded = 0;
