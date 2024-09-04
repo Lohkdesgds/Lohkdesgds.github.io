@@ -12,13 +12,32 @@
 
     <!-- Shared stuff -->
     <script type="text/javascript" src="/js/tools.js"></script>
+    <link href="/css/common.css" media="all" rel="stylesheet" />
     
     <!-- Specific to this site -->
-    <!--link href="css/music.css" media="all" rel="stylesheet" /-->
-    <!--script type="text/javascript" src="js/music.js" defer></script-->
+    <link href="css/lofi.css" media="all" rel="stylesheet" />
+    <script type="text/javascript" src="js/lofi.js" defer></script>
     <!--script type="text/javascript" src="js/youtube.js" defer></script-->
 </head>
 <body>
-    WORKING ON IT
+    <div class="player_box">
+        <h2 class="header">LoFi Embedded Player Radio</h2>
+        
+        <div>
+            <h4 class="status" id="status_msg">Loading...</h4>
+            <div
+                class="lf-volume-bar"
+                id="slider_vol"
+                colorlow="hsl(200, 40%, 20%)"
+                colorhigh="hsl(200, 70%, 50%)"
+            >
+                <span>80%</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h4>Songs source: LoFi StreamBeats by Harris Heller</h4>
+        </div>
+    </div>
 </body>
 </html>
