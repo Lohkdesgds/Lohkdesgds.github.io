@@ -1,168 +1,258 @@
-const tracks_name_beg = "tracks/track (";
-const tracks_name_end = ").ogg";
-const tracks_amount = 587; // [1..X]
+const g = {
+    began: false,
+    track: {
+        audio: null, 
+        next: null,
+        volume: (Number(lsw_get_cookie("lofi_player_volume_+1")) || 1.5) - 1.0,
 
-const tracks_list = [];
-let tracks_loaded = 0;
-let tracks_total_time = 0;
+        setVolume: function(vol) {
+            if (vol <= 0.0) vol = 0.001;
+            this.volume = vol;
+            if (this.audio) this.audio.volume = vol;
+            if (this.next) this.next.volume = vol;
+            lsw_set_cookie("lofi_player_volume_+1", `${this.volume + 1.0}`);
+        }
+    },
+    text: {
+        element: document.getElementById("status_msg"),
+
+        setText: function(str) {
+            this.element.innerText = str;
+        }
+    },
+    tools: {
+        /* Constants */
+        tracks_amount: list_of_names_index.length,
+        /* Variables */
+        total_time_to_play: 0,
+        each_track_time: [],
+
+        _getTrackPath: function(off) {
+            if (typeof off !== 'number' || off < 0 || off > this.tracks_amount) return "";
+            return `tracks/${list_of_names_index[off]}`;
+        },
+        _getTrackName: function(off) {
+            if (typeof off !== 'number' || off < 0 || off > this.tracks_amount) return "";
+            return list_of_names_index[off];
+        },
+        _getCalculateTrackNowAndNext: function() {
+            const time_now = Number(new Date()) * 0.001;
+            const factor = 11987;
+            let time_full = time_now % this.total_time_to_play;
+            let idx = 0;
+
+            for(let i = 0; i < this.tracks_amount; ++i) {
+                idx = (factor + idx) % this.tracks_amount;
+
+                if (time_full > this.each_track_time[idx]) {
+                    time_full -= this.each_track_time[idx];
+                }
+                else break;
+            }
+
+            const nxt = (factor + idx) % this.tracks_amount;
+
+            return { idx: idx, time: time_full, next: nxt };
+        },
 
 
-setup_page();
-setTimeout(setup_audios, 500);
+        // Callback receives a number [0..100] representing progress.
+        loadMetadata: function(cb) {
+            const idx = this.each_track_time.length;
+            const name = this._getTrackPath(idx);
 
-function setup_audios()
-{
-    const idx = tracks_list.length;
+            if (name === "" || idx >= this.tracks_amount) {
+                if (typeof cb === 'function') cb("100.0");
+                return;
+            }
 
-    if (idx == 0) {
-        __set_status(`Preparing... 0%`);
-    }
+            console.log(`Loading ${name} (#${idx})...`);
 
-    if (idx >= tracks_amount) {
-        return;
-    }
+            const audio = new Audio();
+            audio.addEventListener("loadedmetadata", function(ev){
+                if (typeof cb === 'function') {
+                    const tens = Math.floor(1000.0 * idx / g.tools.tracks_amount);
+                    const top = Math.floor(tens / 10);
+                    const low = (tens - (top * 10));
+                    cb(`${top}.${low}`);
+                }
+                
+                g.tools.total_time_to_play += audio.duration;
+                g.tools.each_track_time[idx] = audio.duration;
 
-    const url = __get_track_name(idx);
-    tracks_list[idx] = new Audio();
-    tracks_list[idx].addEventListener("loadedmetadata", function(ev){
-        ++tracks_loaded;
+                setTimeout(function() { g.tools.loadMetadata(cb); }, 8);
+            });
+            audio.src = name;
+        }
+    },
+    funny: {
+        texts_randomized: [],
 
-        __set_status(`Preparing... ${Math.round(100.0 * (tracks_loaded) / tracks_amount)}%`);
-        
-        tracks_total_time += tracks_list[idx].duration;
+        makeTextsIfNeeded: function() {
+            if (this.texts_randomized.length > 0) return;
 
-        if (tracks_loaded == tracks_amount) {
-            __set_status("Click the button to start the stream:");
-            one_time_add_play_and_run();
-            //tracks_list[0].play();
+            this.texts_randomized = [
+                "Preparing the terrain...",
+                "Discovering the recipes...",
+                "Tunneling your soul to the music...",
+                "Connecting to Joe's house...",
+                "Makin' my way downtown, walkin' fast...",
+                "Almost there...",
+                "Working on it...",
+                "Please wait a bit more...",
+                "I am getting there, trust me bro...",
+                "Collecting materials...",
+                "Compiling chrome in seconds...",
+                "If this text updates sometimes, it's a good sign...",
+                "Sometimes garbage collector slows down stuff...",
+                "If you're on Safari, good luck..."
+            ];
+
+            _randArray(this.texts_randomized);
+        },
+        getRandomText: function (update_interval_sec) {
+            const time = Math.floor((Number(new Date()) / 1000) / update_interval_sec) % this.texts_randomized.length;
+            return this.texts_randomized[time];
+        }
+    },
+    slider: {
+        element: document.getElementById("slider_vol"),
+
+        setup: function() {
+            const percx = g.track.volume;
+
+            this.element.addEventListener("mousemove", function(e){g.slider._eventHandler(e);});
+            this.element.addEventListener("mousedown", function(e){g.slider._eventHandler(e);});
+            this.element.addEventListener("mouseup",   function(e){g.slider._eventHandler(e);});
+            this.element.addEventListener("mouseleave",function(e){g.slider._eventHandler(e);});
+
+            this.element.style.background = 
+                "linear-gradient(90deg, " +
+                this.element.getAttribute("colorhigh") +
+                " " +
+                (100 * (percx)) +
+                "%, " +
+                this.element.getAttribute("colorlow") + 
+                " " +
+                (100 * (percx + 0.001)) + "%)";
+
+            this.element.setAttribute("perc", 100 * percx);
+            this.element.children[0].innerText = Math.round(percx * 100) + "%";
+
+        },
+        _eventHandler: function(ev) {
+            if (ev.buttons == 0 && ev.type != "mouseup") return -1;
+            if (ev.type == "mouseleave") return -1;
+
+            const dx = ev.clientX;
+            let percx = (dx - ev.target.offsetLeft) / ev.target.offsetWidth;
+            if (percx < 0) percx = 0;
+            if (percx > 1) percx = 1;
+
+            ev.target.style.background = 
+                "linear-gradient(90deg, " + ev.target.getAttribute("colorhigh") + " " + (100 * (percx)) + "%, " +
+                ev.target.getAttribute("colorlow") + " " + (100 * (percx + 0.001)) + "%)";
             
+            ev.target.setAttribute("perc", 100 * percx);
+            ev.target.children[0].innerText = Math.round(percx * 100) + "%";
+
+            g.track.setVolume(percx);
         }
-    });
-    tracks_list[idx].addEventListener("ended", function() {
-        tracks_list[idx].pause();
-        tracks_list[idx].currentTime = 0;
-        const curr = __calc_track_and_time_now();
-        tracks_list[curr[0]].play();
-    });
-    tracks_list[idx].src = url;
+    },
 
-    setTimeout(setup_audios, 10);
-}
+    prepareAll: function() {
+        g.funny.makeTextsIfNeeded();
+        g.tools.loadMetadata(function(perc) {        
+            g.text.setText(`${g.funny.getRandomText(5)} ${perc}%`);
+            if (perc == 100.0) {
+                g.text.setText("Good! Beginning stream...");
+                setInterval(check_track_prepare_next, 500);
+            }
+        });
+    }
+};
 
-function one_time_add_play_and_run()
+setup_all();
+
+// called every so often:
+function check_track_prepare_next()
 {
-    const btn = document.createElement("button");
-    const root = document.getElementById("status_msg");
+    // { idx: idx, time: track_now, next: (idx + 1) % this.tracks_amount };
+    const now = g.tools._getCalculateTrackNowAndNext();
+    const name_now = g.tools._getTrackPath(now.idx); // track now
+    const name_next = g.tools._getTrackPath(now.next);
 
-    btn.innerText = "Play";
-    btn.addEventListener("click", function() {
-        const curr = __calc_track_and_time_now();
+    // begin situation
+    if (!g.track.next) {
+        console.log(`No next track found, loading "${name_now}" for now at "${now.time}" seconds of playback and "${name_next}" as next.`);
+        g.track.audio = new Audio(name_now);
+        g.track.next = new Audio(name_next);
 
-        root.removeChild(btn);
+        g.track.audio["LOFI_REFERENCE"] = name_now;
+        g.track.next["LOFI_REFERENCE"] = name_next;
 
-        __set_volume_perc(__get_volume_perc()); // force update all
-
-        __set_status("Playing indefinitely!");
-
-        setTimeout(function() {
-            const el = document.getElementById("status_msg");
-            el.parentElement.removeChild(el);
-        }, 2000);
-
-        tracks_list[curr[0]].currentTime = curr[1];
-        tracks_list[curr[0]].play();
-    });
-
-    root.insertBefore(btn, root.children[1]);
-}
-
-function setup_page() {
-
-    const el2 = document.getElementById("slider_vol");
-
-    if (el2) {
-        el2.addEventListener("mousemove", trigger_volume_bar);
-        el2.addEventListener("mousedown", trigger_volume_bar);
-        el2.addEventListener("mouseup",   trigger_volume_bar);
-        el2.addEventListener("mouseleave",trigger_volume_bar);
-
-        __set_volume_perc(0.5);
+        g.track.audio.currentTime = now.time;
+        g.track.audio.volume = g.track.volume;
+        g.track.audio.play();
+    }
+    else if (g.track.next["LOFI_REFERENCE"] == name_now) {
+        console.log(`Next matches now track, so playing "${name_now}" now and loading "${name_next}" as next.`);
+        
+        g.track.audio = g.track.next;
+        g.track.audio.volume = g.track.volume;
+        g.track.audio.play();
+        g.track.next = new Audio(name_next);
+        g.track.next["LOFI_REFERENCE"] = name_next;
     }
 
+    const diff = Math.abs(g.track.audio.currentTime - now.time);
+
+    if (diff > 2.0) {
+        console.log(`Time diff between track and expected time is too high (${diff} sec). Trying to compensate lag...`);
+        g.track.audio.currentTime = now.time;
+        g.track.audio.volume = g.track.volume;
+        g.track.audio.play();
+    }
+
+    const raw_name_track = g.tools._getTrackName(now.idx);
+    const key = ", from Album ";
+    const endd = ".ogg";
+    const point = raw_name_track.indexOf(key);
+    const name_trk = raw_name_track.substring(0, point);
+    const name_album = raw_name_track.substring(point + key.length, raw_name_track.length - endd.length);
+
+    g.text.setText(`${_sec2str(g.track.audio.currentTime)} -> ${name_trk} - ${name_album}`);
 }
 
-function common_filter_trigger(ev)
+function setup_all() 
 {
-    if (ev.buttons == 0 && ev.type != "mouseup") return -1;
-    if (ev.type == "mouseleave") return -1;
+    g.text.setText("Please click anywhere to begin the load (Browsers don't like autoplay without an interaction first)");
 
-    const dx = ev.clientX;
-    let percx = (dx - ev.target.offsetLeft) / ev.target.offsetWidth;
-    if (percx < 0) percx = 0;
-    if (percx > 1) percx = 1;
+    g.slider.setup();
 
-    ev.target.style.background = 
-        "linear-gradient(90deg, " + ev.target.getAttribute("colorhigh") + " " + (100 * (percx)) + "%, " +
-        ev.target.getAttribute("colorlow") + " " + (100 * (percx + 0.001)) + "%)";
-    
-    ev.target.setAttribute("perc", 100 * percx);
-
-    return percx;
+    document.body.addEventListener("click", function(ev) {
+        if (g.began) return;
+        g.began = true;
+        g.prepareAll();
+    });
 }
 
-function trigger_volume_bar(ev)
+function _randArray(arr)
 {
-    const res = common_filter_trigger(ev);
-    if (res < 0.0) return;
-    
-    // res == vol, 0..1
-    __set_volume_perc(res);
-}
+    // While there remain elements to shuffle...
+    for (let currentIndex = arr.length; currentIndex != 0;) {
 
+        // Pick a remaining element...
+        let randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
 
-function __set_volume_perc(percx)
-{
-    const el = document.getElementById("slider_vol");
-    if (!el) return;
-    el.style.background="linear-gradient(90deg, " + el.getAttribute("colorhigh") + " " + (100 * (percx)) + "%, " + el.getAttribute("colorlow") + " " + (100 * (percx + 0.001)) + "%)";
-    el.setAttribute("perc", 100 * percx);
-    el.children[0].innerText = Math.round(percx * 100) + "%";
-
-    for(let i = 0; i < tracks_list.length; ++i) {
-        tracks_list[i].volume = percx;
+        // And swap it with the current element.
+        [arr[currentIndex], arr[randomIndex]] = [
+            arr[randomIndex], arr[currentIndex]];
     }
 }
 
-function __get_volume_perc()
+function _sec2str(seconds)
 {
-    const el = document.getElementById("slider_vol");
-    if (!el) return 0.5;
-    return el.getAttribute("perc") * 0.01;
-}
-
-function __set_status(stat) {
-    const el = document.getElementById("status_msg");
-    if (!el) return;
-    el.innerText = stat;
-}
-
-// from 0 to tracks_amount-1
-function __get_track_name(idx) {
-    if (typeof idx !== 'number' || idx < 0 || idx > tracks_amount) return "";
-    return `${tracks_name_beg}${idx + 1}${tracks_name_end}`;
-}
-
-function __calc_track_and_time_now() {
-    const time_now = Number(new Date()) * 0.001;
-    let track_now = time_now % tracks_total_time;
-    let idx = 0;
-
-    for(; idx < tracks_amount; ++idx) {
-        if (track_now > tracks_list[idx].duration) {
-            track_now -= tracks_list[idx].duration;
-        }
-        else break;
-    }
-
-    return [idx, track_now];
+    return new Date(seconds * 1000).toISOString().slice(11, 19);
 }
