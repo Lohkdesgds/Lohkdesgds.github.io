@@ -18,14 +18,20 @@ const g = {
 
         setText: function(str) {
             this.element.innerText = str;
+        },
+        setTitle: function(str) {
+            document.title = str;
         }
     },
     tools: {
         /* Constants */
         tracks_amount: list_of_names_index.length,
+        parallel_load_amount: 4,
         /* Variables */
+        parallel_stuff_happening: 0,
         total_time_to_play: 0,
         each_track_time: [],
+        thr_update_and_ctl: -1,
 
         _getTrackPath: function(off) {
             if (typeof off !== 'number' || off < 0 || off > this.tracks_amount) return "";
@@ -39,6 +45,7 @@ const g = {
             const time_now = Number(new Date()) * 0.001;
             const factor = 11987;
             let time_full = time_now % this.total_time_to_play;
+            let show_time = 0;
             let idx = 0;
 
             for(let i = 0; i < this.tracks_amount; ++i) {
@@ -46,15 +53,17 @@ const g = {
 
                 if (time_full > this.each_track_time[idx]) {
                     time_full -= this.each_track_time[idx];
+                    show_time += this.each_track_time[idx];
                 }
                 else break;
             }
 
             const nxt = (factor + idx) % this.tracks_amount;
 
-            return { idx: idx, time: time_full, next: nxt };
+            return { idx: idx, time: time_full, show_time: show_time + time_full, next: nxt };
         },
 
+        // Callback receives a number [0..100] representing progress.
         loadMetadata: function(cb)
         {
             const check = lsw_storage_get_from("lofi_player_db_props");
@@ -74,42 +83,81 @@ const g = {
                 }
             }
 
-            this._loadMetadata(cb);
+            console.log(`No cache. Loading tracks info in parallel (x${this.parallel_load_amount}). "Multimedia" warnings are just part of the optimization, believe it or not.`);
+            this.thr_update_and_ctl = setInterval(function(){ g.tools._updateTextAndTasksRunAtTheEnd(cb); }, 20);
+            //this._loadMetadata(cb);
         },
 
-        // Callback receives a number [0..100] representing progress.
-        _loadMetadata: function(cb) {
-            const idx = this.each_track_time.length;
-            const name = this._getTrackPath(idx);
+        _calc_loaded_already: function() {
+            let count = 0;
+            for(let i = 0; i < this.tracks_amount && i < g.tools.each_track_time.length; ++i) {
+                if (g.tools.each_track_time[i] >= 0.0) ++count;
+            }
+            return count;
+        },
 
-            if (name === "" || idx >= this.tracks_amount) {
-                if (typeof cb === 'function') cb("100.0");
+        _updateTextAndTasksRunAtTheEnd: function(cb) {
+            const done_already = this._calc_loaded_already();
+            const is_the_end = done_already >= this.tracks_amount;
+
+            // if not, prepare next update on text
+            if (!is_the_end) {
+                //console.log(`Parallel stuff: ${g.tools.parallel_stuff_happening}`);
+                
+                const tens = Math.floor(1000.0 * done_already / this.tracks_amount);
+                const top = Math.floor(tens / 10);
+                const low = (tens - (top * 10));
+                cb(`${top}.${low}`);
+
+                // Control load externally
+                if (this.parallel_stuff_happening < this.parallel_load_amount) {
+                    for(let i = this.parallel_stuff_happening; i < this.parallel_load_amount; ++i)
+                        setTimeout(function(){ g.tools._loadMetadata(); }, 10 + i);
+                }
+            }
+            else {
+                cb("100.0");
                 lsw_storage_save_to("lofi_player_db_each_track_time", this.each_track_time);
                 lsw_storage_save_to("lofi_player_db_props",
                     { 
                         total_time: this.total_time_to_play,
                         tracks_amount: this.tracks_amount,
                         version: list_of_names_version
-                    });
-                return;
+                    }
+                );
+
+                clearInterval(this.thr_update_and_ctl);
+                this.thr_update_and_ctl = -1;
             }
 
-            console.log(`Loading ${name} (#${idx})...`);
+
+        },
+
+        _loadMetadata: function() {
+            ++this.parallel_stuff_happening;
+
+            const idx = this.each_track_time.length;
+
+            //console.log(`Started task ${idx}.`);
+
+            const name = this._getTrackPath(idx);
+
+            if (name === "" || idx >= this.tracks_amount) return;
+
+            g.tools.each_track_time[idx] = -1; // loading
 
             const audio = new Audio();
             audio.addEventListener("loadedmetadata", function(ev){
-                if (typeof cb === 'function') {
-                    const tens = Math.floor(1000.0 * idx / g.tools.tracks_amount);
-                    const top = Math.floor(tens / 10);
-                    const low = (tens - (top * 10));
-                    cb(`${top}.${low}`);
-                }
+                const first = g.tools.each_track_time[idx] === -1.0;
                 
                 g.tools.total_time_to_play += audio.duration;
                 g.tools.each_track_time[idx] = audio.duration;
+                audio.src = "";
 
-                setTimeout(function() { g.tools.loadMetadata(cb); }, 8);
-            });
+                --g.tools.parallel_stuff_happening;
+                //console.log(`Ended task ${idx}.`);
+            }, {once: true});
+
             audio.src = name;
         }
     },
@@ -194,15 +242,41 @@ const g = {
         }
     },
 
+    radial: {
+        begin: -1,
+        element: document.getElementById("player_box"),
+
+        setup: function()
+        {  
+            this.begin = Number(new Date());
+            setInterval(function(){ g.radial._work(); }, 250);
+        },
+
+        _work: function()
+        {
+            const deg = (135 + (Number(new Date()) - this.begin) / 100) % 360;
+            this.element.style.background = `linear-gradient(${deg}deg, hsl(123, 42%, 54%), hsl(180, 42%, 54%))`;
+        }
+    },
+
     prepareAll: function() {
         g.funny.makeTextsIfNeeded();
         g.tools.loadMetadata(function(perc) {        
             g.text.setText(`${g.funny.getRandomText(5)} ${perc}%`);
-            if (perc >= 100.0) {
-                if (perc == 100.0) g.text.setText("Good! Beginning stream...");
-                else if (perc == 200.0) g.text.setText("Got cache! Let's go!");
+            g.text.setTitle(`Your LoFi - Loading... ${perc}%`);
 
-                setInterval(check_track_prepare_next, 500);
+            if (perc >= 100.0) {
+                g.text.setTitle(`Your LoFi - Playing...`);
+
+                if (perc == 100.0) {
+                    g.text.setText("Good! Beginning stream...");
+                }
+                else if (perc == 200.0) {
+                    check_track_prepare_next();
+                }
+
+                setInterval(check_track_prepare_next, 1000);
+                g.radial.setup();
             }
         });
     }
@@ -257,7 +331,9 @@ function check_track_prepare_next()
     const name_trk = raw_name_track.substring(0, point);
     const name_album = raw_name_track.substring(point + key.length, raw_name_track.length - endd.length);
 
-    g.text.setText(`${_sec2str(g.track.audio.currentTime)} -> ${name_trk} - ${name_album}`);
+    const time_str = _sec2str(now.show_time);//g.track.audio.currentTime);
+    g.text.setText(`${time_str} -> ${name_trk} - ${name_album}`);
+    g.text.setTitle(`${time_str} - ${name_trk} - ${name_album}`);
 }
 
 function setup_all() 
@@ -269,9 +345,12 @@ function setup_all()
     document.body.addEventListener("click", function(ev) {
         if (g.began) return;
         g.began = true;
+        g.text.setText("Began loading...");
+        g.text.setTitle(`Your LoFi - Loading...`);
         g.prepareAll();
     });
 }
+
 
 function _randArray(arr)
 {

@@ -8,7 +8,7 @@ body {
 }
 
 .player_box {
-    background: linear-gradient(135deg, hsl(123, 48%, 54%), hsl(180, 48%, 54%));
+    background: linear-gradient(135deg, hsl(123, 42%, 54%), hsl(180, 42%, 54%));
     border-radius: 15px;
     padding: 1.6em 2em 1.4em 2em;
     box-sizing: border-box;
