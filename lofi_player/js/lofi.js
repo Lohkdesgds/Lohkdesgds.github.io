@@ -55,14 +55,42 @@ const g = {
             return { idx: idx, time: time_full, next: nxt };
         },
 
+        loadMetadata: function(cb)
+        {
+            const check = lsw_storage_get_from("lofi_player_db_props");
+
+            if (check && check.tracks_amount === this.tracks_amount && 
+                check.version === list_of_names_version) 
+            {
+                const all_tracks = lsw_storage_get_from("lofi_player_db_each_track_time");
+
+                if (all_tracks.length === this.tracks_amount) {
+                    console.log(`Found cache, matched version and numbers, using it instead.`);
+
+                    this.each_track_time = all_tracks;
+                    this.total_time_to_play = check.total_time;
+                    if (typeof cb === 'function') cb("200.0");
+                    return;
+                }
+            }
+
+            this._loadMetadata(cb);
+        },
 
         // Callback receives a number [0..100] representing progress.
-        loadMetadata: function(cb) {
+        _loadMetadata: function(cb) {
             const idx = this.each_track_time.length;
             const name = this._getTrackPath(idx);
 
             if (name === "" || idx >= this.tracks_amount) {
                 if (typeof cb === 'function') cb("100.0");
+                lsw_storage_save_to("lofi_player_db_each_track_time", this.each_track_time);
+                lsw_storage_save_to("lofi_player_db_props",
+                    { 
+                        total_time: this.total_time_to_play,
+                        tracks_amount: this.tracks_amount,
+                        version: list_of_names_version
+                    });
                 return;
             }
 
@@ -92,6 +120,12 @@ const g = {
             if (this.texts_randomized.length > 0) return;
 
             this.texts_randomized = [
+                "Sorry for taking this long...",
+                "I promise there is a cache now, just load once...",
+                "First time here? I see...",
+                "Please do not clear your cookies and data!...",
+                "Blame GitHub for this slow load...",
+                "There is a lot of music in here, I promise!...",
                 "Preparing the terrain...",
                 "Discovering the recipes...",
                 "Tunneling your soul to the music...",
@@ -164,8 +198,10 @@ const g = {
         g.funny.makeTextsIfNeeded();
         g.tools.loadMetadata(function(perc) {        
             g.text.setText(`${g.funny.getRandomText(5)} ${perc}%`);
-            if (perc == 100.0) {
-                g.text.setText("Good! Beginning stream...");
+            if (perc >= 100.0) {
+                if (perc == 100.0) g.text.setText("Good! Beginning stream...");
+                else if (perc == 200.0) g.text.setText("Got cache! Let's go!");
+
                 setInterval(check_track_prepare_next, 500);
             }
         });
@@ -226,7 +262,7 @@ function check_track_prepare_next()
 
 function setup_all() 
 {
-    g.text.setText("Please click anywhere to begin the load (Browsers don't like autoplay without an interaction first)");
+    g.text.setText("Please click anywhere to begin the load (Browsers don't like autoplay without an interaction first).");
 
     g.slider.setup();
 

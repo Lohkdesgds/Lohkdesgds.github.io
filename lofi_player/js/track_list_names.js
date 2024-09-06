@@ -5,6 +5,7 @@ And to list all stuff, classic cmd:
 `dir /b`
 */
 
+const list_of_names_version = 1; // UPDATE WHEN LIST IS CHANGED!
 const list_of_names_index = [ // list of tracks
     "576, from Album 3. Sakura Dreams.ogg",
     "90_s, from Album 2. Fantasy Arcade.ogg",
@@ -594,3 +595,4 @@ const list_of_names_index = [ // list of tracks
     "Zen, from Album 3. Sakura Dreams.ogg",
     "Zinnia Whispers, from Album 19. Prime.ogg"
 ];
+// UPDATE list_of_names_version WHEN LIST IS CHANGED!
