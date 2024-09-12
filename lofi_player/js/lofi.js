@@ -26,9 +26,9 @@ const g = {
     tools: {
         /* Constants */
         tracks_amount: list_of_names_index.length,
-        parallel_load_amount: 4,
+        parallel_load_amount: 6,
         /* Variables */
-        parallel_stuff_happening: 0,
+        //parallel_stuff_happening: 0,
         total_time_to_play: 0,
         each_track_time: [],
         thr_update_and_ctl: -1,
@@ -110,8 +110,9 @@ const g = {
                 cb(`${top}.${low}`);
 
                 // Control load externally
-                if (this.parallel_stuff_happening < this.parallel_load_amount) {
-                    for(let i = this.parallel_stuff_happening; i < this.parallel_load_amount; ++i)
+                const parallel = this._calc_parallel_happening_now();
+                if (parallel < this.parallel_load_amount) {
+                    for(let i = parallel; i < this.parallel_load_amount; ++i)
                         setTimeout(function(){ g.tools._loadMetadata(); }, 10 + i);
                 }
             }
@@ -129,12 +130,18 @@ const g = {
                 clearInterval(this.thr_update_and_ctl);
                 this.thr_update_and_ctl = -1;
             }
+        },
 
-
+        _calc_parallel_happening_now: function() {
+            let count = 0;
+            for(let i = 0; i < this.each_track_time.length; ++i) {
+                if (this.each_track_time[i] == -1) ++count;
+            }
+            return count;
         },
 
         _loadMetadata: function() {
-            ++this.parallel_stuff_happening;
+            //++this.parallel_stuff_happening;
 
             const idx = this.each_track_time.length;
 
@@ -154,7 +161,7 @@ const g = {
                 g.tools.each_track_time[idx] = audio.duration;
                 audio.src = "";
 
-                --g.tools.parallel_stuff_happening;
+                //--g.tools.parallel_stuff_happening;
                 //console.log(`Ended task ${idx}.`);
             }, {once: true});
 
