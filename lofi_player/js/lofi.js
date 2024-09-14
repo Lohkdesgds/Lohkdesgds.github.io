@@ -321,6 +321,16 @@ function check_track_prepare_next()
         g.track.next = new Audio(name_next);
         g.track.next["LOFI_REFERENCE"] = name_next;
     }
+    else if (g.track.audio["LOFI_REFERENCE"] !== name_now) {
+        console.log(`Current playing does not match "${name_now}". It was "${g.track.audio["LOFI_REFERENCE"]}". Resetting...`);
+        g.track.audio.currentTime = g.track.audio.duration;
+        g.track.next.currentTime = g.track.next.duration;
+        g.track.audio.volume = 0;
+        g.track.next.volume = 0;
+        g.track.audio = null;
+        g.track.next = null;
+        return;
+    }
 
     const diff = Math.abs(g.track.audio.currentTime - now.time);
 
